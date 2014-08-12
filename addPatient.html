@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="waldo.css" type="text/css" media="all">
+    </head>
+    <body>
+        <div>Add a patient:</div>
+        <form id="addPatientForm">
+            <input id="gender" name="gender" type="hidden" />
+            <table>
+                <tr>
+                    <th class="formLabel">
+                        <label for="lastName">Last Name:</label>
+                    </th>
+                    <td class="inputBox">
+                        <input name="lastName" id="lastName" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formLabel">
+                        <label for="firstName">First Name:</label>
+                    </th>
+                    <td class="inputBox">
+                        <input name="firstName" id="firstName" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formLabel">
+                        <label>Gender:</label>
+                    </th>
+                    <td class="inputBox">
+                        <input name="genderSelect" id="genderM" type="radio" value="M" onclick="getElementById('gender').value = 'M';" />
+                        <label for="genderM">Male</label>
+                        <input name="genderSelect" id="genderF" type="radio" value="F" onclick="getElementById('gender').value = 'F';" />
+                        <label for="genderF">Female</label>
+                        <input name="genderSelect" id="genderO" type="radio" value="O" onclick="getElementById('gender').value = 'O';" />
+                        <label for="genderO">Other</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formLabel">
+                        <label for="dob">Birth Date:<br/><span style="color:red;">(e.g. 19301231)</span></label>
+                    </th>
+                    <td class="inputBox">
+                        <input name="dob" id="dob" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formLabel" style="vertical-align: text-top">
+                        <label>Immunizations:</label>
+                    </th>
+                    <td>
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <th>
+                                    <label>Immunization Date:<br/><span style="color:red;">(e.g. 19301231)</span></label>
+                                </th>
+                                <th>
+                                    <label>CVX Code:</label>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="inputBox">
+                                    <input name="iz1a" id="iz1a" type="text" />
+                                </td>
+                                <td class="inputBox">
+                                    <input name="iz1b" id="iz1b" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="inputBox">
+                                    <input name="iz2a" id="iz2a" type="text" />
+                                </td>
+                                <td class="inputBox">
+                                    <input name="iz2b" id="iz2b" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="inputBox">
+                                    <input name="iz3a" id="iz3a" type="text" />
+                                </td>
+                                <td class="inputBox">
+                                    <input name="iz3b" id="iz3b" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="inputBox">
+                                    <input name="iz4a" id="iz4a" type="text" />
+                                </td>
+                                <td class="inputBox">
+                                    <input name="iz4b" id="iz4b" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="inputBox">
+                                    <input name="iz5a" id="iz5a" type="text" />
+                                </td>
+                                <td class="inputBox">
+                                    <input name="iz5b" id="iz5b" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="inputBox">
+                                    <input name="iz6a" id="iz6a" type="text" />
+                                </td>
+                                <td class="inputBox">
+                                    <input name="iz6b" id="iz6b" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="inputBox">
+                                    <input name="iz7a" id="iz7a" type="text" />
+                                </td>
+                                <td class="inputBox">
+                                    <input name="iz7b" id="iz7b" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="inputBox">
+                                    <input name="iz8a" id="iz8a" type="text" />
+                                </td>
+                                <td class="inputBox">
+                                    <input name="iz8b" id="iz8b" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="inputBox">
+                                    <input name="iz9a" id="iz9a" type="text" />
+                                </td>
+                                <td class="inputBox">
+                                    <input name="iz9b" id="iz9b" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="inputBox">
+                                    <input name="iz10a" id="iz10a" type="text" />
+                                </td>
+                                <td class="inputBox">
+                                    <input name="iz10b" id="iz10b" type="text" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            
+            <button name="Add" onclick="addPatient();return false;">Add</button>
+        </form>
+        <script type="text/javascript" src="logic.js"></script>
+    </body>
+</html>

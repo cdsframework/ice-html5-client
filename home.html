@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>ICE Test App</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="waldo.css" type="text/css" media="all">
+    </head>
+    <body>
+        <form>
+            <div id="patientListTable"></div>
+        </form>
+        <a href="addPatient.html">Add Patient</a>
+        <script type="text/javascript" src="logic.js"></script>
+        <script type="text/javascript">
+            listPatients();
+        </script>
+        <table cellspacing="0" border="1" style="border-collapse: collapse;">
+            <tr>
+                <td class="formLabel" style="vertical-align: text-top;">
+                    Input VMR:
+                </td>
+                <td>
+                    <div id="input" style="white-space: pre-wrap;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="formLabel" style="vertical-align: text-top;">
+                    Output VMR:
+                </td>
+                <td>
+                    <div id="output" style="white-space: pre-wrap;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="formLabel" style="vertical-align: text-top;">
+                    SOAP Request:
+                </td>
+                <td>
+                    <div id="soapRequest" style="white-space: pre-wrap;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="formLabel" style="vertical-align: text-top;">
+                    SOAP Response:
+                </td>
+                <td>
+                    <div id="soapResponse" style="white-space: pre-wrap;"></div>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
