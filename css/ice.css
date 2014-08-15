@@ -1,0 +1,77 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 14, 2014, 8:51:03 PM
+    Author     : HLN Consulting, LLC
+*/
+
+.iceButton:after {
+    background-image: url(../images/iceCube.png);
+}
+.iceBg {
+    background-image: url(../images/iceCube.png);
+    background-repeat: no-repeat;
+    background-position: center; 
+    opacity:0.1; 
+    width:100%;
+    height:100%;
+    position:absolute;
+    content: '';
+}
+.iceGridCell {
+    /*height:50px;*/
+    font-size: 10px;
+    font-weight: normal;
+}
+.iceEvalSquare {
+    font-size: 10px;
+    border: 1px solid #bbb;
+    padding: 5px 30px 5px 5px;
+    min-width: 100px;
+    height: 70px;
+    line-height: 16px;
+    position:relative;
+}
+.iceEvalTable {
+}
+.iceEvalFalse {
+    background-color: rgb(253, 248, 249);
+}
+.iceEvalTrue {
+    background-color: rgb(236, 252, 240);
+}
+.iceRecommended {
+    background-color: rgb(222, 223, 243);
+}
+.iceRecSquare {
+    font-size: 10px;
+    border: 1px solid #bbb;
+    padding: 5px 30px 5px 5px;
+    min-width: 100px;
+    height: 70px;
+    line-height: 16px;
+    position:relative;
+}
+.sectionTitle {
+    text-align: left;
+    margin-top: 1.4em;
+    margin-bottom: 1.4em;
+    opacity: .5;
+}
+.addPatientButton {
+    float:right;
+}
+.ui-btn.my-tooltip-btn,
+.ui-btn.my-tooltip-btn:hover,
+.ui-btn.my-tooltip-btn:active {
+    background: none;
+    border: 0;
+    position:absolute;
+    top: -11px;
+    right:-13px;
+    float:right;
+    
+}

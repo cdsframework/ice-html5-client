@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>ICE Test App</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/jquery.mobile.datepicker.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.min.css" />
+        <link rel="stylesheet" href="css/jquery-ui.css" />
+        <link rel="stylesheet" href="css/ice.css" />
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/jquery.mobile.min.js"></script>
+        <script src="js/jquery.mobile.datepicker.js"></script>
+        <script src="js/iceData.js"></script>
+        <script src="js/iceUtils.js"></script>
+        <script src="js/iceOpenCds.js"></script>
+        <script src="js/icePatient.js"></script>
+        <script src="js/iceInit.js"></script>
+
+    </head>
+    <body>
+        <div data-role="page" id="main">
+            <div data-role="header"><h1>ICE Patient Client</h1></div>
+            <div role="main" class="ui-content">
+                <!-- <div class="iceBg"></div> -->
+                <form>
+                    <div class="sectionTitle" style="float:left;">Patient List</div>
+                    <a href="#addPatient" class="ui-btn ui-btn-inline addPatientButton">Add Patient</a>
+                    <table id="patientListTable" data-role="table" class="ui-responsive table-stroke">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Gender</th>
+                                <th>DOB</th>
+                                <th>IZs</th>
+                                <th>Delete</th>
+                                <th>ICE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <script type="text/javascript">
+                        listPatients();
+                    </script>
+                    <div class="sectionTitle">Patient Output Grid</div>
+                    <table id="iceOutputGrid" data-role="table" class="ui-responsive table-stroke" style="display:none;">
+                        <thead>
+                            <tr>
+                                <th>Vaccine Group</th>
+                                <th>Recommendations</th>
+                                <th>Evaluations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>ICE Debugging:</h3>
+                    <table cellspacing="0" border="1" style="border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                ICE Request Status:
+                            </td>
+                            <td>
+                                <div id="requestStatus"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                ICE Response Data:
+                            </td>
+                            <td>
+                                <textarea id="responseData" name="responseData" cols="50" rows="5"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Input VMR:
+                            </td>
+                            <td>
+                                <textarea id="input" name="input" cols="50" rows="5"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Output VMR:
+                            </td>
+                            <td>
+                                <textarea id="output" name="output" cols="50" rows="5"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                SOAP Request:
+                            </td>
+                            <td>
+                                <textarea id="soapRequest" name="soapRequest" cols="50" rows="5"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                SOAP Response:
+                            </td>
+                            <td>
+                                <textarea id="soapResponse" name="soapResponse" cols="50" rows="5"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div data-role="footer"><h4>Copyright &copy;<script>document.write(new Date().getFullYear())</script> HLN Consulting, LLC</h4></div>
+        </div>
+        <div data-role="page" id="addPatient">
+            <div data-role="header"><h1>Add Patient</h1></div>
+            <div role="main" class="ui-content">
+                <!--  <div class="iceBg"></div> -->
+                <form id="addPatientForm">
+                    <table>
+                        <tr>
+                            <th>
+                                <label for="lastName">Last Name:</label>
+                            </th>
+                            <td>
+                                <input name="lastName" id="lastName" type="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="firstName">First Name:</label>
+                            </th>
+                            <td>
+                                <input name="firstName" id="firstName" type="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label>Gender:</label>
+                            </th>
+                            <td>
+                                <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                    <label><input name="gender" id="genderM" type="radio" value="M"/>Male</label>
+                                    <label><input name="gender" id="genderF" type="radio" value="F"/>Female</label>
+                                    <label><input name="gender" id="genderO" type="radio" value="O"/>Other</label>
+                                </fieldset>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="dob">Birth Date:<br/><span style="color:red;">(e.g. 19301231)</span></label>
+                            </th>
+                            <td>
+                                <input name="dob" id="dob" type="text" data-role="date" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th style="vertical-align: text-top">
+                                <label>Immunizations:</label>
+                            </th>
+                            <td>
+                                <table cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <th>
+                                            <label>Immunization Date:<br/><span style="color:red;">(e.g. 19301231)</span></label>
+                                        </th>
+                                        <th>
+                                            <label>CVX Code:</label>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="iz1a" id="iz1a" type="text" data-role="date"/>
+                                        </td>
+                                        <td>
+                                            <input name="iz1b" id="iz1b" type="text" class="cvxAutoComplete" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="iz2a" id="iz2a" type="text" data-role="date"/>
+                                        </td>
+                                        <td>
+                                            <input name="iz2b" id="iz2b" type="text" class="cvxAutoComplete" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="iz3a" id="iz3a" type="text" data-role="date"/>
+                                        </td>
+                                        <td>
+                                            <input name="iz3b" id="iz3b" type="text" class="cvxAutoComplete" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="iz4a" id="iz4a" type="text" data-role="date"/>
+                                        </td>
+                                        <td>
+                                            <input name="iz4b" id="iz4b" type="text" class="cvxAutoComplete" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="iz5a" id="iz5a" type="text" data-role="date"/>
+                                        </td>
+                                        <td>
+                                            <input name="iz5b" id="iz5b" type="text" class="cvxAutoComplete" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="iz6a" id="iz6a" type="text" data-role="date"/>
+                                        </td>
+                                        <td>
+                                            <input name="iz6b" id="iz6b" type="text" class="cvxAutoComplete" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="iz7a" id="iz7a" type="text" data-role="date"/>
+                                        </td>
+                                        <td>
+                                            <input name="iz7b" id="iz7b" type="text" class="cvxAutoComplete" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="iz8a" id="iz8a" type="text" data-role="date"/>
+                                        </td>
+                                        <td>
+                                            <input name="iz8b" id="iz8b" type="text" class="cvxAutoComplete" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="iz9a" id="iz9a" type="text" data-role="date"/>
+                                        </td>
+                                        <td>
+                                            <input name="iz9b" id="iz9b" type="text" class="cvxAutoComplete" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="iz10a" id="iz10a" type="text" data-role="date"/>
+                                        </td>
+                                        <td>
+                                            <input name="iz10b" id="iz10b" type="text" class="cvxAutoComplete" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a"><a href="#main" onclick="document.getElementById('addPatientForm').reset()" class="ui-shadow ui-btn ui-corner-all">Cancel</a></div>
+                        <div class="ui-block-b">
+                            <div class="button-wrap">
+                                <button name="Add" class="ui-shadow ui-btn ui-corner-all" onclick="addPatient();
+                                        return false;">Add</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div data-role="footer"><h4>Copyright &copy;<script>document.write(new Date().getFullYear())</script> HLN Consulting, LLC</h4></div>
+        </div>
+    </body>
+</html>
