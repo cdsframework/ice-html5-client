@@ -100,7 +100,7 @@ function listPatients() {
     while (tbdy.firstChild) {
         tbdy.removeChild(tbdy.firstChild);
     }
-    var tr, td, span, patDiv0, patDiv1, patDiv2, patA, patP, editButton, deleteButton, iceButton;
+    var tr, td, span, patDiv0, patDiv1, patDiv2, patDiv3, patA, patP, editButton, deleteButton, iceButton;
     if (localStorage.getItem('patientList') === '{}' || localStorage.getItem('patientList') === null || localStorage.getItem('patientList') === '') {
         localStorage.setItem('patientList', defaultPatientList);
     }
@@ -146,7 +146,7 @@ function listPatients() {
         patA.setAttribute('data-rel', 'popup');
         patA.setAttribute('data-transition', 'pop');
         patA.setAttribute('title', 'Immunizations');
-        patA.setAttribute('class', 'my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext');
+        patA.setAttribute('class', 'my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-grid ui-btn-icon-notext');
         patDiv1.appendChild(patA);
         patDiv0.appendChild(patDiv1);
 
@@ -168,43 +168,44 @@ function listPatients() {
 
         patDiv2.appendChild(patP);
         patDiv0.appendChild(patDiv2);
-        td.appendChild(patDiv0);
-        tr.appendChild(td);
+//        tr.appendChild(td);
 
-        td = document.createElement('td');
+//        td = document.createElement('td');
+        patDiv3 = document.createElement('div');
+        patDiv3.setAttribute('class', 'floatRight');
+
         editButton = document.createElement('button');
-        editButton.setAttribute('class', 'centerDiv');
+        editButton.setAttribute('class', 'floatLeft');
         editButton.setAttribute('title', 'Edit');
         editButton.setAttribute('value', ' ');
         editButton.setAttribute('data-icon', 'edit');
         editButton.setAttribute('data-iconpos', 'notext');
         editButton.setAttribute('onclick', 'editPatient(\'' + key + '\');return false;');
         editButton.appendChild(document.createTextNode(' '));
-        td.appendChild(editButton);
-        tr.appendChild(td);
+        patDiv3.appendChild(editButton);
 
-        td = document.createElement('td');
         deleteButton = document.createElement('button');
-        deleteButton.setAttribute('class', 'centerDiv');
+        deleteButton.setAttribute('class', 'floatLeft');
         deleteButton.setAttribute('title', 'Delete');
         deleteButton.setAttribute('value', ' ');
         deleteButton.setAttribute('data-icon', 'delete');
         deleteButton.setAttribute('data-iconpos', 'notext');
         deleteButton.setAttribute('onclick', 'deletePatient(\'' + key + '\');return false;');
         deleteButton.appendChild(document.createTextNode(' '));
-        td.appendChild(deleteButton);
-        tr.appendChild(td);
+        patDiv3.appendChild(deleteButton);
 
-        td = document.createElement('td');
         iceButton = document.createElement('button');
-        iceButton.setAttribute('class', 'centerDiv');
+        iceButton.setAttribute('class', 'floatLeft');
         iceButton.setAttribute('title', 'ICE Patient');
         iceButton.setAttribute('value', ' ');
         iceButton.setAttribute('data-icon', 'action');
         iceButton.setAttribute('data-iconpos', 'notext');
         iceButton.setAttribute('onclick', 'icePatient(\'' + key + '\');return false;');
         iceButton.appendChild(document.createTextNode(' '));
-        td.appendChild(iceButton);
+        patDiv3.appendChild(iceButton);
+        patDiv1.appendChild(patDiv3);
+//        td.appendChild(patDiv3);
+        td.appendChild(patDiv0);
         tr.appendChild(td);
         tbdy.appendChild(tr);
     }
@@ -247,18 +248,19 @@ function renderGrid(responseJs) {
 }
 
 function renderEvaluations(groupKey, evaluations) {
-    var evalTbl, evalTr, evalTd, evalDiv1, evalP, evalA, evalDiv2, evaluation, evaluationKey;
+    var evalDiv0, evalTbl, evalTr, evalTd, evalDiv1, evalP, evalA, evalDiv2, evaluation, evaluationKey;
 
-    evalTbl = document.createElement('table');
-    evalTbl.setAttribute('class', 'iceEvalTable');
-    evalTbl.setAttribute('cellpadding', '0');
-    evalTbl.setAttribute('cellspacing', '0');
-    evalTr = document.createElement('tr');
+    evalDiv0 = document.createElement('div');
+//    evalTbl = document.createElement('table');
+//    evalTbl.setAttribute('class', 'iceEvalTable');
+//    evalTbl.setAttribute('cellpadding', '0');
+//    evalTbl.setAttribute('cellspacing', '0');
+//    evalTr = document.createElement('tr');
 
     for (var i = 0; i < evaluations.length; i++) {
         evaluation = evaluations[i];
-        evalTd = document.createElement('td');
-        evalTd.setAttribute('style', 'border-bottom: 0px;padding: 1px;');
+//        evalTd = document.createElement('td');
+//        evalTd.setAttribute('style', 'border-bottom: 0px;padding: 1px;');
 
         evalDiv1 = document.createElement('div');
         if (evaluation['isValid'] === 'false') {
@@ -268,20 +270,21 @@ function renderEvaluations(groupKey, evaluations) {
         }
         evalDiv1.appendChild(document.createTextNode('Date: ' + evaluation['administrationTime']));
         evalDiv1.appendChild(document.createElement('br'));
-        evalDiv1.appendChild(document.createTextNode('Vaccine: ' + cvxData[evaluation['substanceCode']]['displayName'] + ' (' + evaluation['substanceCode'] + ')'));
-        evalDiv1.appendChild(document.createElement('br'));
         evalDiv1.appendChild(document.createTextNode('Age: '));
         evalDiv1.appendChild(document.createElement('br'));
         evalDiv1.appendChild(document.createTextNode('Valid: ' + evaluation['isValid']));
+        evalDiv1.appendChild(document.createElement('br'));
+        evalDiv1.appendChild(document.createTextNode('Vaccine: ' + cvxData[evaluation['substanceCode']]['displayName'] + ' (' + evaluation['substanceCode'] + ')'));
 
         evalA = document.createElement('a');
         evalA.setAttribute('href', '#eval' + i + '' + groupKey);
         evalA.setAttribute('data-rel', 'popup');
         evalA.setAttribute('data-transition', 'pop');
         evalA.setAttribute('title', 'Details');
-        evalA.setAttribute('class', 'my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext');
+        evalA.setAttribute('class', 'my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-grid ui-btn-icon-notext');
         evalDiv1.appendChild(evalA);
-        evalTd.appendChild(evalDiv1);
+        evalDiv0.appendChild(evalDiv1);
+//        evalTd.appendChild(evalDiv1);
 
 
         evalDiv2 = document.createElement('div');
@@ -298,11 +301,12 @@ function renderEvaluations(groupKey, evaluations) {
 
         evalDiv2.appendChild(evalP);
 
-        evalTd.appendChild(evalDiv2);
-        evalTr.appendChild(evalTd);
+        evalDiv0.appendChild(evalDiv2);
+//        evalTd.appendChild(evalDiv2);
+//        evalTr.appendChild(evalTd);
     }
-    evalTbl.appendChild(evalTr);
-    return evalTbl;
+//    evalTbl.appendChild(evalTr);
+    return evalDiv0;
 }
 
 function renderRecommendations(groupKey, recommendations) {
@@ -323,13 +327,8 @@ function renderRecommendations(groupKey, recommendations) {
 
         if (recommendation['administrationTime'] !== '') {
             recDiv1.appendChild(document.createTextNode('Date: ' + recommendation['administrationTime']));
-            recDiv1.appendChild(document.createElement('br'));
-        }
-
-        if (recommendation['substanceCodeType'] === 'VACCINE') {
-            recDiv1.appendChild(document.createTextNode('Vaccine: ' + cvxData[recommendation['substanceCode']]['displayName'] + ' (' + recommendation['substanceCode'] + ')'));
         } else {
-            recDiv1.appendChild(document.createTextNode('Vaccine Group: ' + vaccineGroups[recommendation['substanceCode']]));
+            recDiv1.appendChild(document.createTextNode('Date: N/A'));
         }
         recDiv1.appendChild(document.createElement('br'));
 
@@ -337,13 +336,20 @@ function renderRecommendations(groupKey, recommendations) {
         recDiv1.appendChild(document.createElement('br'));
 
         recDiv1.appendChild(document.createTextNode('Message: ' + recommendation['interpretations']));
+        recDiv1.appendChild(document.createElement('br'));
+
+        if (recommendation['substanceCodeType'] === 'VACCINE') {
+            recDiv1.appendChild(document.createTextNode('Vaccine: ' + cvxData[recommendation['substanceCode']]['displayName'] + ' (' + recommendation['substanceCode'] + ')'));
+        } else {
+            recDiv1.appendChild(document.createTextNode('Vaccine Group: ' + vaccineGroups[recommendation['substanceCode']]));
+        }
 
         recA = document.createElement('a');
         recA.setAttribute('href', '#rec' + groupKey);
         recA.setAttribute('data-rel', 'popup');
         recA.setAttribute('data-transition', 'pop');
         recA.setAttribute('title', 'Details');
-        recA.setAttribute('class', 'my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext');
+        recA.setAttribute('class', 'my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-grid ui-btn-icon-notext');
         recDiv1.appendChild(recA);
         recDiv0.appendChild(recDiv1);
 

@@ -24,11 +24,14 @@ and open the template in the editor.
 .iceEvalSquare {
     font-size: 10px;
     border: 1px solid #bbb;
-    padding: 5px 30px 5px 5px;
-    min-width: 100px;
+    padding: 5px;
+    min-width: 150px;
     min-height: 70px;
     line-height: 16px;
     position:relative;
+    margin-bottom: 4px;
+    margin-right: 4px;
+    float:left;
 }
 .iceEvalTable {
 }
@@ -44,7 +47,7 @@ and open the template in the editor.
 .iceRecSquare {
     font-size: 10px;
     border: 1px solid #bbb;
-    padding: 5px 30px 5px 5px;
+    padding: 5px;
     min-width: 100px;
     min-height: 70px;
     line-height: 16px;
@@ -53,9 +56,10 @@ and open the template in the editor.
 .icePatSquare {
     font-size: 14px;
     border: 1px solid #bbb;
-    padding: 5px;
+    padding: 5px 5px 40px 5px;
     line-height: 16px;
     position:relative;
+    background-color: #eee;
 }
 .addPatientButton {
     position: absolute;
@@ -68,18 +72,23 @@ and open the template in the editor.
     background: none;
     border: 0;
     position:absolute;
-    top: -11px;
-    right:-13px;
+    top: -8px;
+    right: -10px;
     float:right;
 
 }
 .ui-popup.ui-content {
     background-color: #eee;
 }
-.centerDiv {
-    margin:auto;
-    margin-top: 7px;
+.floatRight {
+    position: absolute;
+    right: 5px;
+    top: 32px;
 }
 .inline-label {
     color: mediumblue;
+}
+.floatLeft {
+    margin-left:4px;
+    float:left;
 }
