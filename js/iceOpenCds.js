@@ -137,20 +137,27 @@ function evaluate(inputXml) {
 function processResponse(xmlDoc) {
     var outputNode = document.getElementById('output');
     var responseDataNode = document.getElementById('responseData');
-    var base64EncodedPayload = xmlDoc.getElementsByTagName('base64EncodedPayload')[0];
+    var base64EncodedPayload = xmlDoc.documentElement.getElementsByTagName('base64EncodedPayload')[0];
     if (outputNode.firstChild !== null) {
         outputNode.removeChild(outputNode.firstChild);
     }
-    var response = atob(base64EncodedPayload.childNodes[0].nodeValue);
-    var cdsOutputDoc = (new DOMParser()).parseFromString(response, 'application/xml');
-    var responseJs = cdsOutput2Js(cdsOutputDoc);
-
-    renderGrid(responseJs);
-
+    
+    // mozilla chunks large text nodes in 4k blocks...
+    var response = '';
+    for (var i = 0; i < base64EncodedPayload.childNodes.length; i++) {
+        response += base64EncodedPayload.childNodes[i].nodeValue;
+    }
+    response = atob(response);
+    
     if (outputNode.firstChild !== null) {
         outputNode.removeChild(outputNode.firstChild);
     }
     outputNode.appendChild(document.createTextNode(response));
+
+    var cdsOutputDoc = (new DOMParser()).parseFromString(response, 'application/xml');
+    var responseJs = cdsOutput2Js(cdsOutputDoc);
+
+    renderGrid(responseJs);
 
     if (responseDataNode.firstChild !== null) {
         responseDataNode.removeChild(responseDataNode.firstChild);
@@ -192,7 +199,7 @@ function getRecommendations(cdsOutputDoc) {
     }
     recommendations['UNKNOWN'] = [];
 
-    var substanceAdministrationProposalsNode = cdsOutputDoc.getElementsByTagName('substanceAdministrationProposals')[0];
+    var substanceAdministrationProposalsNode = cdsOutputDoc.documentElement.getElementsByTagName('substanceAdministrationProposals')[0];
     var childNodes = substanceAdministrationProposalsNode.childNodes;
     for (var i = 0; i < childNodes.length; i++) {
         if (childNodes[i].nodeName === 'substanceAdministrationProposal') {
@@ -271,7 +278,10 @@ function getEvaluations(cdsOutputDoc) {
     }
     evaluations['UNKNOWN'] = [];
 
-    var substanceAdministrationEventsNode = cdsOutputDoc.getElementsByTagName('substanceAdministrationEvents')[0];
+    var substanceAdministrationEventsNode = cdsOutputDoc.documentElement.getElementsByTagName('substanceAdministrationEvents')[0];
+    if (typeof (substanceAdministrationEventsNode) === 'undefined') {
+        return evaluations;
+    }
     var childNodes = substanceAdministrationEventsNode.childNodes;
     for (var i = 0; i < childNodes.length; i++) {
         if (childNodes[i].nodeName === 'substanceAdministrationEvent') {

@@ -27,29 +27,25 @@ and open the template in the editor.
     </head>
     <body>
         <div data-role="page" id="main">
-            <div data-role="header"><h1>ICE Patient Client</h1></div>
+            <div data-role="header">
+                <div class="addPatientButton"><a href="#addPatient" class="ui-btn ui-btn-inline">Add Patient</a></div>
+                <div class="iceLogo"></div>
+                <h1>ICE Client</h1>
+            </div>
             <div role="main" class="ui-content">
-                <!-- <div class="iceBg"></div> -->
                 <form>
-                    <div class="sectionTitle" style="float:left;">Patient List</div>
-                    <a href="#addPatient" class="ui-btn ui-btn-inline addPatientButton">Add Patient</a>
                     <table id="patientListTable" data-role="table" class="ui-responsive table-stroke">
+                        <caption>Patient List</caption>
                         <thead>
                             <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Gender</th>
-                                <th>DOB</th>
-                                <th>IZs</th>
-                                <th>Delete</th>
-                                <th>ICE</th>
+                                <th>Patient Summary</th>
+                                <th style="text-align:center;">Edit</th>
+                                <th style="text-align:center;">Delete</th>
+                                <th style="text-align:center;">ICE</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -60,8 +56,11 @@ and open the template in the editor.
                     <script type="text/javascript">
                         listPatients();
                     </script>
-                    <div class="sectionTitle">Patient Output Grid</div>
-                    <table id="iceOutputGrid" data-role="table" class="ui-responsive table-stroke" style="display:none;">
+                    <table id="iceOutputGrid"
+                           data-role="table"
+                           class="ui-responsive table-stroke"
+                           style="display:none;margin-top:80px;">
+                        <caption>Patient Output Grid</caption>
                         <thead>
                             <tr>
                                 <th>Vaccine Group</th>
@@ -77,65 +76,74 @@ and open the template in the editor.
                             </tr>
                         </tbody>
                     </table>
-                    <h3>ICE Debugging:</h3>
-                    <table cellspacing="0" border="1" style="border-collapse: collapse;">
-                        <tr>
-                            <td>
-                                ICE Request Status:
-                            </td>
-                            <td>
-                                <div id="requestStatus"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                ICE Response Data:
-                            </td>
-                            <td>
-                                <textarea id="responseData" name="responseData" cols="50" rows="5"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Input VMR:
-                            </td>
-                            <td>
-                                <textarea id="input" name="input" cols="50" rows="5"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Output VMR:
-                            </td>
-                            <td>
-                                <textarea id="output" name="output" cols="50" rows="5"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                SOAP Request:
-                            </td>
-                            <td>
-                                <textarea id="soapRequest" name="soapRequest" cols="50" rows="5"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                SOAP Response:
-                            </td>
-                            <td>
-                                <textarea id="soapResponse" name="soapResponse" cols="50" rows="5"></textarea>
-                            </td>
-                        </tr>
+                    <table id="iceDebugger"
+                           data-role="table"
+                           class="ui-responsive table-stroke"
+                           style="margin-top:80px;">
+                        <caption>Debugging Info</caption>
+                        <thead>
+                            <tr>
+                                <th>Object</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>                        <tbody>
+                            <tr>
+                                <td>
+                                    ICE Request Status:
+                                </td>
+                                <td>
+                                    <div id="requestStatus"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ICE Response Data:
+                                </td>
+                                <td>
+                                    <textarea id="responseData" name="responseData" cols="50" rows="5"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Input VMR:
+                                </td>
+                                <td>
+                                    <textarea id="input" name="input" cols="50" rows="5"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Output VMR:
+                                </td>
+                                <td>
+                                    <textarea id="output" name="output" cols="50" rows="5"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    SOAP Request:
+                                </td>
+                                <td>
+                                    <textarea id="soapRequest" name="soapRequest" cols="50" rows="5"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    SOAP Response:
+                                </td>
+                                <td>
+                                    <textarea id="soapResponse" name="soapResponse" cols="50" rows="5"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </form>
             </div>
             <div data-role="footer"><h4>Copyright &copy;<script>document.write(new Date().getFullYear())</script> HLN Consulting, LLC</h4></div>
         </div>
         <div data-role="page" id="addPatient">
-            <div data-role="header"><h1>Add Patient</h1></div>
+            <div data-role="header"><div class="iceLogo"></div><h1>Add Patient</h1></div>
             <div role="main" class="ui-content">
-                <!--  <div class="iceBg"></div> -->
                 <form id="addPatientForm">
                     <table>
                         <tr>

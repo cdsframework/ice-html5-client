@@ -7,19 +7,14 @@ and open the template in the editor.
     Created on : Aug 14, 2014, 8:51:03 PM
     Author     : HLN Consulting, LLC
 */
-
-.iceButton:after {
-    background-image: url(../images/iceCube.png);
-}
-.iceBg {
-    background-image: url(../images/iceCube.png);
+.iceLogo {
+    float:left;
+    background-image: url(../images/iceLogo.png);
+    height:40px;
+    width:120px;
     background-repeat: no-repeat;
-    background-position: center; 
-    opacity:0.1; 
-    width:100%;
-    height:100%;
+    background-position: 5px 5px;
     position:absolute;
-    content: '';
 }
 .iceGridCell {
     /*height:50px;*/
@@ -31,7 +26,7 @@ and open the template in the editor.
     border: 1px solid #bbb;
     padding: 5px 30px 5px 5px;
     min-width: 100px;
-    height: 70px;
+    min-height: 70px;
     line-height: 16px;
     position:relative;
 }
@@ -51,18 +46,21 @@ and open the template in the editor.
     border: 1px solid #bbb;
     padding: 5px 30px 5px 5px;
     min-width: 100px;
-    height: 70px;
+    min-height: 70px;
     line-height: 16px;
     position:relative;
 }
-.sectionTitle {
-    text-align: left;
-    margin-top: 1.4em;
-    margin-bottom: 1.4em;
-    opacity: .5;
+.icePatSquare {
+    font-size: 14px;
+    border: 1px solid #bbb;
+    padding: 5px;
+    line-height: 16px;
+    position:relative;
 }
 .addPatientButton {
-    float:right;
+    position: absolute;
+    right: -5px;
+    top: -3px;
 }
 .ui-btn.my-tooltip-btn,
 .ui-btn.my-tooltip-btn:hover,
@@ -73,5 +71,15 @@ and open the template in the editor.
     top: -11px;
     right:-13px;
     float:right;
-    
+
+}
+.ui-popup.ui-content {
+    background-color: #eee;
+}
+.centerDiv {
+    margin:auto;
+    margin-top: 7px;
+}
+.inline-label {
+    color: mediumblue;
 }

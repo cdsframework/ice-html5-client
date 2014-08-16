@@ -100,7 +100,7 @@ function listPatients() {
     while (tbdy.firstChild) {
         tbdy.removeChild(tbdy.firstChild);
     }
-    var tr, td, deleteButton, iceButton;
+    var tr, td, span, patDiv0, patDiv1, patDiv2, patA, patP, editButton, deleteButton, iceButton;
     if (localStorage.getItem('patientList') === '{}' || localStorage.getItem('patientList') === null || localStorage.getItem('patientList') === '') {
         localStorage.setItem('patientList', defaultPatientList);
     }
@@ -110,51 +110,106 @@ function listPatients() {
         var patient = patientList[key];
         tr = document.createElement('tr');
         td = document.createElement('td');
-        td.appendChild(document.createTextNode(patient['firstName']));
-        tr.appendChild(td);
-        td = document.createElement('td');
-        td.appendChild(document.createTextNode(patient['lastName']));
-        tr.appendChild(td);
-        td = document.createElement('td');
-        td.appendChild(document.createTextNode(patient['gender']));
-        tr.appendChild(td);
-        td = document.createElement('td');
-        td.appendChild(document.createTextNode(patient['dob']));
-        tr.appendChild(td);
+        span = document.createElement('span');
+        span.setAttribute('class', 'inline-label');
 
-        td = document.createElement('td');
+        patDiv0 = document.createElement('div');
+        patDiv1 = document.createElement('div');
+        patDiv1.setAttribute('class', 'ui-shadow icePatSquare');
+
+        span = document.createElement('span');
+        span.setAttribute('class', 'inline-label');
+        span.appendChild(document.createTextNode('Name: '));
+
+        patDiv1.appendChild(span);
+        patDiv1.appendChild(document.createTextNode(patient['lastName'] + ', ' + patient['firstName']));
+        patDiv1.appendChild(document.createElement('br'));
+
+        span = document.createElement('span');
+        span.setAttribute('class', 'inline-label');
+        span.appendChild(document.createTextNode('DOB: '));
+
+        patDiv1.appendChild(span);
+        patDiv1.appendChild(document.createTextNode(patient['dob']));
+
+        span = document.createElement('span');
+        span.setAttribute('class', 'inline-label');
+        span.appendChild(document.createTextNode(' Gender: '));
+
+        patDiv1.appendChild(span);
+        patDiv1.appendChild(document.createTextNode(patient['gender']));
+        patDiv1.appendChild(document.createElement('br'));
+
+
+        patA = document.createElement('a');
+        patA.setAttribute('href', '#PAT' + key);
+        patA.setAttribute('data-rel', 'popup');
+        patA.setAttribute('data-transition', 'pop');
+        patA.setAttribute('title', 'Immunizations');
+        patA.setAttribute('class', 'my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext');
+        patDiv1.appendChild(patA);
+        patDiv0.appendChild(patDiv1);
+
+
+        patDiv2 = document.createElement('div');
+        patDiv2.setAttribute('class', 'ui-content');
+        patDiv2.setAttribute('data-role', 'popup');
+        patDiv2.setAttribute('id', 'PAT' + key);
+
+        patP = document.createElement('p');
+
         for (var i = 0; i < patient['izs'].length; i++) {
             var iz = patient['izs'][i];
             if (iz[1] !== null && iz[1] !== '') {
-                td.appendChild(document.createTextNode(iz[1] + '/' + iz[2] + ';'));
-                td.appendChild(document.createElement('br'));
+                patP.appendChild(document.createTextNode(iz[1] + '/' + iz[2] + ';'));
+                patP.appendChild(document.createElement('br'));
             }
         }
+
+        patDiv2.appendChild(patP);
+        patDiv0.appendChild(patDiv2);
+        td.appendChild(patDiv0);
         tr.appendChild(td);
+
+        td = document.createElement('td');
+        editButton = document.createElement('button');
+        editButton.setAttribute('class', 'centerDiv');
+        editButton.setAttribute('title', 'Edit');
+        editButton.setAttribute('value', ' ');
+        editButton.setAttribute('data-icon', 'edit');
+        editButton.setAttribute('data-iconpos', 'notext');
+        editButton.setAttribute('onclick', 'editPatient(\'' + key + '\');return false;');
+        editButton.appendChild(document.createTextNode(' '));
+        td.appendChild(editButton);
+        tr.appendChild(td);
+
         td = document.createElement('td');
         deleteButton = document.createElement('button');
+        deleteButton.setAttribute('class', 'centerDiv');
         deleteButton.setAttribute('title', 'Delete');
-        deleteButton.setAttribute('value', 'Icon only');
+        deleteButton.setAttribute('value', ' ');
         deleteButton.setAttribute('data-icon', 'delete');
         deleteButton.setAttribute('data-iconpos', 'notext');
         deleteButton.setAttribute('onclick', 'deletePatient(\'' + key + '\');return false;');
-        deleteButton.appendChild(document.createTextNode('Delete'));
+        deleteButton.appendChild(document.createTextNode(' '));
         td.appendChild(deleteButton);
         tr.appendChild(td);
+
         td = document.createElement('td');
         iceButton = document.createElement('button');
+        iceButton.setAttribute('class', 'centerDiv');
         iceButton.setAttribute('title', 'ICE Patient');
-        iceButton.setAttribute('value', 'Icon only');
-        iceButton.setAttribute('data-icon', 'delete');
+        iceButton.setAttribute('value', ' ');
+        iceButton.setAttribute('data-icon', 'action');
         iceButton.setAttribute('data-iconpos', 'notext');
-        iceButton.setAttribute('class', 'iceButton');
         iceButton.setAttribute('onclick', 'icePatient(\'' + key + '\');return false;');
-        iceButton.appendChild(document.createTextNode('ICE'));
+        iceButton.appendChild(document.createTextNode(' '));
         td.appendChild(iceButton);
         tr.appendChild(td);
         tbdy.appendChild(tr);
     }
     tbl.appendChild(tbdy);
+    $('#patientListTable').trigger('create');
 }
 
 function renderGrid(responseJs) {
@@ -165,7 +220,7 @@ function renderGrid(responseJs) {
     while (tbdy.firstChild) {
         tbdy.removeChild(tbdy.firstChild);
     }
-    var tr, td, evalTbl, recTbl;
+    var tr, td, eval, rec;
 
     var groupKey;
     for (groupKey in responseJs) {
@@ -181,8 +236,8 @@ function renderGrid(responseJs) {
         tr.appendChild(td);
 
         td = document.createElement('td');
-        evalTbl = renderEvaluations(groupKey, responseJs[groupKey]['evaluations']);
-        td.appendChild(evalTbl);
+        eval = renderEvaluations(groupKey, responseJs[groupKey]['evaluations']);
+        td.appendChild(eval);
         tr.appendChild(td);
 
         tbdy.appendChild(tr);
@@ -252,8 +307,6 @@ function renderEvaluations(groupKey, evaluations) {
 
 function renderRecommendations(groupKey, recommendations) {
     var recommendation, recDiv0, recDiv1, recP, recA, recDiv2, recommendationKey;
-
-    console.log(recommendations);
 
     recDiv0 = document.createElement('div');
 
