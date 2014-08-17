@@ -71,3 +71,43 @@ function formatXml(xml) {
     });
     return formatted;
 }
+
+function initSettings() {
+    var settings = getSettings();
+    $('#debugSetting').prop('checked', settings['debug']);
+}
+function saveSettings() {
+    var settings = getSettings();
+//    console.log($('input[name="debugSetting"]:checked').val());
+    settings['debug'] = $('input[name="debugSetting"]:checked').val() === 'on';
+    setSettings(settings);
+    document.location.href = '#main';
+    location.reload();
+
+}
+
+/**
+ * Retrieve the settings from the local storage mechanism
+ * 
+ * @returns {Array|Object}
+ */
+function getSettings() {
+    var rawSettings = localStorage.getItem('settings');
+    if (rawSettings === '{}' || rawSettings === null || rawSettings === '') {
+        localStorage.setItem('settings', JSON.stringify({'debug': false}));
+        rawSettings = localStorage.getItem('settings');
+    }
+//    console.log(JSON.parse(rawSettings));
+    return JSON.parse(rawSettings);
+}
+
+/**
+ * Sets the settings in the local storage mechanism
+ * 
+ * @param {type} settings
+ * @returns {undefined}
+ */
+function setSettings(settings) {
+//    console.log(settings);
+    localStorage.setItem('settings', JSON.stringify(settings));
+}

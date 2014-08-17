@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-
+var files;
 
 $.datepicker._defaults.dateFormat = 'yymmdd';
 $.datepicker._defaults.changeYear = true;

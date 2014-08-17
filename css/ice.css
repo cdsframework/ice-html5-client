@@ -22,14 +22,14 @@ and open the template in the editor.
     font-weight: normal;
 }
 .iceEvalSquare {
-    font-size: 10px;
+    font-size: 12px;
     border: 1px solid #bbb;
     padding: 5px;
     min-width: 150px;
     min-height: 70px;
     line-height: 16px;
     position:relative;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
     margin-right: 4px;
     float:left;
 }
@@ -45,7 +45,7 @@ and open the template in the editor.
     background-color: rgb(222, 223, 243);
 }
 .iceRecSquare {
-    font-size: 10px;
+    font-size: 12px;
     border: 1px solid #bbb;
     padding: 5px;
     min-width: 100px;
@@ -56,7 +56,7 @@ and open the template in the editor.
 .icePatSquare {
     font-size: 14px;
     border: 1px solid #bbb;
-    padding: 5px 5px 40px 5px;
+    padding: 5px 5px 0px 5px;
     line-height: 16px;
     position:relative;
     background-color: #eee;
@@ -64,18 +64,26 @@ and open the template in the editor.
 .addPatientButton {
     position: absolute;
     right: -5px;
-    top: -3px;
+    top: 42px;
 }
-.ui-btn.my-tooltip-btn,
-.ui-btn.my-tooltip-btn:hover,
-.ui-btn.my-tooltip-btn:active {
-    background: none;
-    border: 0;
-    position:absolute;
-    top: -8px;
-    right: -10px;
-    float:right;
+.importPatientButton {
+    position: absolute;
+    right: 115px;
+    top: 42px;
+}
+.immunizationPopup {
 
+}
+.icePopup {
+    position:absolute;
+    top: -3px;
+    right: -4px;
+}
+.izTable {
+    font-size:10px;
+}
+.izPopup {
+    width:200px;
 }
 .ui-popup.ui-content {
     background-color: #eee;
@@ -83,7 +91,7 @@ and open the template in the editor.
 .floatRight {
     position: absolute;
     right: 5px;
-    top: 32px;
+    top: 53px;
 }
 .inline-label {
     color: mediumblue;
@@ -91,4 +99,29 @@ and open the template in the editor.
 .floatLeft {
     margin-left:4px;
     float:left;
+}
+
+.icePatLabel {
+    font-weight:bold;
+    float:left;
+    text-align:right;
+    width:150px;
+}
+.icePatData {
+    float:left;
+}
+.floatLeft100 {
+    width:100%;
+    float:left;
+    margin-bottom:10px;
+}
+.formLabel {
+    font-weight:bold;
+    text-align:right;
+    width:150px;
+}
+@-moz-document url-prefix() {
+    .importPatientButton {
+        right: 130px;
+    }
 }

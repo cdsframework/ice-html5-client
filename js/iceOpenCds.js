@@ -7,9 +7,9 @@
 
 
 function icePatient(id) {
-    var patientList = JSON.parse(localStorage.getItem('patientList'));
+    var settings = getSettings();
+    var patientList = getPatientList();
     var patient = patientList[id];
-    var inputNode = document.getElementById('input');
     var xmlString = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
             + '<ns3:cdsInput xmlns:ns2="org.opencds.vmr.v1_0.schema.vmr" xmlns:ns3="org.opencds.vmr.v1_0.schema.cdsinput">'
             + '<templateId root="2.16.840.1.113883.3.795.11.1.1"/>'
@@ -42,11 +42,14 @@ function icePatient(id) {
     var xmlDoc = (new DOMParser()).parseFromString(xmlString, 'application/xml');
     var serializer = new XMLSerializer();
     var inputXml = formatXml(serializer.serializeToString(xmlDoc));
-    if (inputNode.firstChild !== null) {
-        inputNode.removeChild(inputNode.firstChild);
+    if (settings['debug']) {
+        var inputNode = document.getElementById('input');
+        while (inputNode.firstChild) {
+            inputNode.removeChild(inputNode.firstChild);
+        }
+        inputNode.appendChild(document.createTextNode(inputXml));
     }
-    inputNode.appendChild(document.createTextNode(inputXml));
-    evaluate(inputXml);
+    evaluate(inputXml, patient, settings);
 }
 
 function addsubstanceAdministrationEvent(xmlString, iz) {
@@ -65,10 +68,11 @@ function addsubstanceAdministrationEvent(xmlString, iz) {
     return xmlString;
 }
 
-function evaluate(inputXml) {
-    console.time("evaluate");
+function evaluate(inputXml, patient, settings) {
+    if (settings['debug']) {
+        console.time("evaluate");
+    }
     var xhr = createCORSRequest('POST', 'http://cds.hln.com:16080/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate');
-    var soapRequestNode = document.getElementById('soapRequest');
 
     var now = new Date();
 
@@ -97,35 +101,43 @@ function evaluate(inputXml) {
             '</ns2:evaluateAtSpecifiedTime>' +
             '</S:Body>' +
             '</S:Envelope>';
-    if (soapRequestNode.firstChild !== null) {
-        soapRequestNode.removeChild(soapRequestNode.firstChild);
+
+    if (settings['debug']) {
+        var soapRequestNode = document.getElementById('soapRequest');
+        while (soapRequestNode.firstChild) {
+            soapRequestNode.removeChild(soapRequestNode.firstChild);
+        }
+        soapRequestNode.appendChild(document.createTextNode(formatXml(sr)));
     }
-    soapRequestNode.appendChild(document.createTextNode(formatXml(sr)));
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                var soapResponseNode = document.getElementById('soapResponse');
                 var xmlDoc = (new DOMParser()).parseFromString(xhr.responseText, 'application/xml');
                 var serializer = new XMLSerializer();
                 var outputXml = formatXml(serializer.serializeToString(xmlDoc));
 
-                if (soapResponseNode.firstChild !== null) {
-                    soapResponseNode.removeChild(soapResponseNode.firstChild);
+                if (settings['debug']) {
+                    var soapResponseNode = document.getElementById('soapResponse');
+                    while (soapResponseNode.firstChild) {
+                        soapResponseNode.removeChild(soapResponseNode.firstChild);
+                    }
+                    soapResponseNode.appendChild(document.createTextNode(outputXml));
                 }
-                soapResponseNode.appendChild(document.createTextNode(outputXml));
 
-                processResponse(xmlDoc);
+                processResponse(xmlDoc, patient, settings);
             }
-            var requestStatusNode = document.getElementById('requestStatus');
 
-            if (requestStatusNode.firstChild !== null) {
-                requestStatusNode.removeChild(requestStatusNode.firstChild);
+            if (settings['debug']) {
+                var requestStatusNode = document.getElementById('requestStatus');
+                while (requestStatusNode.firstChild) {
+                    requestStatusNode.removeChild(requestStatusNode.firstChild);
+                }
+                requestStatusNode.appendChild(document.createTextNode(xhr.status + ': ' + xhr.statusText));
             }
-            requestStatusNode.appendChild(document.createTextNode(xhr.status + ': ' + xhr.statusText));
-
-            console.timeEnd("evaluate");
-
+            if (settings['debug']) {
+                console.timeEnd("evaluate");
+            }
         }
     };
 
@@ -134,38 +146,39 @@ function evaluate(inputXml) {
     xhr.send(sr);
 }
 
-function processResponse(xmlDoc) {
-    var outputNode = document.getElementById('output');
-    var responseDataNode = document.getElementById('responseData');
+function processResponse(xmlDoc, patient, settings) {
     var base64EncodedPayload = xmlDoc.documentElement.getElementsByTagName('base64EncodedPayload')[0];
-    if (outputNode.firstChild !== null) {
-        outputNode.removeChild(outputNode.firstChild);
-    }
-    
+
     // mozilla chunks large text nodes in 4k blocks...
     var response = '';
     for (var i = 0; i < base64EncodedPayload.childNodes.length; i++) {
         response += base64EncodedPayload.childNodes[i].nodeValue;
     }
     response = atob(response);
-    
-    if (outputNode.firstChild !== null) {
-        outputNode.removeChild(outputNode.firstChild);
+
+    if (settings['debug']) {
+        var outputNode = document.getElementById('output');
+        while (outputNode.firstChild) {
+            outputNode.removeChild(outputNode.firstChild);
+        }
+        outputNode.appendChild(document.createTextNode(response));
     }
-    outputNode.appendChild(document.createTextNode(response));
 
     var cdsOutputDoc = (new DOMParser()).parseFromString(response, 'application/xml');
-    var responseJs = cdsOutput2Js(cdsOutputDoc);
+    var responseJs = cdsOutput2Js(cdsOutputDoc, settings);
 
-    renderGrid(responseJs);
+    renderGrid(responseJs, patient, settings);
 
-    if (responseDataNode.firstChild !== null) {
-        responseDataNode.removeChild(responseDataNode.firstChild);
+    if (settings['debug']) {
+        var responseDataNode = document.getElementById('responseData');
+        while (responseDataNode.firstChild) {
+            responseDataNode.removeChild(responseDataNode.firstChild);
+        }
+        responseDataNode.appendChild(document.createTextNode(JSON.stringify(responseJs)));
     }
-    responseDataNode.appendChild(document.createTextNode(JSON.stringify(responseJs)));
 }
 
-function cdsOutput2Js(cdsOutputDoc) {
+function cdsOutput2Js(cdsOutputDoc, settings) {
     var result = {};
     var groupKey;
     for (groupKey in vaccineGroups) {
@@ -179,19 +192,19 @@ function cdsOutput2Js(cdsOutputDoc) {
         'recommendations': []
     };
 
-    var recommendations = getRecommendations(cdsOutputDoc);
+    var recommendations = getRecommendations(cdsOutputDoc, settings);
     for (groupKey in recommendations) {
         result[groupKey]['recommendations'] = recommendations[groupKey];
     }
 
-    var evaluations = getEvaluations(cdsOutputDoc);
+    var evaluations = getEvaluations(cdsOutputDoc, settings);
     for (groupKey in evaluations) {
         result[groupKey]['evaluations'] = evaluations[groupKey];
     }
     return result;
 }
 
-function getRecommendations(cdsOutputDoc) {
+function getRecommendations(cdsOutputDoc, settings) {
     var recommendations = {};
     var groupKey;
     for (groupKey in vaccineGroups) {
@@ -270,7 +283,7 @@ function getRecommendations(cdsOutputDoc) {
     return recommendations;
 }
 
-function getEvaluations(cdsOutputDoc) {
+function getEvaluations(cdsOutputDoc, settings) {
     var evaluations = {};
     var groupKey;
     for (groupKey in vaccineGroups) {
@@ -354,4 +367,177 @@ function getEvaluations(cdsOutputDoc) {
         }
     }
     return evaluations;
+}
+
+function renderGrid(responseJs, patient, settings) {
+
+    if (settings['debug']) {
+         $('#iceDebugger')[0].style.display = 'block';
+    } else {
+         $('#iceDebugger')[0].style.display = 'none';
+    }
+
+    var patientNameNode = $('#patientName')[0];
+    while (patientNameNode.firstChild) {
+        patientNameNode.removeChild(patientNameNode.firstChild);
+    }
+    patientNameNode.appendChild(document.createTextNode(patient['firstName'] + ' ' + patient['lastName']));
+
+    var patientDobNode = $('#patientDob')[0];
+    while (patientDobNode.firstChild) {
+        patientDobNode.removeChild(patientDobNode.firstChild);
+    }
+    patientDobNode.appendChild(document.createTextNode(patient['dob']));
+
+    var patientGenderNode = $('#patientGender')[0];
+    while (patientGenderNode.firstChild) {
+        patientGenderNode.removeChild(patientGenderNode.firstChild);
+    }
+    patientGenderNode.appendChild(document.createTextNode(patient['gender']));
+
+    var tbl = $('#iceOutputGrid')[0];
+
+    var tbdy = tbl.getElementsByTagName('tbody')[0];
+    while (tbdy.firstChild) {
+        tbdy.removeChild(tbdy.firstChild);
+    }
+    var tr, td, eval, rec;
+
+    var groupKey;
+    for (groupKey in responseJs) {
+        tr = document.createElement('tr');
+
+        td = document.createElement('td');
+        td.appendChild(document.createTextNode(responseJs[groupKey]['groupName']));
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        rec = renderRecommendations(groupKey, responseJs[groupKey]['recommendations']);
+        td.appendChild(rec);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        eval = renderEvaluations(groupKey, responseJs[groupKey]['evaluations']);
+        td.appendChild(eval);
+        tr.appendChild(td);
+
+        tbdy.appendChild(tr);
+
+        $('#iceOutputGrid').trigger('create');
+    }
+}
+
+function renderEvaluations(groupKey, evaluations) {
+    var evalDiv0, evalDiv1, evalP, evalA, evalDiv2, evaluation, evaluationKey;
+
+    evalDiv0 = document.createElement('div');
+
+    for (var i = 0; i < evaluations.length; i++) {
+        evaluation = evaluations[i];
+
+        evalDiv1 = document.createElement('div');
+        if (evaluation['isValid'] === 'false') {
+            evalDiv1.setAttribute('class', 'ui-shadow iceEvalSquare iceEvalFalse');
+        } else {
+            evalDiv1.setAttribute('class', 'ui-shadow iceEvalSquare iceEvalTrue');
+        }
+        evalDiv1.appendChild(document.createTextNode('Date: ' + evaluation['administrationTime']));
+        evalDiv1.appendChild(document.createElement('br'));
+        evalDiv1.appendChild(document.createTextNode('Age: '));
+        evalDiv1.appendChild(document.createElement('br'));
+        evalDiv1.appendChild(document.createTextNode('Valid: ' + evaluation['isValid']));
+        evalDiv1.appendChild(document.createElement('br'));
+        evalDiv1.appendChild(document.createTextNode('Vaccine: ' + cvxData[evaluation['substanceCode']]['displayName'] + ' (' + evaluation['substanceCode'] + ')'));
+
+        evalA = document.createElement('a');
+        evalA.setAttribute('href', '#eval' + i + '' + groupKey);
+        evalA.setAttribute('data-rel', 'popup');
+        evalA.setAttribute('data-transition', 'pop');
+        evalA.setAttribute('title', 'Details');
+        evalA.setAttribute('class', 'my-tooltip-btn ui-btn ui-btn-inline ui-icon-bullets ui-corner-all ui-shadow ui-btn-icon-notext icePopup');
+        evalDiv1.appendChild(evalA);
+        evalDiv0.appendChild(evalDiv1);
+
+        evalDiv2 = document.createElement('div');
+        evalDiv2.setAttribute('class', 'ui-content');
+        evalDiv2.setAttribute('data-role', 'popup');
+        evalDiv2.setAttribute('id', 'eval' + i + '' + groupKey);
+
+        evalP = document.createElement('p');
+
+        for (evaluationKey in evaluation) {
+            evalP.appendChild(document.createTextNode(evaluationKey + ': ' + evaluation[evaluationKey]));
+            evalP.appendChild(document.createElement('br'));
+        }
+
+        evalDiv2.appendChild(evalP);
+
+        evalDiv0.appendChild(evalDiv2);
+    }
+    return evalDiv0;
+}
+
+function renderRecommendations(groupKey, recommendations) {
+    var recommendation, recDiv0, recDiv1, recP, recA, recDiv2, recommendationKey;
+
+    recDiv0 = document.createElement('div');
+
+    if (recommendations.length > 0) {
+
+        recommendation = recommendations[0];
+
+        recDiv1 = document.createElement('div');
+        if (recommendation['concept'] === 'RECOMMENDED') {
+            recDiv1.setAttribute('class', 'ui-shadow iceRecSquare iceRecommended');
+        } else {
+            recDiv1.setAttribute('class', 'ui-shadow iceRecSquare');
+        }
+
+        if (recommendation['administrationTime'] !== '') {
+            recDiv1.appendChild(document.createTextNode('Date: ' + recommendation['administrationTime']));
+        } else {
+            recDiv1.appendChild(document.createTextNode('Date: N/A'));
+        }
+        recDiv1.appendChild(document.createElement('br'));
+
+        recDiv1.appendChild(document.createTextNode('Status: ' + recommendation['concept']));
+        recDiv1.appendChild(document.createElement('br'));
+
+        recDiv1.appendChild(document.createTextNode('Message: ' + recommendation['interpretations']));
+        recDiv1.appendChild(document.createElement('br'));
+
+        if (recommendation['substanceCodeType'] === 'VACCINE') {
+            recDiv1.appendChild(document.createTextNode('Vaccine: ' + cvxData[recommendation['substanceCode']]['displayName'] + ' (' + recommendation['substanceCode'] + ')'));
+        } else {
+            recDiv1.appendChild(document.createTextNode('Vaccine Group: ' + vaccineGroups[recommendation['substanceCode']]));
+        }
+
+        recA = document.createElement('a');
+        recA.setAttribute('href', '#rec' + groupKey);
+        recA.setAttribute('data-rel', 'popup');
+        recA.setAttribute('data-transition', 'pop');
+        recA.setAttribute('title', 'Details');
+        recA.setAttribute('class', 'my-tooltip-btn ui-btn ui-btn-inline ui-icon-bullets ui-corner-all ui-shadow ui-btn-icon-notext icePopup');
+        recDiv1.appendChild(recA);
+        recDiv0.appendChild(recDiv1);
+
+
+        recDiv2 = document.createElement('div');
+        recDiv2.setAttribute('class', 'ui-content');
+        recDiv2.setAttribute('data-role', 'popup');
+        recDiv2.setAttribute('id', 'rec' + groupKey);
+
+        recP = document.createElement('p');
+
+        for (recommendationKey in recommendation) {
+            recP.appendChild(document.createTextNode(recommendationKey + ': ' + recommendation[recommendationKey]));
+            recP.appendChild(document.createElement('br'));
+        }
+
+        recDiv2.appendChild(recP);
+
+        recDiv0.appendChild(recDiv2);
+    }
+
+    return recDiv0;
 }
