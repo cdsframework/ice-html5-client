@@ -39,15 +39,13 @@ and open the template in the editor.
             <div role="main" class="ui-content">
                 <form>
                     <table id="patientListTable" data-role="table" class="ui-responsive table-stroke">
-                        <caption>Patient List</caption>
+                        <caption class="patCaption">Patient List</caption>
                         <thead>
                             <tr>
-                                <th>Patient Summary</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td></td>
                             </tr>
                         </tbody>
                     </table>
@@ -64,7 +62,7 @@ and open the template in the editor.
             <div role="main" class="ui-content">
                 <form>
                     <a href="#main" class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Back</a>
-                    <div class="floatLeft100" style="opacity: .5;display: table-caption;margin: 20px 0px;">Patient Info</div>
+                    <div class="floatLeft100" style="opacity: .5;display: table-caption;margin: 20px 12px;">Patient Info</div>
                     <div class="floatLeft100" ><div class="icePatLabel">Name:&nbsp;&nbsp;</div><div class="icePatData" id="patientName"></div></div>
                     <div class="floatLeft100" ><div class="icePatLabel">DOB:&nbsp;&nbsp;</div><div class="icePatData" id="patientDob"></div></div>
                     <div class="floatLeft100" ><div class="icePatLabel" style="margin-bottom:20px;">Gender:&nbsp;&nbsp;</div><div class="icePatData" id="patientGender"></div></div>
@@ -158,143 +156,80 @@ and open the template in the editor.
         <div data-role="page" id="savePatient">
             <div data-role="header"><div class="iceLogo"></div><h1>Patient Editor</h1></div>
             <div role="main" class="ui-content">
+                Note: for dates, use &quot;yyyymmdd&quot; format (e.g. 19301231).
                 <form id="savePatientForm">
                     <input type="hidden" name="patientId" id="patientId" />
-                    <table>
-                        <tr>
-                            <th>
-                                <label for="lastName">Last Name:</label>
-                            </th>
-                            <td>
-                                <input name="lastName" id="lastName" type="text" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <label for="firstName">First Name:</label>
-                            </th>
-                            <td>
-                                <input name="firstName" id="firstName" type="text" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <label>Gender:</label>
-                            </th>
-                            <td>
-                                <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-                                    <label><input name="gender" id="genderM" type="radio" value="M"/>Male</label>
-                                    <label><input name="gender" id="genderF" type="radio" value="F"/>Female</label>
-                                    <label><input name="gender" id="genderO" type="radio" value="O"/>Other</label>
-                                </fieldset>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <label for="dob">Birth Date:<br/><span style="color:red;">(e.g. 19301231)</span></label>
-                            </th>
-                            <td>
-                                <input name="dob" id="dob" type="text" data-role="date" />
-                            </td>
-                        </tr>
+                    <table data-role="table" class="ui-responsive table-stroke">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <label for="firstName">First Name</label>
+                                </th>
+                                <td>
+                                    <input name="firstName" id="firstName" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label for="lastName">Last Name</label>
+                                </th>
+                                <td>
+                                    <input name="lastName" id="lastName" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label>Gender</label>
+                                </th>
+                                <td>
+                                    <fieldset data-role="controlgroup" data-type="horizontal">
+                                        <label><input name="gender" id="genderM" type="radio" value="M"/>Male</label>
+                                        <label><input name="gender" id="genderF" type="radio" value="F"/>Female</label>
+                                        <label><input name="gender" id="genderO" type="radio" value="O"/>Other</label>
+                                    </fieldset>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label for="dob">Birth Date</label>
+                                </th>
+                                <td>
+                                    <input name="dob" id="dob" type="text" data-role="date" />
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <th style="vertical-align: text-top">
-                                <label>Immunizations:</label>
-                            </th>
-                            <td>
-                                <table cellpadding="0" cellspacing="0">
-                                    <tr>
-                                        <th>
-                                            <label>Immunization Date:<br/><span style="color:red;">(e.g. 19301231)</span></label>
-                                        </th>
-                                        <th>
-                                            <label>CVX Code:</label>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="iz1a" id="iz1a" type="text" data-role="date"/>
-                                        </td>
-                                        <td>
-                                            <input name="iz1b" id="iz1b" type="text" class="cvxAutoComplete" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="iz2a" id="iz2a" type="text" data-role="date"/>
-                                        </td>
-                                        <td>
-                                            <input name="iz2b" id="iz2b" type="text" class="cvxAutoComplete" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="iz3a" id="iz3a" type="text" data-role="date"/>
-                                        </td>
-                                        <td>
-                                            <input name="iz3b" id="iz3b" type="text" class="cvxAutoComplete" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="iz4a" id="iz4a" type="text" data-role="date"/>
-                                        </td>
-                                        <td>
-                                            <input name="iz4b" id="iz4b" type="text" class="cvxAutoComplete" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="iz5a" id="iz5a" type="text" data-role="date"/>
-                                        </td>
-                                        <td>
-                                            <input name="iz5b" id="iz5b" type="text" class="cvxAutoComplete" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="iz6a" id="iz6a" type="text" data-role="date"/>
-                                        </td>
-                                        <td>
-                                            <input name="iz6b" id="iz6b" type="text" class="cvxAutoComplete" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="iz7a" id="iz7a" type="text" data-role="date"/>
-                                        </td>
-                                        <td>
-                                            <input name="iz7b" id="iz7b" type="text" class="cvxAutoComplete" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="iz8a" id="iz8a" type="text" data-role="date"/>
-                                        </td>
-                                        <td>
-                                            <input name="iz8b" id="iz8b" type="text" class="cvxAutoComplete" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="iz9a" id="iz9a" type="text" data-role="date"/>
-                                        </td>
-                                        <td>
-                                            <input name="iz9b" id="iz9b" type="text" class="cvxAutoComplete" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="iz10a" id="iz10a" type="text" data-role="date"/>
-                                        </td>
-                                        <td>
-                                            <input name="iz10b" id="iz10b" type="text" class="cvxAutoComplete" />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+                            <tr>
+                                <th style="vertical-align: text-top">
+                                    <label>Immunizations</label>
+                                </th>
+                                <td>
+                                    <table data-role="table"
+                                           id="izEntryTable"
+                                           class="ui-responsive table-stroke">
+                                        <thead>
+                                            <tr>
+                                                <th>Immunization Date</th>
+                                                <th>CVX Code</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <a href="#"
+                                       class="ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-left"
+                                       onclick="addIzRow();"
+                                       title="Add Row"
+                                       alt="Add Row">Add Row</a>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                     <div class="ui-grid-a">
                         <div class="ui-block-a"><a href="#main" onclick="document.getElementById('savePatientForm').reset()" class="ui-shadow ui-btn ui-corner-all">Cancel</a></div>

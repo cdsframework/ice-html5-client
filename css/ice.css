@@ -125,3 +125,11 @@ and open the template in the editor.
         right: 130px;
     }
 }
+
+.patCaption {
+    width:100px;
+}
+.ui-table caption {
+    margin-bottom:4px;
+    margin-left:12px;
+}

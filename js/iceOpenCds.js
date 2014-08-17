@@ -372,9 +372,9 @@ function getEvaluations(cdsOutputDoc, settings) {
 function renderGrid(responseJs, patient, settings) {
 
     if (settings['debug']) {
-         $('#iceDebugger')[0].style.display = 'block';
+        $('#iceDebugger')[0].style.display = 'block';
     } else {
-         $('#iceDebugger')[0].style.display = 'none';
+        $('#iceDebugger')[0].style.display = 'none';
     }
 
     var patientNameNode = $('#patientName')[0];
@@ -428,7 +428,7 @@ function renderGrid(responseJs, patient, settings) {
 }
 
 function renderEvaluations(groupKey, evaluations) {
-    var evalDiv0, evalDiv1, evalP, evalA, evalDiv2, evaluation, evaluationKey;
+    var evalDiv0, evalDiv1, evalA, evalDiv2, evaluation, evaluationKey;
 
     evalDiv0 = document.createElement('div');
 
@@ -449,6 +449,10 @@ function renderEvaluations(groupKey, evaluations) {
         evalDiv1.appendChild(document.createElement('br'));
         evalDiv1.appendChild(document.createTextNode('Vaccine: ' + cvxData[evaluation['substanceCode']]['displayName'] + ' (' + evaluation['substanceCode'] + ')'));
 
+        /**
+         * attr popup table
+         */
+
         evalA = document.createElement('a');
         evalA.setAttribute('href', '#eval' + i + '' + groupKey);
         evalA.setAttribute('data-rel', 'popup');
@@ -463,22 +467,44 @@ function renderEvaluations(groupKey, evaluations) {
         evalDiv2.setAttribute('data-role', 'popup');
         evalDiv2.setAttribute('id', 'eval' + i + '' + groupKey);
 
-        evalP = document.createElement('p');
+        /**
+         * popup contents
+         */
+        var attrTbl = document.createElement('table');
+        attrTbl.setAttribute('data-role', 'table');
+        attrTbl.setAttribute('class', 'ui-responsive table-stroke izTable');
+        var attrThead = document.createElement('thead');
+        var attrTr = document.createElement('tr');
+        var attrTh = document.createElement('th');
+        attrTh.appendChild(document.createTextNode('Key'));
+        attrTr.appendChild(attrTh);
+        attrTh = document.createElement('th');
+        attrTh.appendChild(document.createTextNode('Value'));
+        attrTr.appendChild(attrTh);
+        attrThead.appendChild(attrTr);
+        attrTbl.appendChild(attrThead);
+        var attrTbody = document.createElement('tbody');
 
         for (evaluationKey in evaluation) {
-            evalP.appendChild(document.createTextNode(evaluationKey + ': ' + evaluation[evaluationKey]));
-            evalP.appendChild(document.createElement('br'));
+                attrTr = document.createElement('tr');
+                var attrTd = document.createElement('td');
+                attrTd.appendChild(document.createTextNode(evaluationKey));
+                attrTr.appendChild(attrTd);
+                attrTd = document.createElement('td');
+                attrTd.appendChild(document.createTextNode(evaluation[evaluationKey]));
+                attrTr.appendChild(attrTd);
+                attrTbody.appendChild(attrTr);
         }
 
-        evalDiv2.appendChild(evalP);
-
+        attrTbl.appendChild(attrTbody);
+        evalDiv2.appendChild(attrTbl);
         evalDiv0.appendChild(evalDiv2);
     }
     return evalDiv0;
 }
 
 function renderRecommendations(groupKey, recommendations) {
-    var recommendation, recDiv0, recDiv1, recP, recA, recDiv2, recommendationKey;
+    var recommendation, recDiv0, recDiv1, recA, recDiv2, recommendationKey;
 
     recDiv0 = document.createElement('div');
 
@@ -527,15 +553,37 @@ function renderRecommendations(groupKey, recommendations) {
         recDiv2.setAttribute('data-role', 'popup');
         recDiv2.setAttribute('id', 'rec' + groupKey);
 
-        recP = document.createElement('p');
+        /**
+         * popup contents
+         */
+        var attrTbl = document.createElement('table');
+        attrTbl.setAttribute('data-role', 'table');
+        attrTbl.setAttribute('class', 'ui-responsive table-stroke izTable');
+        var attrThead = document.createElement('thead');
+        var attrTr = document.createElement('tr');
+        var attrTh = document.createElement('th');
+        attrTh.appendChild(document.createTextNode('Key'));
+        attrTr.appendChild(attrTh);
+        attrTh = document.createElement('th');
+        attrTh.appendChild(document.createTextNode('Value'));
+        attrTr.appendChild(attrTh);
+        attrThead.appendChild(attrTr);
+        attrTbl.appendChild(attrThead);
+        var attrTbody = document.createElement('tbody');
 
         for (recommendationKey in recommendation) {
-            recP.appendChild(document.createTextNode(recommendationKey + ': ' + recommendation[recommendationKey]));
-            recP.appendChild(document.createElement('br'));
+                attrTr = document.createElement('tr');
+                var attrTd = document.createElement('td');
+                attrTd.appendChild(document.createTextNode(recommendationKey));
+                attrTr.appendChild(attrTd);
+                attrTd = document.createElement('td');
+                attrTd.appendChild(document.createTextNode(recommendation[recommendationKey]));
+                attrTr.appendChild(attrTd);
+                attrTbody.appendChild(attrTr);
         }
 
-        recDiv2.appendChild(recP);
-
+        attrTbl.appendChild(attrTbody);
+        recDiv2.appendChild(attrTbl);
         recDiv0.appendChild(recDiv2);
     }
 

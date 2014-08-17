@@ -70,45 +70,18 @@ function savePatient() {
 
     var dob = $('#dob')[0].value;
 
-    var iz1Id = getGuid();
-    var iz1a = $('#iz1a')[0].value;
-    var iz1b = $('#iz1b')[0].value;
+    var izEntryTable = $('#izEntryTable')[0];
+    var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
+    var trs = tbdy.getElementsByTagName('tr');
+    var izs = [];
 
-    var iz2Id = getGuid();
-    var iz2a = $('#iz2a')[0].value;
-    var iz2b = $('#iz2b')[0].value;
-
-    var iz3Id = getGuid();
-    var iz3a = $('#iz3a')[0].value;
-    var iz3b = $('#iz3b')[0].value;
-
-    var iz4Id = getGuid();
-    var iz4a = $('#iz4a')[0].value;
-    var iz4b = $('#iz4b')[0].value;
-
-    var iz5Id = getGuid();
-    var iz5a = $('#iz5a')[0].value;
-    var iz5b = $('#iz5b')[0].value;
-
-    var iz6Id = getGuid();
-    var iz6a = $('#iz6a')[0].value;
-    var iz6b = $('#iz6b')[0].value;
-
-    var iz7Id = getGuid();
-    var iz7a = $('#iz7a')[0].value;
-    var iz7b = $('#iz7b')[0].value;
-
-    var iz8Id = getGuid();
-    var iz8a = $('#iz8a')[0].value;
-    var iz8b = $('#iz8b')[0].value;
-
-    var iz9Id = getGuid();
-    var iz9a = $('#iz9a')[0].value;
-    var iz9b = $('#iz9b')[0].value;
-
-    var iz10Id = getGuid();
-    var iz10a = $('#iz10a')[0].value;
-    var iz10b = $('#iz10b')[0].value;
+    for (var i = 0; i < trs.length; i++) {
+        var tr = trs[i];
+        var inputs = tr.getElementsByTagName('input');
+        izs[izs.length] = [inputs[0].name.substring(2, inputs[0].name.length),
+            inputs[0].value,
+            inputs[1].value]
+    }
 
     var patient = {
         'firstName': firstName,
@@ -116,18 +89,7 @@ function savePatient() {
         'gender': gender,
         'dob': dob,
         'id': patientId,
-        'izs': [
-            [iz1Id, iz1a, iz1b],
-            [iz2Id, iz2a, iz2b],
-            [iz3Id, iz3a, iz3b],
-            [iz4Id, iz4a, iz4b],
-            [iz5Id, iz5a, iz5b],
-            [iz6Id, iz6a, iz6b],
-            [iz7Id, iz7a, iz7b],
-            [iz8Id, iz8a, iz8b],
-            [iz9Id, iz9a, iz9b],
-            [iz10Id, iz10a, iz10b]
-        ]
+        'izs': izs
     };
     var patientList = getPatientList();
     patientList[patientId] = patient;
@@ -148,35 +110,11 @@ function editPatient(patientId) {
 
     $('#dob')[0].value = patient['dob'];
 
-    $('#iz1a')[0].value = patient['izs'][0][1];
-    $('#iz1b')[0].value = patient['izs'][0][2];
-
-    $('#iz2a')[0].value = patient['izs'][1][1];
-    $('#iz2b')[0].value = patient['izs'][1][2];
-
-    $('#iz3a')[0].value = patient['izs'][2][1];
-    $('#iz3b')[0].value = patient['izs'][2][2];
-
-    $('#iz4a')[0].value = patient['izs'][3][1];
-    $('#iz4b')[0].value = patient['izs'][3][2];
-
-    $('#iz5a')[0].value = patient['izs'][4][1];
-    $('#iz5b')[0].value = patient['izs'][4][2];
-
-    $('#iz6a')[0].value = patient['izs'][5][1];
-    $('#iz6b')[0].value = patient['izs'][5][2];
-
-    $('#iz7a')[0].value = patient['izs'][6][1];
-    $('#iz7b')[0].value = patient['izs'][6][2];
-
-    $('#iz8a')[0].value = patient['izs'][7][1];
-    $('#iz8b')[0].value = patient['izs'][7][2];
-
-    $('#iz9a')[0].value = patient['izs'][8][1];
-    $('#iz9b')[0].value = patient['izs'][8][2];
-
-    $('#iz10a')[0].value = patient['izs'][9][1];
-    $('#iz10b')[0].value = patient['izs'][9][2];
+    var izEntryTable = $('#izEntryTable')[0];
+    var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
+    for (var i = 0; i < patient['izs'].length; i++) {
+        appendIzTableRow(tbdy, patient['izs'][i]);
+    }
 }
 
 function deletePatient(patientId) {
@@ -334,6 +272,83 @@ function listPatients() {
     }
     tbl.appendChild(tbdy);
     $('#patientListTable').trigger('create');
+}
+
+function removeIzTableRow(source) {
+    var tr = source;
+    var c = 0;
+    while (tr.nodeName.toLowerCase() !== 'tr') {
+        c++;
+        tr = tr.parentNode;
+        if (c === 10) {
+            break;
+        }
+    }
+    var izEntryTable = $('#izEntryTable')[0];
+    var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
+    tbdy.removeChild(tr);
+}
+
+function addIzRow() {
+    var izEntryTable = $('#izEntryTable')[0];
+    var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
+    appendIzTableRow(tbdy, []);
+    $('#izEntryTable').trigger('create');
+}
+
+function appendIzTableRow(tbdy, data) {
+    var tr = document.createElement('tr');
+
+    var izId;
+    if (data.length > 0) {
+        izId = data[0];
+    } else {
+        izId = getGuid();
+    }
+
+    var td = document.createElement('td');
+    var dateInput = document.createElement('input');
+    dateInput.name = 'DI' + izId;
+    dateInput.id = dateInput.name;
+    dateInput.type = 'text';
+    dateInput.setAttribute('data-role', 'date');
+    if (data.length > 0) {
+        dateInput.value = data[1];
+    }
+    td.appendChild(dateInput);
+    tr.appendChild(td);
+
+    td = document.createElement('td');
+    var cvxInput = document.createElement('input');
+    cvxInput.name = 'CI' + izId;
+    cvxInput.id = cvxInput.name;
+    cvxInput.type = 'text';
+    cvxInput.setAttribute('class', 'cvxAutoComplete');
+    if (data.length > 0) {
+        cvxInput.value = data[2];
+    }
+    td.appendChild(cvxInput);
+    tr.appendChild(td);
+
+    td = document.createElement('td');
+    var deleteButton = document.createElement('a');
+    deleteButton.setAttribute('href', '#');
+    deleteButton.setAttribute('onclick', 'removeIzTableRow(this);');
+    deleteButton.setAttribute('class', 'ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-shadow');
+    deleteButton.setAttribute('title', 'Delete');
+    deleteButton.setAttribute('alt', 'Delete');
+    deleteButton.appendChild(document.createTextNode('Delete'));
+    td.appendChild(deleteButton);
+    tr.appendChild(td);
+
+    tbdy.appendChild(tr);
+
+    $('#' + cvxInput.id).autocomplete({
+        source: getCvxData(),
+        minLength: 0
+    }).focus(function() {
+        $(this).autocomplete("search");
+    });
 }
 
 /**

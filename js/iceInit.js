@@ -4,18 +4,9 @@
  * and open the template in the editor.
  */
 
-var files;
-
 $.datepicker._defaults.dateFormat = 'yymmdd';
 $.datepicker._defaults.changeYear = true;
 $.datepicker._defaults.changeMonth = true;
 //console.log($.datepicker._defaults);
-
-$(function() {
-
-    $('.cvxAutoComplete').autocomplete({
-        source: getCvxData()
-    });
-});
 
 // console.log('done');
