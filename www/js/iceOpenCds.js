@@ -74,7 +74,12 @@ function evaluate(inputXml, patient, settings) {
     }
     var xhr = createCORSRequest('POST', 'http://cds.hln.com:16080/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate');
 
-    var now = new Date();
+    var evalDate = patient['evalDate'];
+    if (evalDate === null || typeof (evalDate) === 'undefined' || evalDate === '') {
+        evalDate = new Date().toISOString().substring(0, 10);
+    } else {
+        evalDate = evalDate.substring(0, 4) + '-' + evalDate.substring(4, 6) + '-' + evalDate.substring(6, 8);
+    }
 
     // build SOAP request
     var sr =
@@ -83,7 +88,7 @@ function evaluate(inputXml, patient, settings) {
             '<S:Body>' +
             '<ns2:evaluateAtSpecifiedTime xmlns:ns2="http://www.omg.org/spec/CDSS/201105/dss">' +
             '<interactionId scopingEntityId="gov.nyc.health" interactionId="123456"/>' +
-            '<specifiedTime>' + now.toISOString().substring(0, 10) + '</specifiedTime>' +
+            '<specifiedTime>' + evalDate + '</specifiedTime>' +
             '<evaluationRequest clientLanguage="" clientTimeZoneOffset="">' +
             '<kmEvaluationRequest>' +
             '<kmId scopingEntityId="org.nyc.cir" businessId="ICE" version="1.0.0"/>' +
@@ -175,6 +180,43 @@ function processResponse(xmlDoc, patient, settings) {
             responseDataNode.removeChild(responseDataNode.firstChild);
         }
         responseDataNode.appendChild(document.createTextNode(JSON.stringify(responseJs)));
+    }
+}
+
+function vmr2Js(xmlDoc) {
+    var patient = {'izs': []};
+    getPatientDemographics(patient, xmlDoc);
+    getPatientEvents(patient, xmlDoc);
+//    console.log(patient);
+    return patient;
+}
+
+function getPatientDemographics(patient, xmlDoc) {
+    var patientNode = xmlDoc.documentElement.getElementsByTagName('patient')[0];
+    var idNode = patientNode.getElementsByTagName('id')[0];
+    patient['firstName'] = 'Patient';
+    patient['lastName'] = idNode.getAttribute('extension');
+    patient['dob'] = patientNode.getElementsByTagName('birthTime')[0].getAttribute('value').substring(0, 8);
+    patient['gender'] = patientNode.getElementsByTagName('gender')[0].getAttribute('code');
+    if (patientNode.getElementsByTagName('observationFocus')[0].getAttribute('code') === 'U') {
+        patient['evalDate'] = patientNode.getElementsByTagName('observationEventTime')[0].getAttribute('high').substring(0, 8);
+    } else {
+        patient['evalDate'] = null;
+    }
+}
+
+function getPatientEvents(patient, xmlDoc) {
+    var substanceAdministrationEventsNode = xmlDoc.documentElement.getElementsByTagName('substanceAdministrationEvents')[0];
+    var childNodes = substanceAdministrationEventsNode.childNodes;
+    for (var i = 0; i < childNodes.length; i++) {
+        if (childNodes[i].nodeName.toLowerCase() === 'substanceadministrationevent') {
+            var child = childNodes[i];
+            var id = child.getElementsByTagName('id')[0].getAttribute('extension');
+            var substanceCode = child.getElementsByTagName('substanceCode')[0].getAttribute('code');
+            var administrationTime = child.getElementsByTagName('administrationTimeInterval')[0].getAttribute('high').substring(0, 8);
+            patient['izs'][patient['izs'].length] = [id, administrationTime, substanceCode];
+//            console.log([id, administrationTime, substanceCode]);
+        }
     }
 }
 
@@ -395,6 +437,16 @@ function renderGrid(responseJs, patient, settings) {
     }
     patientGenderNode.appendChild(document.createTextNode(patient['gender']));
 
+    var patientEvalDateNode = $('#patientEvalDate')[0];
+    while (patientEvalDateNode.firstChild) {
+        patientEvalDateNode.removeChild(patientEvalDateNode.firstChild);
+    }
+    var evalDate = patient['evalDate'];
+    if (evalDate === null || typeof (evalDate) === 'undefined' || evalDate === '') {
+        evalDate = new Date().toISOString().substring(0, 10).split('-').join('');
+    }
+    patientEvalDateNode.appendChild(document.createTextNode(evalDate));
+
     var tbl = $('#iceOutputGrid')[0];
 
     var tbdy = tbl.getElementsByTagName('tbody')[0];
@@ -486,14 +538,14 @@ function renderEvaluations(groupKey, evaluations) {
         var attrTbody = document.createElement('tbody');
 
         for (evaluationKey in evaluation) {
-                attrTr = document.createElement('tr');
-                var attrTd = document.createElement('td');
-                attrTd.appendChild(document.createTextNode(evaluationKey));
-                attrTr.appendChild(attrTd);
-                attrTd = document.createElement('td');
-                attrTd.appendChild(document.createTextNode(evaluation[evaluationKey]));
-                attrTr.appendChild(attrTd);
-                attrTbody.appendChild(attrTr);
+            attrTr = document.createElement('tr');
+            var attrTd = document.createElement('td');
+            attrTd.appendChild(document.createTextNode(evaluationKey));
+            attrTr.appendChild(attrTd);
+            attrTd = document.createElement('td');
+            attrTd.appendChild(document.createTextNode(evaluation[evaluationKey]));
+            attrTr.appendChild(attrTd);
+            attrTbody.appendChild(attrTr);
         }
 
         attrTbl.appendChild(attrTbody);
@@ -572,14 +624,14 @@ function renderRecommendations(groupKey, recommendations) {
         var attrTbody = document.createElement('tbody');
 
         for (recommendationKey in recommendation) {
-                attrTr = document.createElement('tr');
-                var attrTd = document.createElement('td');
-                attrTd.appendChild(document.createTextNode(recommendationKey));
-                attrTr.appendChild(attrTd);
-                attrTd = document.createElement('td');
-                attrTd.appendChild(document.createTextNode(recommendation[recommendationKey]));
-                attrTr.appendChild(attrTd);
-                attrTbody.appendChild(attrTr);
+            attrTr = document.createElement('tr');
+            var attrTd = document.createElement('td');
+            attrTd.appendChild(document.createTextNode(recommendationKey));
+            attrTr.appendChild(attrTd);
+            attrTd = document.createElement('td');
+            attrTd.appendChild(document.createTextNode(recommendation[recommendationKey]));
+            attrTr.appendChild(attrTd);
+            attrTbody.appendChild(attrTr);
         }
 
         attrTbl.appendChild(attrTbody);

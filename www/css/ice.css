@@ -125,3 +125,6 @@ and open the template in the editor.
     margin-bottom:4px;
     margin-left:12px;
 }
+.ui-widget-header .ui-icon {
+    background-image:none;
+}

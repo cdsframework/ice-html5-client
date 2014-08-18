@@ -70,6 +70,8 @@ function savePatient() {
 
     var dob = $('#dob')[0].value;
 
+    var evalDate = $('#evalDate')[0].value;
+
     var izEntryTable = $('#izEntryTable')[0];
     var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
     var trs = tbdy.getElementsByTagName('tr');
@@ -88,6 +90,7 @@ function savePatient() {
         'lastName': lastName,
         'gender': gender,
         'dob': dob,
+        'evalDate': evalDate,
         'id': patientId,
         'izs': izs
     };
@@ -109,6 +112,8 @@ function editPatient(patientId) {
     $('input[name="gender"][value="' + patient['gender'] + '"]').prop('checked', true);
 
     $('#dob')[0].value = patient['dob'];
+
+    $('#evalDate')[0].value = patient['evalDate'];
 
     var izEntryTable = $('#izEntryTable')[0];
     var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
@@ -200,17 +205,19 @@ function listPatients() {
         izTbl.appendChild(izThead);
         var izTbody = document.createElement('tbody');
 
-        for (var i = 0; i < patient['izs'].length; i++) {
-            var iz = patient['izs'][i];
-            if (iz[1] !== null && iz[1] !== '') {
-                izTr = document.createElement('tr');
-                var izTd = document.createElement('td');
-                izTd.appendChild(document.createTextNode(iz[1]));
-                izTr.appendChild(izTd);
-                izTd = document.createElement('td');
-                izTd.appendChild(document.createTextNode(iz[2]));
-                izTr.appendChild(izTd);
-                izTbody.appendChild(izTr);
+        if (typeof (patient['izs']) !== 'undefined') {
+            for (var i = 0; i < patient['izs'].length; i++) {
+                var iz = patient['izs'][i];
+                if (iz[1] !== null && iz[1] !== '') {
+                    izTr = document.createElement('tr');
+                    var izTd = document.createElement('td');
+                    izTd.appendChild(document.createTextNode(iz[1]));
+                    izTr.appendChild(izTd);
+                    izTd = document.createElement('td');
+                    izTd.appendChild(document.createTextNode(iz[2]));
+                    izTr.appendChild(izTd);
+                    izTbody.appendChild(izTr);
+                }
             }
         }
         izTbl.appendChild(izTbody);
@@ -227,7 +234,6 @@ function listPatients() {
         exportButton = document.createElement('a');
         exportButton.setAttribute('class', 'ui-btn ui-icon-arrow-d ui-btn-icon-notext ui-corner-all ui-shadow floatLeft');
         exportButton.setAttribute('title', 'Export Patient');
-        exportButton.setAttribute('alt', 'Export Patient');
         exportButton.setAttribute('download', key + '.json');
         exportButton.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(patient)));
         exportButton.appendChild(document.createTextNode(' '));
@@ -236,7 +242,6 @@ function listPatients() {
         editButton = document.createElement('a');
         editButton.setAttribute('class', 'ui-btn ui-icon-edit ui-btn-icon-notext ui-corner-all ui-shadow floatLeft');
         editButton.setAttribute('title', 'Edit');
-        editButton.setAttribute('alt', 'Edit');
         editButton.setAttribute('href', '#savePatient');
         editButton.setAttribute('onclick', 'editPatient(\'' + key + '\');$.mobile.changePage(\'#savePatient\');');
         editButton.appendChild(document.createTextNode(' '));
@@ -245,7 +250,6 @@ function listPatients() {
         deleteButton = document.createElement('a');
         deleteButton.setAttribute('class', 'ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-shadow floatLeft');
         deleteButton.setAttribute('title', 'Delete');
-        deleteButton.setAttribute('alt', 'Delete');
         deleteButton.setAttribute('href', '#deleteConfirm');
         deleteButton.setAttribute('data-transition', 'pop');
         deleteButton.setAttribute('data-rel', 'dialog');
@@ -256,7 +260,6 @@ function listPatients() {
         iceButton = document.createElement('a');
         iceButton.setAttribute('class', 'ui-btn ui-icon-action ui-btn-icon-notext ui-corner-all ui-shadow floatLeft');
         iceButton.setAttribute('title', 'ICE Patient');
-        iceButton.setAttribute('alt', 'ICE Patient');
         iceButton.setAttribute('href', '#icePatient');
         iceButton.setAttribute('data-transition', 'pop');
         iceButton.setAttribute('data-rel', 'dialog');
@@ -336,7 +339,6 @@ function appendIzTableRow(tbdy, data) {
     deleteButton.setAttribute('onclick', 'removeIzTableRow(this);');
     deleteButton.setAttribute('class', 'ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-shadow');
     deleteButton.setAttribute('title', 'Delete');
-    deleteButton.setAttribute('alt', 'Delete');
     deleteButton.appendChild(document.createTextNode('Delete'));
     td.appendChild(deleteButton);
     tr.appendChild(td);
@@ -374,14 +376,7 @@ $(document).ready(function() {
         var reader = new FileReader();
         reader.onload = (function(theFile) {
             return function(e) {
-                var result = e.target.result;
-                var patientData = atob(decodeURIComponent(result.substring(result.indexOf(',') + 1)));
-                var patient = JSON.parse(patientData);
-                var newGuid = getGuid();
-                patient['id'] = newGuid;
-                var patientList = getPatientList();
-                patientList[newGuid] = patient;
-                setPatientList(patientList);
+                importPatient(e.target.result);
                 document.location.href = '#main';
                 location.reload();
             };
@@ -389,3 +384,18 @@ $(document).ready(function() {
         reader.readAsDataURL(file);
     });
 });
+
+function importPatient(data) {
+    var payload = atob(decodeURIComponent(data.substring(data.indexOf(',') + 1)));
+    var patient;
+    try {
+        patient = JSON.parse(payload);
+    } catch (err) {
+        var xmlDoc = (new DOMParser()).parseFromString(payload, 'application/xml');
+        patient = vmr2Js(xmlDoc);
+    }
+    patient['id'] = getGuid();
+    var patientList = getPatientList();
+    patientList[patient['id']] = patient;
+    setPatientList(patientList);
+}

@@ -63,7 +63,8 @@ and open the template in the editor.
                     <div class="floatLeft100" style="opacity: .5;display: table-caption;margin: 20px 12px;">Patient Info</div>
                     <div class="floatLeft100" ><div class="icePatLabel">Name:&nbsp;&nbsp;</div><div class="icePatData" id="patientName"></div></div>
                     <div class="floatLeft100" ><div class="icePatLabel">DOB:&nbsp;&nbsp;</div><div class="icePatData" id="patientDob"></div></div>
-                    <div class="floatLeft100" ><div class="icePatLabel" style="margin-bottom:20px;">Gender:&nbsp;&nbsp;</div><div class="icePatData" id="patientGender"></div></div>
+                    <div class="floatLeft100" ><div class="icePatLabel">Gender:&nbsp;&nbsp;</div><div class="icePatData" id="patientGender"></div></div>
+                    <div class="floatLeft100" ><div class="icePatLabel" style="margin-bottom:20px;">Evaluation Date:&nbsp;&nbsp;</div><div class="icePatData" id="patientEvalDate"></div></div>
                     <table id="iceOutputGrid"
                            data-role="table"
                            class="ui-responsive table-stroke"
@@ -201,7 +202,14 @@ and open the template in the editor.
                                     <input name="dob" id="dob" type="text" data-role="date" />
                                 </td>
                             </tr>
-
+                            <tr>
+                                <th>
+                                    <label for="dob">Evaluation Date</label>
+                                </th>
+                                <td>
+                                    <input name="evalDate" id="evalDate" type="text" data-role="date" />
+                                </td>
+                            </tr>
                             <tr>
                                 <th style="vertical-align: text-top">
                                     <label>Immunizations</label>
@@ -209,7 +217,7 @@ and open the template in the editor.
                                 <td>
                                     <table data-role="table"
                                            id="izEntryTable"
-                                           class="ui-responsive table-stroke">
+                                           class="table-stroke">
                                         <thead>
                                             <tr>
                                                 <th>Immunization Date</th>
@@ -223,8 +231,7 @@ and open the template in the editor.
                                     <a href="#"
                                        class="ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-left"
                                        onclick="addIzRow();"
-                                       title="Add Row"
-                                       alt="Add Row">Add Row</a>
+                                       title="Add Row">Add Row</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -244,11 +251,11 @@ and open the template in the editor.
         </div>
         <div data-role="page" id="deleteConfirm" data-dialog="true">
             <div data-role="header"><h1>Delete Patient</h1></div>
-            <div role="main" class="ui-content">
+            <div role="main" class="ui-content" style="padding:40px;">
                 <div id="deleteConfirmMessage">Are you sure you want to delete the selected patient?</div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a"><a href="#main" onclick="selectedPatient = null;" class="ui-shadow ui-btn ui-corner-all">Cancel</a></div>
-                    <div class="ui-block-b">
+                    <div class="ui-block-b" style="padding-right:20px;">
                         <div class="button-wrap">
                             <button name="Delete" class="ui-shadow ui-btn ui-corner-all" onclick="deletePatient(selectedPatient);
                                     return false;">Delete</button>
@@ -259,7 +266,7 @@ and open the template in the editor.
         </div>
         <div data-role="page" id="importPatient" data-dialog="true">
             <div data-role="header"><h1>Import Patient</h1></div>
-            <div role="main" class="ui-content">
+            <div role="main" class="ui-content" style="padding:40px;">
                 <form id="uploadForm" method="post" enctype="multipart/form-data" data-ajax="false">
                     <div>Select a file to import a patient from:</div>
                     <div><input type="file" name="file" id="importPatientInput" /></div>
