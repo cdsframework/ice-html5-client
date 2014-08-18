@@ -19,7 +19,6 @@ www/spec.html
 www/spec/*
 www/res/icon/*
 www/res/.pgbomit
-icon.png
 platforms/android/.settings/org.eclipse.jdt.core.prefs
 platforms/android/.classpath
 platforms/android/.project
@@ -28,7 +27,6 @@ platforms/android/ant-build/*
 platforms/android/ant-gen/*
 platforms/android/bin/*
 platforms/android/build.xml
-platforms/android/cordova/*
 platforms/android/CordovaLib/*
 platforms/android/local.properties
 platforms/android/proguard-project.txt
@@ -46,3 +44,4 @@ platforms/android/assets/www/css/*
 platforms/android/assets/www/images/*
 platforms/android/assets/www/js/*
 platforms/android/assets/www/index.html
+platforms/android/assets/www/icon.png
