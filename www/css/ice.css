@@ -12,7 +12,7 @@ and open the template in the editor.
 }
 .iceLogo {
     float:left;
-    background-image: url(../images/iceLogo.png);
+    background-image: url(images/iceLogo.png);
     height:40px;
     width:120px;
     background-repeat: no-repeat;
