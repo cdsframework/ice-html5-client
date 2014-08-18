@@ -29,12 +29,6 @@ and open the template in the editor.
     <body>
         <div data-role="page" id="main">
             <div data-role="header">
-                <div class="addPatientButton">
-                    <a href="#savePatient" class="ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-left">Add Patient</a>
-                </div>
-                <div class="importPatientButton">
-                    <a href="#importPatient" class="ui-btn ui-btn-inline ui-icon-arrow-u ui-btn-icon-left">Import Patient</a>
-                </div>
                 <div class="iceLogo"></div>
                 <h1>ICE Client</h1>
             </div>
@@ -54,6 +48,8 @@ and open the template in the editor.
                     <script type="text/javascript">
                         listPatients();
                     </script>
+                    <a href="#savePatient" class="ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-left">Add Patient</a>
+                    <a href="#importPatient" class="ui-btn ui-btn-inline ui-icon-arrow-u ui-btn-icon-left">Import Patient</a>
                     <a href="#settings" onclick="initSettings();" class="ui-btn ui-btn-inline ui-icon-gear ui-btn-icon-left">Settings</a>
                 </form>
             </div>

@@ -64,18 +64,7 @@ and open the template in the editor.
     position:relative;
     background-color: #eee;
 }
-.addPatientButton {
-    position: absolute;
-    right: -5px;
-    top: 42px;
-}
-.importPatientButton {
-    position: absolute;
-    right: 115px;
-    top: 42px;
-}
 .immunizationPopup {
-
 }
 .icePopup {
     position:absolute;
