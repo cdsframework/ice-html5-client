@@ -94,7 +94,7 @@ and open the template in the editor.
 .floatRight {
     position: absolute;
     right: 5px;
-    top: 53px;
+    bottom: 0px;
 }
 .inline-label {
     color: mediumblue;
