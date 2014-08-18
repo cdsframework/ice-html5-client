@@ -1,0 +1,9 @@
+{
+    "lib": {
+        "www": {
+            "id": "org.cdsframework.iceclient",
+            "version": "1.0",
+            "uri": "https://bitbucket.org/cdsframework/ice-html5-client/get/default.tar.gz"
+        }
+    }
+}

@@ -1,8 +1,6 @@
 syntax: glob
-.cordova/config.json
 hooks/README.md
 out/*
-plugins/android.json
 www/res/screen/webos/*
 www/res/icon/bada/*
 www/res/icon/bada-wac/*
