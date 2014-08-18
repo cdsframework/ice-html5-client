@@ -26,8 +26,6 @@ platforms/android/.project
 platforms/android/android.iml
 platforms/android/ant-build/*
 platforms/android/ant-gen/*
-platforms/android/assets/_where-is-www.txt
-platforms/android/assets/www/*
 platforms/android/bin/*
 platforms/android/build.xml
 platforms/android/cordova/*
@@ -42,3 +40,9 @@ platforms/android/res/drawable-land-xhdpi/screen.png
 platforms/android/res/drawable-land-mdpi/screen.png
 platforms/android/res/drawable-land-ldpi/screen.png
 platforms/android/res/drawable-land-hdpi/screen.png
+platforms/android/assets/_where-is-www.txt
+platforms/android/assets/www/config.xml
+platforms/android/assets/www/css/*
+platforms/android/assets/www/images/*
+platforms/android/assets/www/js/*
+platforms/android/assets/www/index.html
