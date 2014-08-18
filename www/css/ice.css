@@ -7,6 +7,9 @@ and open the template in the editor.
     Created on : Aug 14, 2014, 8:51:03 PM
     Author     : HLN Consulting, LLC
 */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
 .iceLogo {
     float:left;
     background-image: url(../images/iceLogo.png);

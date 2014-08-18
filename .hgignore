@@ -1,0 +1,25 @@
+syntax: glob
+.cordova/config.json
+hooks/README.md
+platforms/*
+out/*
+plugins/android.json
+www/res/screen/webos/*
+www/res/icon/bada/*
+www/res/icon/bada-wac/*
+www/res/icon/blackberry/*
+www/res/icon/tizen/*
+www/res/icon/webos/*
+www/res/icon/windows-phone/*
+www/res/screen/bada-wac/*
+www/res/screen/android/*
+www/res/screen/blackberry/*
+www/res/screen/ios/*
+www/res/screen/bada/*
+www/res/screen/tizen/*
+www/res/screen/windows-phone/*
+www/spec.html
+www/spec/*
+www/res/icon/*
+www/res/.pgbomit
+icon.png
