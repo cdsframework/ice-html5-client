@@ -26,7 +26,6 @@ platforms/android/android.iml
 platforms/android/ant-build/*
 platforms/android/ant-gen/*
 platforms/android/bin/*
-platforms/android/build.xml
 platforms/android/CordovaLib/*
 platforms/android/local.properties
 platforms/android/proguard-project.txt
