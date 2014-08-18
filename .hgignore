@@ -1,7 +1,6 @@
 syntax: glob
 .cordova/config.json
 hooks/README.md
-platforms/*
 out/*
 plugins/android.json
 www/res/screen/webos/*
@@ -23,3 +22,25 @@ www/spec/*
 www/res/icon/*
 www/res/.pgbomit
 icon.png
+platforms/android/.settings/org.eclipse.jdt.core.prefs
+platforms/android/.classpath
+platforms/android/.project
+platforms/android/android.iml
+platforms/android/ant-build/*
+platforms/android/ant-gen/*
+platforms/android/assets/_where-is-www.txt
+platforms/android/assets/www/*
+platforms/android/bin/*
+platforms/android/build.xml
+platforms/android/cordova/*
+platforms/android/CordovaLib/*
+platforms/android/local.properties
+platforms/android/proguard-project.txt
+platforms/android/res/drawable-port-xhdpi/screen.png
+platforms/android/res/drawable-port-mdpi/screen.png
+platforms/android/res/drawable-port-ldpi/screen.png
+platforms/android/res/drawable-port-hdpi/screen.png
+platforms/android/res/drawable-land-xhdpi/screen.png
+platforms/android/res/drawable-land-mdpi/screen.png
+platforms/android/res/drawable-land-ldpi/screen.png
+platforms/android/res/drawable-land-hdpi/screen.png
