@@ -72,6 +72,68 @@ function formatXml(xml) {
     return formatted;
 }
 
+function getAgeFromISOs(dateString1, dateString2) {
+    return getAge(getDateFromISO(dateString1), getDateFromISO(dateString2));
+}
+
+function getDateFromISO(dateString) {
+    var result = new Date(
+            dateString.substring(0, 4),
+            (dateString.substring(4, 6)) - 1,
+            dateString.substring(6, 8),
+            0, 0, 0, 0);
+    return result;
+}
+
+function getAge(date1, date2) {
+//    console.time('getAge');
+    if ((date2.getTime() - date1.getTime()) < 0) {
+        throw 'date2 is before date1!';
+    }
+    var years = 0;
+    var months = 0;
+    var days = 0;
+    var tempDate1 = new Date(date1);
+
+    // years
+    // increment years until date1 is greater than date2
+    while (true) {
+        tempDate1.setFullYear(tempDate1.getFullYear() + 1);
+        if ((date2.getTime() - tempDate1.getTime()) >= 0) {
+            years++;
+        } else {
+            tempDate1.setFullYear(tempDate1.getFullYear() - 1);
+            break;
+        }
+    }
+
+    // months
+    // increment months until date1 is greater than date2
+    while (true) {
+        tempDate1.setMonth(tempDate1.getMonth() + 1);
+        if ((date2.getTime() - tempDate1.getTime()) >= 0) {
+            months++;
+        } else {
+            tempDate1.setMonth(tempDate1.getMonth() - 1);
+            break;
+        }
+    }
+
+    // days
+    // increment days until date1 is greater than date2
+    while (true) {
+        tempDate1.setDate(tempDate1.getDate() + 1);
+        if ((date2.getTime() - tempDate1.getTime()) >= 0) {
+            days++;
+        } else {
+            tempDate1.setDate(tempDate1.getDate() - 1);
+            break;
+        }
+    }
+//    console.timeEnd("getAge");
+    return years + 'y ' + months + 'm ' + days + 'd';
+}
+
 function initSettings() {
     var settings = getSettings();
     $('#debugSetting').prop('checked', settings['debug']);
@@ -86,6 +148,13 @@ function saveSettings() {
 
 }
 
+function sleep(millis, callback) {
+    setTimeout(function()
+    {
+        callback();
+    }
+    , millis);
+}
 /**
  * Retrieve the settings from the local storage mechanism
  * 

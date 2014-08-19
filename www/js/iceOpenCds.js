@@ -447,6 +447,18 @@ function renderGrid(responseJs, patient, settings) {
     }
     patientEvalDateNode.appendChild(document.createTextNode(evalDate));
 
+    var patientAgeEvalDateNode = $('#patientAgeEvalDate')[0];
+    while (patientAgeEvalDateNode.firstChild) {
+        patientAgeEvalDateNode.removeChild(patientAgeEvalDateNode.firstChild);
+    }
+    var ageAtEval;
+    try {
+        ageAtEval = getAgeFromISOs(patient['dob'], evalDate);
+    } catch (err) {
+        ageAtEval = 'evaluation date before date of birth!';
+    }
+    patientAgeEvalDateNode.appendChild(document.createTextNode(ageAtEval));
+
     var tbl = $('#iceOutputGrid')[0];
 
     var tbdy = tbl.getElementsByTagName('tbody')[0];
@@ -469,7 +481,7 @@ function renderGrid(responseJs, patient, settings) {
         tr.appendChild(td);
 
         td = document.createElement('td');
-        eval = renderEvaluations(groupKey, responseJs[groupKey]['evaluations']);
+        eval = renderEvaluations(groupKey, responseJs[groupKey]['evaluations'], patient);
         td.appendChild(eval);
         tr.appendChild(td);
 
@@ -479,13 +491,21 @@ function renderGrid(responseJs, patient, settings) {
     }
 }
 
-function renderEvaluations(groupKey, evaluations) {
-    var evalDiv0, evalDiv1, evalA, evalDiv2, evaluation, evaluationKey;
+function renderEvaluations(groupKey, evaluations, patient) {
+    var evalDiv0, evalDiv1, evalA, evalDiv2, evaluation;
 
     evalDiv0 = document.createElement('div');
 
     for (var i = 0; i < evaluations.length; i++) {
         evaluation = evaluations[i];
+
+        var ageAtEval;
+        try {
+            ageAtEval = getAgeFromISOs(patient['dob'], evaluation['administrationTime']);
+        } catch (err) {
+            ageAtEval = 'shot date before date of birth!';
+        }
+
 
         evalDiv1 = document.createElement('div');
         if (evaluation['isValid'] === 'false') {
@@ -495,7 +515,7 @@ function renderEvaluations(groupKey, evaluations) {
         }
         evalDiv1.appendChild(document.createTextNode('Date: ' + evaluation['administrationTime']));
         evalDiv1.appendChild(document.createElement('br'));
-        evalDiv1.appendChild(document.createTextNode('Age: '));
+        evalDiv1.appendChild(document.createTextNode('Age: ' + ageAtEval));
         evalDiv1.appendChild(document.createElement('br'));
         evalDiv1.appendChild(document.createTextNode('Valid: ' + evaluation['isValid']));
         evalDiv1.appendChild(document.createElement('br'));
@@ -556,7 +576,7 @@ function renderEvaluations(groupKey, evaluations) {
 }
 
 function renderRecommendations(groupKey, recommendations) {
-    var recommendation, recDiv0, recDiv1, recA, recDiv2, recommendationKey;
+    var recommendation, recDiv0, recDiv1, recA, recDiv2;
 
     recDiv0 = document.createElement('div');
 

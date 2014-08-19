@@ -113,7 +113,9 @@ function editPatient(patientId) {
 
     $('#dob')[0].value = patient['dob'];
 
-    $('#evalDate')[0].value = patient['evalDate'];
+    if (patient['evalDate'] !== null && typeof (patient['evalDate']) !== 'undefined' && patient['evalDate'] !== '') {
+        $('#evalDate')[0].value = patient['evalDate'];
+    }
 
     var izEntryTable = $('#izEntryTable')[0];
     var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
