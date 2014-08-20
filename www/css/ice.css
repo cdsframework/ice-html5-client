@@ -38,6 +38,9 @@ and open the template in the editor.
 }
 .iceEvalTable {
 }
+.iceDisease {
+    background-color: rgb(255, 241, 184);
+}
 .iceEvalFalse {
     background-color: rgb(253, 248, 249);
 }
@@ -76,6 +79,22 @@ and open the template in the editor.
 }
 .izPopup {
     width:200px;
+}
+.izPopup section h3 {
+    font-size: 10px;
+    margin: 5px 0;
+}
+.izPopup ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+.izPopup ul li {
+    padding-left: 15px;
+    font-size: 10px;
+}
+.izTypeSelect .ui-select {
+    margin-top:9px;
 }
 .ui-popup.ui-content {
     background-color: #eee;

@@ -1,11 +1,13 @@
 // select code || ': ' || display_name from cds_code where code_system_id = 'e0bc41f880dc19d217656508b6cf9908' order by int(code);
 var cvxCodeSystem = '2.16.840.1.113883.12.292';
+var icd9CodeSystem = '2.16.840.1.113883.6.103';
 var groupCodeSystem = '2.16.840.1.113883.3.795.12.100.1';
 
 var cvxList = [];
+var diseaseList = [];
 
 var cvxData = {
-    '01': {'displayName': 'DTP'},
+    '01': {'displayName': 'DTP', 'group': ['200'] },
     '02': {'displayName': 'OPV'},
     '03': {'displayName': 'MMR'},
     '04': {'displayName': 'measles/rubella'},
@@ -13,16 +15,16 @@ var cvxData = {
     '06': {'displayName': 'rubella'},
     '07': {'displayName': 'mumps'},
     '08': {'displayName': 'Hep B, adolescent or pediatric'},
-    '09': {'displayName': 'Td, adult, absorbed'},
+    '09': {'displayName': 'Td, adult, absorbed', 'group': ['200']},
     '10': {'displayName': 'IPV'},
-    '11': {'displayName': 'pertussis'},
+    '11': {'displayName': 'pertussis', 'group': ['200']},
     '15': {'displayName': 'influenza, split '},
     '16': {'displayName': 'influenza, whole'},
     '17': {'displayName': 'Hib NOS'},
-    '20': {'displayName': 'DTaP'},
+    '20': {'displayName': 'DTaP', 'group': ['200']},
     '21': {'displayName': 'varicella'},
-    '22': {'displayName': 'DTP-Hib'},
-    '28': {'displayName': 'DT, pediatric'},
+    '22': {'displayName': 'DTP-Hib', 'group': ['200']},
+    '28': {'displayName': 'DT, pediatric', 'group': ['200']},
     '31': {'displayName': 'Hep A, pediatric, NOS'},
     '32': {'displayName': 'meningococcal MPSV4'},
     '33': {'displayName': 'pneumococcal polysaccharide '},
@@ -35,7 +37,7 @@ var cvxData = {
     '47': {'displayName': 'Hib (HbOC)'},
     '48': {'displayName': 'Hib (PRP-T)'},
     '49': {'displayName': 'Hib (PRP-OMP)'},
-    '50': {'displayName': 'DTaP-Hib'},
+    '50': {'displayName': 'DTaP-Hib', 'group': ['200']},
     '51': {'displayName': 'Hib-Hep B'},
     '52': {'displayName': 'Hep A, adult'},
     '62': {'displayName': 'HPV, quadrivalent'},
@@ -47,34 +49,34 @@ var cvxData = {
     '89': {'displayName': 'polio NOS'},
     '94': {'displayName': 'MMR-Varicella'},
     '100': {'displayName': 'pneumococcal conjugate PCV 7'},
-    '102': {'displayName': 'DTP-Hib-Hep B'},
+    '102': {'displayName': 'DTP-Hib-Hep B', 'group': ['200']},
     '103': {'displayName': 'meningococcal C conjugate'},
     '104': {'displayName': 'Hep A-Hep B'},
-    '106': {'displayName': 'DTaP, 5 pertussis antigens'},
-    '107': {'displayName': 'DTaP NOS'},
+    '106': {'displayName': 'DTaP, 5 pertussis antigens', 'group': ['200']},
+    '107': {'displayName': 'DTaP NOS', 'group': ['200']},
     '108': {'displayName': 'meningococcal NOS'},
     '109': {'displayName': 'pneumococcal NOS'},
-    '110': {'displayName': 'DTaP-Hep B-IPV'},
+    '110': {'displayName': 'DTaP-Hep B-IPV', 'group': ['200']},
     '111': {'displayName': 'influenza, live, intranasal'},
-    '113': {'displayName': 'Td, adult, preservative free'},
+    '113': {'displayName': 'Td, adult, preservative free', 'group': ['200']},
     '114': {'displayName': 'meningococcal MCV4P'},
-    '115': {'displayName': 'Tdap'},
+    '115': {'displayName': 'Tdap', 'group': ['200']},
     '116': {'displayName': 'rotavirus, pentavalent'},
     '118': {'displayName': 'HPV, bivalent'},
     '119': {'displayName': 'rotavirus, monovalent'},
-    '120': {'displayName': 'DTaP-Hib-IPV'},
+    '120': {'displayName': 'DTaP-Hib-IPV', 'group': ['200']},
     '122': {'displayName': 'rotavirus NOS'},
     '125': {'displayName': 'H1N1-09, nasal'},
     '126': {'displayName': 'H1N1-09, preservative-free'},
     '127': {'displayName': 'H1N1-09, injectable'},
     '128': {'displayName': 'H1N1-09 NOS'},
-    '130': {'displayName': 'DTaP-IPV'},
+    '130': {'displayName': 'DTaP-IPV', 'group': ['200']},
     '133': {'displayName': 'pneumococcal conjugate PCV 13'},
     '135': {'displayName': 'influenza, high dose '},
     '136': {'displayName': 'meningococcal MCV4O'},
     '137': {'displayName': 'HPV NOS'},
-    '138': {'displayName': 'Td, not adsorbed'},
-    '139': {'displayName': 'Td, adult NOS'},
+    '138': {'displayName': 'Td, not adsorbed', 'group': ['200']},
+    '139': {'displayName': 'Td, adult NOS', 'group': ['200']},
     '140': {'displayName': 'influenza, injectable, preservative-free'},
     '141': {'displayName': 'influenza, injectable'},
     '144': {'displayName': 'influenza, intradermal, preservative-free'},
@@ -96,6 +98,34 @@ function getCvxData() {
         }
     }
     return cvxList;
+}
+
+var icd9DiseaseData = {
+    '045.9': {'displayName': 'Acute Poliomyelitis', 'group': '400', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '032.9': {'displayName': 'Diphtheria', 'group': '200', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '488.1': {'displayName': 'H1N1 Influenza', 'group': '890', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '070.1': {'displayName': 'Hepatitis A', 'group': '810', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '070.30': {'displayName': 'Hepatitis B', 'group': '100', 'conceptCode': 'PROOF_OF_IMMUNITY', 'interpretation': 'IS_IMMUNE'},
+    '482.2': {'displayName': 'Hib', 'group': '300', 'conceptCode': '', 'interpretation': 'IS_IMMUNE'},
+    '795.0': {'displayName': 'Human Papillomavirus', 'group': '840', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '487': {'displayName': 'Influenza', 'group': '800', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '055.9': {'displayName': 'Measles', 'group': '500', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '036.9': {'displayName': 'Meningococcal', 'group': '830', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '072.9': {'displayName': 'Mumps', 'group': '500', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '033.9': {'displayName': 'Pertussis', 'group': '200', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '008.61': {'displayName': 'Rotavirus', 'group': '820', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '056.9': {'displayName': 'Rubella', 'group': '500', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '037': {'displayName': 'Tetanus', 'group': '200', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'},
+    '052.9': {'displayName': 'Varicella', 'group': '600', 'conceptCode': 'DISEASE_DOCUMENTED', 'interpretation': 'IS_IMMUNE'}
+};
+
+function getDiseaseData() {
+    if (diseaseList.length === 0) {
+        for (diseaseCode in icd9DiseaseData) {
+            diseaseList[diseaseList.length] = diseaseCode + ': ' + icd9DiseaseData[diseaseCode]['displayName'];
+        }
+    }
+    return diseaseList;
 }
 
 var vaccineGroups = {

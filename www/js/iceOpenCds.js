@@ -4,12 +4,11 @@
  * and open the template in the editor.
  */
 
-
-
 function icePatient(id) {
     var settings = getSettings();
     var patientList = getPatientList();
     var patient = patientList[id];
+    var izs = patient['izs'];
     var xmlString = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
             + '<ns3:cdsInput xmlns:ns2="org.opencds.vmr.v1_0.schema.vmr" xmlns:ns3="org.opencds.vmr.v1_0.schema.cdsinput">'
             + '<templateId root="2.16.840.1.113883.3.795.11.1.1"/>'
@@ -26,12 +25,21 @@ function icePatient(id) {
             + '<gender code="' + patient['gender'] + '" codeSystem="2.16.840.1.113883.5.1" />'
             + '</demographics>'
             + '<clinicalStatements>'
-            + '<observationResults>'
-            + '</observationResults>'
-            + '<substanceAdministrationEvents>';
-    var izs = patient['izs'];
+            + '<observationResults>';
+
     for (var i = 0; i < izs.length; i++) {
-        xmlString = addsubstanceAdministrationEvent(xmlString, izs[i]);
+        if (izs[i][3] === 'D') {
+            xmlString = addDiseaseEvent(xmlString, izs[i]);
+        }
+    }
+
+    xmlString += '</observationResults>'
+            + '<substanceAdministrationEvents>';
+
+    for (var i = 0; i < izs.length; i++) {
+        if (izs[i][3] === 'I' || izs[i][3] === null || typeof (izs[i][3]) === 'undefined' || izs[i][3] === '') {
+            xmlString = addsubstanceAdministrationEvent(xmlString, izs[i]);
+        }
     }
 
     xmlString += '</substanceAdministrationEvents>'
@@ -50,6 +58,31 @@ function icePatient(id) {
         inputNode.appendChild(document.createTextNode(inputXml));
     }
     evaluate(inputXml, patient, settings);
+}
+function addDiseaseEvent(xmlString, iz) {
+    if (iz[2] !== null && iz[2] !== '') {
+        var disease = icd9DiseaseData[iz[2].split(':')[0]];
+        var concept, interpretation;
+        if (disease !== null && typeof (disease) !== 'undefined') {
+            concept = disease['conceptCode'];
+            interpretation = disease['interpretation'];
+        } else {
+            concept = 'N/A';
+            interpretation = ['N/A'];
+        }
+
+        xmlString += '<observationResult>'
+                + '<templateId root="2.16.840.1.113883.3.795.11.6.3.1"/>'
+                + '<id root="' + iz[0] + '"/>'
+                + '<observationFocus code="' + iz[2].split(':')[0] + '" codeSystem="2.16.840.1.113883.6.103" />'
+                + '<observationEventTime low="' + iz[1] + '" high="' + iz[1] + '"/>'
+                + '<observationValue>'
+                + '<concept code="' + concept + '" codeSystem="2.16.840.1.113883.3.795.12.100.8"/>'
+                + '</observationValue>'
+                + '<interpretation code="' + interpretation + '" codeSystem="2.16.840.1.113883.3.795.12.100.9"/>'
+                + '</observationResult>';
+    }
+    return xmlString;
 }
 
 function addsubstanceAdministrationEvent(xmlString, iz) {
@@ -214,7 +247,19 @@ function getPatientEvents(patient, xmlDoc) {
             var id = child.getElementsByTagName('id')[0].getAttribute('extension');
             var substanceCode = child.getElementsByTagName('substanceCode')[0].getAttribute('code');
             var administrationTime = child.getElementsByTagName('administrationTimeInterval')[0].getAttribute('high').substring(0, 8);
-            patient['izs'][patient['izs'].length] = [id, administrationTime, substanceCode];
+            patient['izs'][patient['izs'].length] = [id, administrationTime, substanceCode, 'I'];
+//            console.log([id, administrationTime, substanceCode]);
+        }
+    }
+    var observationResults = xmlDoc.documentElement.getElementsByTagName('observationResults')[0];
+    childNodes = observationResults.childNodes;
+    for (var i = 0; i < childNodes.length; i++) {
+        if (childNodes[i].nodeName.toLowerCase() === 'observationresult') {
+            var child = childNodes[i];
+            var id = child.getElementsByTagName('id')[0].getAttribute('root');
+            var observationFocus = child.getElementsByTagName('observationFocus')[0].getAttribute('code');
+            var observationEventTime = child.getElementsByTagName('observationEventTime')[0].getAttribute('high').substring(0, 8);
+            patient['izs'][patient['izs'].length] = [id, observationEventTime, observationFocus, 'D'];
 //            console.log([id, administrationTime, substanceCode]);
         }
     }
@@ -235,6 +280,24 @@ function cdsOutput2Js(cdsOutputDoc, settings) {
     };
 
     var recommendations = getRecommendations(cdsOutputDoc, settings);
+    if (recommendations['890'].length === 0) {
+        recommendations['890'][0] = {
+            'substanceCode': '890',
+            'substanceCodeType': 'VACCINE_GROUP',
+            'administrationTime': '',
+            'concept': 'NOT_RECOMMENDED',
+            'interpretations': ['VAC_GROUP_NO_LONGER_REC']
+        };
+    }
+    if (recommendations['200'].length === 0) {
+        recommendations['200'][0] = {
+            'substanceCode': '200',
+            'substanceCodeType': 'VACCINE_GROUP',
+            'administrationTime': '',
+            'concept': 'N/A',
+            'interpretations': ['UNSUPPORTED - NO FORECAST PERFORMED']
+        };
+    }
     for (groupKey in recommendations) {
         result[groupKey]['recommendations'] = recommendations[groupKey];
     }
@@ -356,13 +419,11 @@ function getEvaluations(cdsOutputDoc, settings) {
 
             if (relatedClinicalStatements !== null && typeof (relatedClinicalStatements) !== 'undefined' && relatedClinicalStatements.length > 0) {
                 for (var r = 0; r < relatedClinicalStatements.length; r++) {
-                    var interpretations = [];
                     var concept = null;
                     var relatedClinicalStatement = relatedClinicalStatements[r];
                     var evaluationSubstanceAdministrationEvent = relatedClinicalStatement.getElementsByTagName('substanceAdministrationEvent')[0];
                     var observationResult = evaluationSubstanceAdministrationEvent.getElementsByTagName('observationResult')[0];
                     var conceptNodes = observationResult.getElementsByTagName('concept');
-                    var interpretationNodes = observationResult.getElementsByTagName('interpretation');
                     var doseNumber = evaluationSubstanceAdministrationEvent.getElementsByTagName('doseNumber')[0].getAttribute('value');
                     var isValid = evaluationSubstanceAdministrationEvent.getElementsByTagName('isValid')[0].getAttribute('value');
                     var componentSubstanceCode = evaluationSubstanceAdministrationEvent.getElementsByTagName('substanceCode')[0].getAttribute('code');
@@ -373,11 +434,6 @@ function getEvaluations(cdsOutputDoc, settings) {
                         concept = conceptNodes[0].getAttribute('code');
                     }
 
-                    if (interpretationNodes !== null && typeof (interpretationNodes) !== 'undefined' && interpretationNodes.length > 0) {
-                        for (var f = 0; f < interpretationNodes.length; f++) {
-                            interpretations[f] = interpretationNodes[f].getAttribute('code');
-                        }
-                    }
                     var record = {
                         'id': id,
                         'substanceCode': substanceCode,
@@ -387,12 +443,19 @@ function getEvaluations(cdsOutputDoc, settings) {
                         'isValid': isValid,
                         'observationEventTime': observationEventTime,
                         'concept': concept,
-                        'interpretations': interpretations
+                        'interpretations': getInterpretations(observationResult),
+                        'eventType': 'I'
                     };
                     evaluations[observationFocus][evaluations[observationFocus].length] = record;
                 }
             } else {
-                var observationFocus = 'UNKNOWN';
+                var observationFocus;
+                var vaccine = cvxData[substanceCode];
+                if (vaccine !== null && typeof (vaccine) !== 'undefined' && vaccine['group'] !== null && typeof (vaccine['group']) !== 'undefined') {
+                    observationFocus = vaccine['group'];
+                } else {
+                    observationFocus = 'UNKNOWN';
+                }
                 var record = {
                     'id': id,
                     'substanceCode': substanceCode,
@@ -402,13 +465,54 @@ function getEvaluations(cdsOutputDoc, settings) {
                     'isValid': 'UNSUPPORTED',
                     'observationEventTime': 'N/A',
                     'concept': 'N/A',
-                    'interpretations': []
+                    'interpretations': [],
+                    'eventType': 'I'
                 };
                 evaluations[observationFocus][evaluations[observationFocus].length] = record;
             }
         }
     }
+    var observationResults = cdsOutputDoc.documentElement.getElementsByTagName('observationResults')[0];
+    childNodes = observationResults.childNodes;
+    for (var i = 0; i < childNodes.length; i++) {
+        if (childNodes[i].nodeName.toLowerCase() === 'observationresult') {
+            var child = childNodes[i];
+            var id = child.getElementsByTagName('id')[0].getAttribute('root');
+            var observationFocus = child.getElementsByTagName('observationFocus')[0].getAttribute('code');
+            var observationEventTime = child.getElementsByTagName('observationEventTime')[0].getAttribute('high').substring(0, 8);
+            var concept = child.getElementsByTagName('concept')[0].getAttribute('code');
+            var disease = icd9DiseaseData[observationFocus];
+            var groupKey;
+            if (disease !== null && typeof (disease) !== 'undefined') {
+                groupKey = disease['group'];
+            } else {
+                groupKey = 'UNKNOWN';
+            }
+
+            var record = {
+                'id': id,
+                'diseaseCode': observationFocus,
+                'observationEventTime': observationEventTime,
+                'concept': concept,
+                'interpretations': getInterpretations(child),
+                'eventType': 'D'
+            };
+            evaluations[groupKey][evaluations[groupKey].length] = record;
+        }
+    }
     return evaluations;
+}
+
+function getInterpretations(node) {
+    var interpretations = [];
+    var interpretationNodes = node.getElementsByTagName('interpretation');
+
+    if (interpretationNodes !== null && typeof (interpretationNodes) !== 'undefined' && interpretationNodes.length > 0) {
+        for (var f = 0; f < interpretationNodes.length; f++) {
+            interpretations[f] = interpretationNodes[f].getAttribute('code');
+        }
+    }
+    return interpretations;
 }
 
 function renderGrid(responseJs, patient, settings) {
@@ -498,28 +602,53 @@ function renderEvaluations(groupKey, evaluations, patient) {
 
     for (var i = 0; i < evaluations.length; i++) {
         evaluation = evaluations[i];
+        var eventType = evaluation['eventType'];
+        var eventDate, displayName;
+        if (eventType === 'I') {
+            eventDate = evaluation['administrationTime'];
+            var vaccine = cvxData[evaluation['substanceCode']];
+            if (vaccine !== null && typeof (vaccine) !== 'undefined') {
+                displayName = 'Vaccine: ' + cvxData[evaluation['substanceCode']]['displayName'] + ' (' + evaluation['substanceCode'] + ')';
+            } else {
+                displayName = 'Vaccine: ' + evaluation['substanceCode'];
+            }
+        } else {
+            eventDate = evaluation['observationEventTime'];
+            var disease = icd9DiseaseData[evaluation['diseaseCode']];
+            if (disease !== null && typeof (disease) !== 'undefined') {
+                displayName = 'Disease: ' + icd9DiseaseData[evaluation['diseaseCode']]['displayName'] + ' (' + evaluation['diseaseCode'] + ')';
+            } else {
+                displayName = 'Disease: ' + evaluation['diseaseCode'];
+            }
+        }
 
-        var ageAtEval;
+        var age;
         try {
-            ageAtEval = getAgeFromISOs(patient['dob'], evaluation['administrationTime']);
+            age = getAgeFromISOs(patient['dob'], eventDate);
         } catch (err) {
-            ageAtEval = 'shot date before date of birth!';
+            age = 'event date before date of birth!';
         }
 
 
         evalDiv1 = document.createElement('div');
-        if (evaluation['isValid'] === 'false') {
-            evalDiv1.setAttribute('class', 'ui-shadow iceEvalSquare iceEvalFalse');
+        if (eventType === 'I') {
+            if (evaluation['isValid'] === 'false') {
+                evalDiv1.setAttribute('class', 'ui-shadow iceEvalSquare iceEvalFalse');
+            } else {
+                evalDiv1.setAttribute('class', 'ui-shadow iceEvalSquare iceEvalTrue');
+            }
         } else {
-            evalDiv1.setAttribute('class', 'ui-shadow iceEvalSquare iceEvalTrue');
+            evalDiv1.setAttribute('class', 'ui-shadow iceEvalSquare iceDisease');
         }
-        evalDiv1.appendChild(document.createTextNode('Date: ' + evaluation['administrationTime']));
+        evalDiv1.appendChild(document.createTextNode('Date: ' + eventDate));
         evalDiv1.appendChild(document.createElement('br'));
-        evalDiv1.appendChild(document.createTextNode('Age: ' + ageAtEval));
+        evalDiv1.appendChild(document.createTextNode('Age: ' + age));
         evalDiv1.appendChild(document.createElement('br'));
-        evalDiv1.appendChild(document.createTextNode('Valid: ' + evaluation['isValid']));
-        evalDiv1.appendChild(document.createElement('br'));
-        evalDiv1.appendChild(document.createTextNode('Vaccine: ' + cvxData[evaluation['substanceCode']]['displayName'] + ' (' + evaluation['substanceCode'] + ')'));
+        if (eventType === 'I') {
+            evalDiv1.appendChild(document.createTextNode('Valid: ' + evaluation['isValid']));
+            evalDiv1.appendChild(document.createElement('br'));
+        }
+        evalDiv1.appendChild(document.createTextNode(displayName));
 
         /**
          * attr popup table

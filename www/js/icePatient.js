@@ -80,9 +80,11 @@ function savePatient() {
     for (var i = 0; i < trs.length; i++) {
         var tr = trs[i];
         var inputs = tr.getElementsByTagName('input');
+        var select = tr.getElementsByTagName('select')[0];
         izs[izs.length] = [inputs[0].name.substring(2, inputs[0].name.length),
             inputs[0].value,
-            inputs[1].value]
+            inputs[1].value,
+            select.value];
     }
 
     var patient = {
@@ -119,9 +121,13 @@ function editPatient(patientId) {
 
     var izEntryTable = $('#izEntryTable')[0];
     var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
+    while (tbdy.firstChild) {
+        tbdy.removeChild(tbdy.firstChild);
+    }
     for (var i = 0; i < patient['izs'].length; i++) {
         appendIzTableRow(tbdy, patient['izs'][i]);
     }
+    $('#izEntryTable').trigger('create');
 }
 
 function deletePatient(patientId) {
@@ -197,12 +203,19 @@ function listPatients() {
         izTbl.setAttribute('class', 'ui-responsive table-stroke izTable');
         var izThead = document.createElement('thead');
         var izTr = document.createElement('tr');
+
         var izTh = document.createElement('th');
         izTh.appendChild(document.createTextNode('Date'));
         izTr.appendChild(izTh);
+
         izTh = document.createElement('th');
-        izTh.appendChild(document.createTextNode('CVX Code'));
+        izTh.appendChild(document.createTextNode('Code'));
         izTr.appendChild(izTh);
+
+        izTh = document.createElement('th');
+        izTh.appendChild(document.createTextNode('Type'));
+        izTr.appendChild(izTh);
+
         izThead.appendChild(izTr);
         izTbl.appendChild(izThead);
         var izTbody = document.createElement('tbody');
@@ -212,12 +225,24 @@ function listPatients() {
                 var iz = patient['izs'][i];
                 if (iz[1] !== null && iz[1] !== '') {
                     izTr = document.createElement('tr');
+
                     var izTd = document.createElement('td');
                     izTd.appendChild(document.createTextNode(iz[1]));
                     izTr.appendChild(izTd);
+
                     izTd = document.createElement('td');
                     izTd.appendChild(document.createTextNode(iz[2]));
                     izTr.appendChild(izTd);
+
+                    var eventType = 'I';
+                    if (iz[3] !== null && typeof (iz[3]) !== 'undefined' && iz[3] !== '') {
+                        eventType = iz[3];
+                    }
+                    izTd = document.createElement('td');
+                    izTd.setAttribute('style', 'text-align:center;');
+                    izTd.appendChild(document.createTextNode(eventType));
+                    izTr.appendChild(izTd);
+
                     izTbody.appendChild(izTr);
                 }
             }
@@ -225,6 +250,19 @@ function listPatients() {
         izTbl.appendChild(izTbody);
 
         patDiv2.appendChild(izTbl);
+        var section = document.createElement('section');
+        var h3 = document.createElement('h3');
+        h3.appendChild(document.createTextNode('Type:'));
+        section.appendChild(h3);
+        var ul = document.createElement('ul');
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode('I: Immunization'));
+        ul.appendChild(li);
+        li = document.createElement('li');
+        li.appendChild(document.createTextNode('D: Disease Documented/Proof of Immunity'));
+        ul.appendChild(li);
+        section.appendChild(ul);
+        patDiv2.appendChild(section);
         patDiv0.appendChild(patDiv2);
 
         /**
@@ -280,6 +318,19 @@ function listPatients() {
 }
 
 function removeIzTableRow(source) {
+    var tr = getContainingTr(source);
+    var izEntryTable = $('#izEntryTable')[0];
+    var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
+    tbdy.removeChild(tr);
+}
+
+/**
+ * Returns the containing TR node of the node passed in.
+ * 
+ * @param {type} source
+ * @returns {getContainingTr.tr|tr.parentNode|tr.parentNode.parentNode}
+ */
+function getContainingTr(source) {
     var tr = source;
     var c = 0;
     while (tr.nodeName.toLowerCase() !== 'tr') {
@@ -289,9 +340,7 @@ function removeIzTableRow(source) {
             break;
         }
     }
-    var izEntryTable = $('#izEntryTable')[0];
-    var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
-    tbdy.removeChild(tr);
+    return tr;
 }
 
 function addIzRow() {
@@ -336,6 +385,35 @@ function appendIzTableRow(tbdy, data) {
     tr.appendChild(td);
 
     td = document.createElement('td');
+    td.setAttribute('class', 'izTypeSelect');
+    var select = document.createElement('select');
+    select.name = 'PI' + izId;
+    select.id = select.name;
+    select.setAttribute('data-mini', 'true');
+    select.setAttribute('data-native-menu', 'false');
+    select.setAttribute('onchange', 'setIzCodeData(this);');
+    var eventType = 'I';
+    if (data[3] !== null && typeof (data[3]) !== 'undefined' && data[3] !== '') {
+        eventType = data[3];
+    }
+    var optionI = document.createElement('option');
+    optionI.value = 'I';
+    optionI.appendChild(document.createTextNode('Immunization'));
+    if (eventType === 'I') {
+        optionI.selected = 'selected';
+    }
+    select.appendChild(optionI);
+    var optionD = document.createElement('option');
+    optionD.value = 'D';
+    optionD.appendChild(document.createTextNode('Disease'));
+    if (eventType === 'D') {
+        optionD.selected = 'selected';
+    }
+    select.appendChild(optionD);
+    td.appendChild(select);
+    tr.appendChild(td);
+
+    td = document.createElement('td');
     var deleteButton = document.createElement('a');
     deleteButton.setAttribute('href', '#');
     deleteButton.setAttribute('onclick', 'removeIzTableRow(this);');
@@ -347,8 +425,24 @@ function appendIzTableRow(tbdy, data) {
 
     tbdy.appendChild(tr);
 
-    $('#' + cvxInput.id).autocomplete({
-        source: getCvxData(),
+    _setIzCodeData(eventType, $('#' + cvxInput.id));
+}
+
+function setIzCodeData(source) {
+    var ciObject = $('#CI' + source.id.substring(2, source.id.length));
+    _setIzCodeData(source.value, ciObject);
+    ciObject[0].value = '';
+}
+
+function _setIzCodeData(value, object) {
+    var sourceData;
+    if (value === 'I') {
+        sourceData = getCvxData();
+    } else {
+        sourceData = getDiseaseData();
+    }
+    object.autocomplete({
+        source: sourceData,
         minLength: 0
     }).focus(function() {
         $(this).autocomplete("search");
