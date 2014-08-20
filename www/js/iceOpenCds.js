@@ -59,6 +59,7 @@ function icePatient(id) {
     }
     evaluate(inputXml, patient, settings);
 }
+
 function addDiseaseEvent(xmlString, iz) {
     if (iz[2] !== null && iz[2] !== '') {
         var disease = icd9DiseaseData[iz[2].split(':')[0]];

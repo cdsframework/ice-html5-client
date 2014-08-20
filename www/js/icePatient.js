@@ -426,6 +426,7 @@ function appendIzTableRow(tbdy, data) {
     tbdy.appendChild(tr);
 
     _setIzCodeData(eventType, $('#' + cvxInput.id));
+    $(select.id).trigger('create');
 }
 
 function setIzCodeData(source) {
