@@ -180,3 +180,15 @@ function setSettings(settings) {
 //    console.log(settings);
     localStorage.setItem('settings', JSON.stringify(settings));
 }
+
+/**
+ * Set the viewed intro setting to true.
+ * 
+ * @returns {undefined}
+ */
+function setViewedIntro() {
+    var settings = getSettings();
+    settings['viewedIntro'] = true;
+    setSettings(settings);
+}
+

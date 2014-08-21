@@ -9,4 +9,19 @@ $.datepicker._defaults.changeYear = true;
 $.datepicker._defaults.changeMonth = true;
 //console.log($.datepicker._defaults);
 
+function onLoad() {
+    document.addEventListener('deviceready', deviceReady, false);
+    if (getSettings()['viewedIntro'] !== true) {
+        document.location = '#about';
+    }
+}
+
+function deviceReady() {
+    document.addEventListener('backbutton', backButtonCallback, false);
+}
+
+function backButtonCallback() {
+    document.location = '#exitConfirm';
+}
+
 // console.log('done');
