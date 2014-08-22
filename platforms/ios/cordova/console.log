@@ -1,0 +1,164 @@
+2014-08-21 20:43:29.180 ICE Client[7069:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 20:43:29.200 ICE Client[7069:90b] Unlimited access to network resources
+2014-08-21 20:43:29.206 ICE Client[7069:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 20:43:29.883 ICE Client[7069:90b] Resetting plugins due to page load.
+2014-08-21 20:43:30.694 ICE Client[7069:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 20:43:39.108 ICE Client[7069:90b] THREAD WARNING: ['InAppBrowser'] took '782.747070' ms. Plugin should use a background thread.
+2014-08-21 23:00:37.121 ICE Client[7341:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:00:37.139 ICE Client[7341:90b] Unlimited access to network resources
+2014-08-21 23:00:37.144 ICE Client[7341:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:00:37.270 ICE Client[7341:90b] Resetting plugins due to page load.
+2014-08-21 23:00:37.507 ICE Client[7341:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:02:55.738 ICE Client[7610:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:02:55.800 ICE Client[7610:90b] Unlimited access to network resources
+2014-08-21 23:02:55.804 ICE Client[7610:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:02:56.102 ICE Client[7610:90b] Resetting plugins due to page load.
+2014-08-21 23:02:57.139 ICE Client[7610:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:12:41.750 ICE Client[7962:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:12:41.758 ICE Client[7962:90b] Unlimited access to network resources
+2014-08-21 23:12:41.764 ICE Client[7962:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:12:41.802 ICE Client[7962:90b] [CDVTimer][statusbar] 18.121004ms
+2014-08-21 23:12:41.803 ICE Client[7962:90b] [CDVTimer][TotalPluginStartup] 18.945992ms
+2014-08-21 23:12:42.008 ICE Client[7962:90b] Resetting plugins due to page load.
+2014-08-21 23:12:42.272 ICE Client[7962:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:17:07.499 ICE Client[8219:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:17:07.505 ICE Client[8219:90b] Unlimited access to network resources
+2014-08-21 23:17:07.509 ICE Client[8219:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:17:07.539 ICE Client[8219:90b] [CDVTimer][statusbar] 11.182010ms
+2014-08-21 23:17:07.539 ICE Client[8219:90b] [CDVTimer][TotalPluginStartup] 11.556983ms
+2014-08-21 23:17:07.648 ICE Client[8219:90b] Resetting plugins due to page load.
+2014-08-21 23:17:07.940 ICE Client[8219:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:19:19.320 ICE Client[8527:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:19:19.329 ICE Client[8527:90b] Unlimited access to network resources
+2014-08-21 23:19:19.332 ICE Client[8527:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:19:19.544 ICE Client[8527:90b] [CDVTimer][statusbar] 192.511976ms
+2014-08-21 23:19:19.545 ICE Client[8527:90b] [CDVTimer][TotalPluginStartup] 193.405986ms
+2014-08-21 23:19:19.968 ICE Client[8527:90b] Resetting plugins due to page load.
+2014-08-21 23:19:22.455 ICE Client[8527:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:19:53.630 ICE Client[8527:90b] Resetting plugins due to page load.
+2014-08-21 23:19:53.679 ICE Client[8527:90b] Finished load of: data:text/json;charset=utf-8,%7B%22firstName%22%3A%22Yogi%22%2C%22lastName%22%3A%22Bear%22%2C%22gender%22%3A%22M%22%2C%2 ... 5D%5D%7D
+2014-08-21 23:22:32.336 ICE Client[8791:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:22:32.344 ICE Client[8791:90b] Unlimited access to network resources
+2014-08-21 23:22:32.349 ICE Client[8791:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:22:32.398 ICE Client[8791:90b] [CDVTimer][statusbar] 11.030018ms
+2014-08-21 23:22:32.399 ICE Client[8791:90b] [CDVTimer][TotalPluginStartup] 12.001038ms
+2014-08-21 23:22:32.509 ICE Client[8791:90b] Resetting plugins due to page load.
+2014-08-21 23:22:32.875 ICE Client[8791:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:26:00.183 ICE Client[9044:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:26:00.191 ICE Client[9044:90b] Unlimited access to network resources
+2014-08-21 23:26:00.203 ICE Client[9044:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:26:00.233 ICE Client[9044:90b] [CDVTimer][statusbar] 10.254979ms
+2014-08-21 23:26:00.234 ICE Client[9044:90b] [CDVTimer][TotalPluginStartup] 10.785997ms
+2014-08-21 23:26:00.339 ICE Client[9044:90b] Resetting plugins due to page load.
+2014-08-21 23:26:00.623 ICE Client[9044:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:27:05.574 ICE Client[9293:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:27:05.581 ICE Client[9293:90b] Unlimited access to network resources
+2014-08-21 23:27:05.589 ICE Client[9293:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:27:05.620 ICE Client[9293:90b] [CDVTimer][statusbar] 10.374963ms
+2014-08-21 23:27:05.621 ICE Client[9293:90b] [CDVTimer][TotalPluginStartup] 11.260986ms
+2014-08-21 23:27:05.761 ICE Client[9293:90b] Resetting plugins due to page load.
+2014-08-21 23:27:06.030 ICE Client[9293:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:28:01.446 ICE Client[9543:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:28:01.465 ICE Client[9543:90b] Unlimited access to network resources
+2014-08-21 23:28:01.478 ICE Client[9543:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:28:01.514 ICE Client[9543:90b] [CDVTimer][statusbar] 13.401031ms
+2014-08-21 23:28:01.515 ICE Client[9543:90b] [CDVTimer][TotalPluginStartup] 14.072955ms
+2014-08-21 23:28:01.652 ICE Client[9543:90b] Resetting plugins due to page load.
+2014-08-21 23:28:01.928 ICE Client[9543:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:31:44.672 ICE Client[9797:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:31:44.679 ICE Client[9797:90b] Unlimited access to network resources
+2014-08-21 23:31:44.684 ICE Client[9797:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:31:44.715 ICE Client[9797:90b] [CDVTimer][statusbar] 11.520028ms
+2014-08-21 23:31:44.716 ICE Client[9797:90b] [CDVTimer][TotalPluginStartup] 12.236953ms
+2014-08-21 23:31:44.872 ICE Client[9797:90b] Resetting plugins due to page load.
+2014-08-21 23:31:45.259 ICE Client[9797:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:35:55.382 ICE Client[10320:90b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 23:35:55.390 ICE Client[10320:90b] Unlimited access to network resources
+2014-08-21 23:35:55.403 ICE Client[10320:90b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 23:35:55.437 ICE Client[10320:90b] CDVPlugin class CDVStatusBar (pluginName: statusbar) does not exist.
+2014-08-21 23:35:55.438 ICE Client[10320:90b] [CDVTimer][statusbar] 1.219034ms
+2014-08-21 23:35:55.439 ICE Client[10320:90b] [CDVTimer][TotalPluginStartup] 1.812041ms
+2014-08-21 23:35:55.588 ICE Client[10320:90b] Resetting plugins due to page load.
+2014-08-21 23:35:55.995 ICE Client[10320:90b] Finished load of: file:///Users/sdn/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/438262C6-C0D5-4B2F-8A57-B5B72F753B98/ICE%20Client.app/www/index.html
+2014-08-21 23:35:56.059 ICE Client[10320:90b] CDVPlugin class CDVStatusBar (pluginName: StatusBar) does not exist.
+2014-08-21 23:35:56.060 ICE Client[10320:90b] ERROR: Plugin 'StatusBar' not found, or is not a CDVPlugin. Check your plugin mapping in config.xml.
+2014-08-21 23:35:56.061 ICE Client[10320:90b] -[CDVCommandQueue executePending] [Line 158] FAILED pluginJSON = [
+  "INVALID",
+  "StatusBar",
+  "_ready",
+  [
+
+  ]
+]
