@@ -80,11 +80,13 @@ function savePatient() {
     for (var i = 0; i < trs.length; i++) {
         var tr = trs[i];
         var inputs = tr.getElementsByTagName('input');
-        var select = tr.getElementsByTagName('select')[0];
-        izs[izs.length] = [inputs[0].name.substring(2, inputs[0].name.length),
+        var selects = tr.getElementsByTagName('select');
+
+        izs[izs.length] = [
+            inputs[0].name.substring(2, inputs[0].name.length),
             inputs[0].value,
-            inputs[1].value,
-            select.value];
+            selects[1].value,
+            selects[0].value];
     }
 
     var patient = {
@@ -99,12 +101,14 @@ function savePatient() {
     var patientList = getPatientList();
     patientList[patientId] = patient;
     setPatientList(patientList);
+    selectedPatient = null;
     document.location.href = '#main';
     location.reload();
 }
 
 function editPatient(patientId) {
     var patient = getPatientList()[patientId];
+    selectedPatient = patient;
 
     $('#patientId')[0].value = patientId;
 
@@ -119,15 +123,21 @@ function editPatient(patientId) {
         $('#evalDate')[0].value = patient['evalDate'];
     }
 
+    var tbdy = clearSavePatient();
+    for (var i = 0; i < patient['izs'].length; i++) {
+        appendIzTableRow(tbdy, patient['izs'][i]);
+    }
+    $('#izEntryTable').trigger('create');
+}
+
+function clearSavePatient() {
     var izEntryTable = $('#izEntryTable')[0];
     var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
     while (tbdy.firstChild) {
         tbdy.removeChild(tbdy.firstChild);
     }
-    for (var i = 0; i < patient['izs'].length; i++) {
-        appendIzTableRow(tbdy, patient['izs'][i]);
-    }
-    $('#izEntryTable').trigger('create');
+
+    return tbdy;
 }
 
 function deletePatient(patientId) {
@@ -351,7 +361,10 @@ function addIzRow() {
 }
 
 function appendIzTableRow(tbdy, data) {
-    var tr = document.createElement('tr');
+    var eventType = 'I';
+    if (data[3] !== null && typeof (data[3]) !== 'undefined' && data[3] !== '') {
+        eventType = data[3];
+    }
 
     var izId;
     if (data.length > 0) {
@@ -360,42 +373,17 @@ function appendIzTableRow(tbdy, data) {
         izId = getGuid();
     }
 
-    var td = document.createElement('td');
-    var dateInput = document.createElement('input');
-    dateInput.name = 'DI' + izId;
-    dateInput.id = dateInput.name;
-    dateInput.type = 'text';
-    dateInput.setAttribute('data-role', 'date');
-    if (data.length > 0) {
-        dateInput.value = data[1];
-    }
-    td.appendChild(dateInput);
-    tr.appendChild(td);
-
-    td = document.createElement('td');
-    var cvxInput = document.createElement('input');
-    cvxInput.name = 'CI' + izId;
-    cvxInput.id = cvxInput.name;
-    cvxInput.type = 'text';
-    cvxInput.setAttribute('class', 'cvxAutoComplete');
-    if (data.length > 0) {
-        cvxInput.value = data[2];
-    }
-    td.appendChild(cvxInput);
-    tr.appendChild(td);
-
+    var tr = document.createElement('tr');
+    
+    // event type select
     td = document.createElement('td');
     td.setAttribute('class', 'izTypeSelect');
     var select = document.createElement('select');
     select.name = 'PI' + izId;
     select.id = select.name;
     select.setAttribute('data-mini', 'true');
-    select.setAttribute('data-native-menu', 'false');
+//    select.setAttribute('data-native-menu', 'false');
     select.setAttribute('onchange', 'setIzCodeData(this);');
-    var eventType = 'I';
-    if (data[3] !== null && typeof (data[3]) !== 'undefined' && data[3] !== '') {
-        eventType = data[3];
-    }
     var optionI = document.createElement('option');
     optionI.value = 'I';
     optionI.appendChild(document.createTextNode('Immunization'));
@@ -413,7 +401,35 @@ function appendIzTableRow(tbdy, data) {
     td.appendChild(select);
     tr.appendChild(td);
 
+    // code select
     td = document.createElement('td');
+    td.setAttribute('class', 'izSelect');
+    var cvxInput = document.createElement('select');
+    cvxInput.name = 'CI' + izId;
+    cvxInput.id = cvxInput.name;
+    cvxInput.setAttribute('data-mini', 'true');
+//    cvxInput.setAttribute('data-native-menu', 'false');
+    td.appendChild(cvxInput);
+    tr.appendChild(td);
+
+    // date input
+    var td = document.createElement('td');
+    td.setAttribute('class', 'iceDateInput');
+    var dateInput = document.createElement('input');
+    dateInput.name = 'DI' + izId;
+    dateInput.id = dateInput.name;
+    dateInput.type = 'text';
+    dateInput.size = 8;
+    dateInput.setAttribute('data-role', 'datebox');
+    if (data.length > 0) {
+        dateInput.value = data[1];
+    }
+    td.appendChild(dateInput);
+    tr.appendChild(td);
+
+    // delete button
+    td = document.createElement('td');
+    td.setAttribute('class', 'izAction');
     var deleteButton = document.createElement('a');
     deleteButton.setAttribute('href', '#');
     deleteButton.setAttribute('onclick', 'removeIzTableRow(this);');
@@ -425,29 +441,48 @@ function appendIzTableRow(tbdy, data) {
 
     tbdy.appendChild(tr);
 
-    _setIzCodeData(eventType, $('#' + cvxInput.id));
-    $(select.id).trigger('create');
+    _setIzCodeData(eventType, $('#' + cvxInput.id)[0], data);
+    $('#' + dateInput.id).datebox({'mode': 'datebox', 'overrideDateFormat': '%Y%m%d'});
+    $('#' + dateInput.id).datebox('refresh');
 }
 
 function setIzCodeData(source) {
     var ciObject = $('#CI' + source.id.substring(2, source.id.length));
-    _setIzCodeData(source.value, ciObject);
-    ciObject[0].value = '';
+    ciObject.val('').selectmenu('refresh');
+    _setIzCodeData(source.value, ciObject[0], []);
+//    ciObject.value = '';
 }
 
-function _setIzCodeData(value, object) {
+function _setIzCodeData(value, object, data) {
     var sourceData;
+
+    //get the source data - iz or disease
     if (value === 'I') {
         sourceData = getCvxData();
     } else {
         sourceData = getDiseaseData();
     }
-    object.autocomplete({
-        source: sourceData,
-        minLength: 0
-    }).focus(function() {
-        $(this).autocomplete("search");
-    });
+
+    // purge children on select menu
+    while (object.firstChild) {
+        object.removeChild(object.firstChild);
+    }
+    var option = document.createElement('option');
+    option.setAttribute('value', '');
+    option.appendChild(document.createTextNode('Choose one...'));
+    object.appendChild(option);
+
+    // add the option elements
+    for (var i = 0; i < sourceData.length; i++) {
+        var option = document.createElement('option');
+        var label = sourceData[i];
+        option.setAttribute('value', label);
+        if (data.length > 0 && data[2] === label) {
+            option.setAttribute('selected', 'selected');
+        }
+        option.appendChild(document.createTextNode(label));
+        object.appendChild(option);
+    }
 }
 
 /**

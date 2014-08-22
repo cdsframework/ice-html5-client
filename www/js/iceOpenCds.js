@@ -8,6 +8,7 @@ function icePatient(id) {
     var settings = getSettings();
     var patientList = getPatientList();
     var patient = patientList[id];
+    selectedPatient = patient;
     var izs = patient['izs'];
     var xmlString = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
             + '<ns3:cdsInput xmlns:ns2="org.opencds.vmr.v1_0.schema.vmr" xmlns:ns3="org.opencds.vmr.v1_0.schema.cdsinput">'
@@ -87,7 +88,10 @@ function addDiseaseEvent(xmlString, iz) {
 }
 
 function addsubstanceAdministrationEvent(xmlString, iz) {
-    if (iz[2] !== null && iz[2] !== '') {
+    if (iz[1] !== null
+            && iz[1] !== ''
+            && iz[2] !== null
+            && iz[2] !== '') {
         xmlString += '<substanceAdministrationEvent>'
                 + '<templateId root="2.16.840.1.113883.3.795.11.9.1.1"/>'
                 + '<id root="2.16.840.1.113883.3.795.12.100.10" extension="' + iz[0] + '"/>'

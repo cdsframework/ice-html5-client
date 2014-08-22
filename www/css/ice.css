@@ -102,8 +102,21 @@ and open the template in the editor.
     padding-left: 15px;
     font-size: 0.6em;
 }
+.izSelect .ui-select {
+    margin-top:9px;
+}
+.izTypeSelect {
+    width:12em;
+}
 .izTypeSelect .ui-select {
     margin-top:9px;
+    max-width: 12em;
+}
+.izAction {
+    width:30px;
+}
+.izAction .ui-icon-delete {
+    margin-top:11px;
 }
 .ui-popup.ui-content {
     background-color: #eee;
@@ -153,6 +166,34 @@ and open the template in the editor.
     margin-bottom:4px;
     margin-left:12px;
 }
-.ui-widget-header .ui-icon {
-    background-image:none;
+td.iceDateInput a {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin: -14px 15px 0;
+    border: 0;
+    background-color: none;
+}
+
+.ui-datebox-container {
+    border: 2px solid #999!important;
+    padding: 6px 6px 0px 6px;
+}
+/*.iceDateInput {
+    max-width: 40px;
+}*/
+.iceDateInput .ui-input-text {
+    min-width:115px;
+}
+.iceDateInput a.ui-input-clear {
+    background-color: transparent;
+}
+#savePatientForm > table > tbody > tr > td.izEvalDateInput > .ui-input-text > a.ui-icon-delete {
+    margin-right:30px;
+}
+#savePatientForm a.ui-icon-calendar:hover {
+    background-color: #f6f6f6;
+}
+.ui-datebox-controls a.ui-icon-delete {
+    margin-left:10px;
 }

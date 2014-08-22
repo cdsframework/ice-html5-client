@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-$.datepicker._defaults.dateFormat = 'yymmdd';
-$.datepicker._defaults.changeYear = true;
-$.datepicker._defaults.changeMonth = true;
+//$.datepicker._defaults.dateFormat = 'yymmdd';
+//$.datepicker._defaults.changeYear = true;
+//$.datepicker._defaults.changeMonth = true;
 //console.log($.datepicker._defaults);
 
 function onLoad() {
