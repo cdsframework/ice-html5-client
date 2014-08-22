@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.cdsframework.iceclient" version="1.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="org.cdsframework.iceclient" version="1.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
     <preference name="AndroidLaunchMode" value="singleTop" />
     <feature name="App">
@@ -8,9 +8,9 @@
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
-    <name>ICE Client</name>
+    <name>ICE OpenCDS Client</name>
     <description>
-        ICE HTML5 client application.
+        The Immunization Calculation Engine (ICE) client application was developed by HLN Consulting, LLC to enable users to interact with and evaluate the open-source ICE OpenCDS Web Service which was created by a collaboration of immunization and information technology experts from the public and private sectors.
     </description>
     <author email="ice@cdsframework.org" href="http://cdsframework.org">
         ICE Team

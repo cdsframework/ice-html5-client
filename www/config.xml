@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.cdsframework.iceclient" version="1.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>ICE Client</name>
+<widget id="org.cdsframework.iceclient" version="1.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>ICE OpenCDS Client</name>
     <description>
-        ICE HTML5 client application.
+        The Immunization Calculation Engine (ICE) client application was developed by HLN Consulting, LLC to enable users to interact with and evaluate the open-source ICE OpenCDS Web Service which was created by a collaboration of immunization and information technology experts from the public and private sectors.
     </description>
     <author email="ice@cdsframework.org" href="http://cdsframework.org">
         ICE Team
