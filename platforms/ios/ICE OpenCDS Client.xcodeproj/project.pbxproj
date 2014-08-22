@@ -42,6 +42,10 @@
 		314E099C309549449AB9B4EC /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CCA7EA6DED64D6695E79CAE /* CDVNotification.m */; };
 		876897FE3DEB46B0B96F5507 /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 16D9FD46BE5F42F1B3A7A2B5 /* CDVNotification.bundle */; };
 		AB58147F691C4BDFA71569CD /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D58844BB4794BE6993F3818 /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FD64120A8D8C45CD904117B7 /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D1341ADCBE4A999CECE714 /* CDVDevice.m */; };
+		ECBF6CC4BDC5442F83BF8084 /* CDVCompass.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0FDECECA2F4798BFBF3FAE /* CDVCompass.m */; };
+		1D918A9F41C240359893A95F /* CDVAccelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C10DE0732964CE8BA18D5B7 /* CDVAccelerometer.m */; };
+		00811FC94A424E868C6D12B7 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCACF83EEF9F49E294FB68A3 /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +118,13 @@
 		2D58844BB4794BE6993F3818 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 		557E3A6C9A6846A68AAD39E6 /* CDVStatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVStatusBar.m"; path = "com.phonegap.plugin.statusbar/CDVStatusBar.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		50187DEAFF9C4E268CB6E574 /* CDVStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVStatusBar.h"; path = "com.phonegap.plugin.statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		43D1341ADCBE4A999CECE714 /* CDVDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVDevice.m"; path = "org.apache.cordova.device/CDVDevice.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		DF4CADE6F05D46C5B73E5696 /* CDVDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVDevice.h"; path = "org.apache.cordova.device/CDVDevice.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		5F0FDECECA2F4798BFBF3FAE /* CDVCompass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVCompass.m"; path = "org.apache.cordova.device-orientation/CDVCompass.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		2897DBEDC6C148128DA2EDCD /* CDVCompass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVCompass.h"; path = "org.apache.cordova.device-orientation/CDVCompass.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		9C10DE0732964CE8BA18D5B7 /* CDVAccelerometer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVAccelerometer.m"; path = "org.apache.cordova.device-motion/CDVAccelerometer.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		6E0D561B10DE42589652D364 /* CDVAccelerometer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVAccelerometer.h"; path = "org.apache.cordova.device-motion/CDVAccelerometer.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		DCACF83EEF9F49E294FB68A3 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "CoreMotion.framework"; path = "System/Library/Frameworks/CoreMotion.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +138,7 @@
 				305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */,
 				5AEE5B35173C68D80009041E /* CoreLocation.framework in Frameworks */,
 				AB58147F691C4BDFA71569CD /* AudioToolbox.framework in Frameworks */,
+				00811FC94A424E868C6D12B7 /* CoreMotion.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,6 +234,7 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */,
 				2D58844BB4794BE6993F3818 /* AudioToolbox.framework */,
+				DCACF83EEF9F49E294FB68A3 /* CoreMotion.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -243,6 +256,12 @@
 				B55645AE4CF4416F956F1984 /* CDVNotification.h */,
 				557E3A6C9A6846A68AAD39E6 /* CDVStatusBar.m */,
 				50187DEAFF9C4E268CB6E574 /* CDVStatusBar.h */,
+				43D1341ADCBE4A999CECE714 /* CDVDevice.m */,
+				DF4CADE6F05D46C5B73E5696 /* CDVDevice.h */,
+				5F0FDECECA2F4798BFBF3FAE /* CDVCompass.m */,
+				2897DBEDC6C148128DA2EDCD /* CDVCompass.h */,
+				9C10DE0732964CE8BA18D5B7 /* CDVAccelerometer.m */,
+				6E0D561B10DE42589652D364 /* CDVAccelerometer.h */,
 			);
 			name = Plugins;
 			path = "ICE OpenCDS Client/Plugins";
@@ -441,6 +460,9 @@
 				A49D5B5D3DBF4A21AC3E6129 /* CDVInAppBrowser.m in Sources */,
 				314E099C309549449AB9B4EC /* CDVNotification.m in Sources */,
 				F118C9BB6B6A4F1A8AFD4C6C /* CDVStatusBar.m in Sources */,
+				FD64120A8D8C45CD904117B7 /* CDVDevice.m in Sources */,
+				ECBF6CC4BDC5442F83BF8084 /* CDVCompass.m in Sources */,
+				1D918A9F41C240359893A95F /* CDVAccelerometer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,6 +18,18 @@
                             "xml": "true",
                             "count": 1
                         }
+                    ],
+                    "CoreLocation.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
+                    ],
+                    "CoreMotion.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
                     ]
                 }
             },
@@ -43,6 +55,18 @@
                         {
                             "xml": "<preference name=\"StatusBarOverlaysWebView\" value=\"false\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Compass\"><param name=\"ios-package\" value=\"CDVCompass\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Accelerometer\"><param name=\"ios-package\" value=\"CDVAccelerometer\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -57,6 +81,15 @@
             "PACKAGE_NAME": "org.cdsframework.iceclient"
         },
         "com.phonegap.plugin.statusbar": {
+            "PACKAGE_NAME": "org.cdsframework.iceclient"
+        },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "org.cdsframework.iceclient"
+        },
+        "org.apache.cordova.device-orientation": {
+            "PACKAGE_NAME": "org.cdsframework.iceclient"
+        },
+        "org.apache.cordova.device-motion": {
             "PACKAGE_NAME": "org.cdsframework.iceclient"
         }
     },
