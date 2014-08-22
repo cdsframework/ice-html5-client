@@ -13,7 +13,6 @@ www/res/screen/tizen/*
 www/res/screen/windows-phone/*
 www/spec.html
 www/spec/*
-www/res/icon/*
 www/res/.pgbomit
 platforms/android/.settings/org.eclipse.jdt.core.prefs
 platforms/android/.classpath
