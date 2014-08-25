@@ -83,10 +83,10 @@ function savePatient() {
         var selects = tr.getElementsByTagName('select');
 
         izs[izs.length] = [
-            inputs[0].name.substring(2, inputs[0].name.length),
-            inputs[0].value,
-            selects[1].value,
-            selects[0].value];
+            inputs[2].name.substring(2, inputs[0].name.length),
+            inputs[2].value,
+            selects[0].value,
+            inputs[0].checked ? 'I' : 'D'];
     }
 
     var patient = {
@@ -102,6 +102,7 @@ function savePatient() {
     patientList[patientId] = patient;
     setPatientList(patientList);
     selectedPatient = null;
+    currentPage = 'main';
     document.location.href = '#main';
     location.reload();
 }
@@ -109,6 +110,8 @@ function savePatient() {
 function editPatient(patientId) {
     var patient = getPatientList()[patientId];
     selectedPatient = patient;
+
+    var tbdy = clearSavePatient();
 
     $('#patientId')[0].value = patientId;
 
@@ -123,7 +126,6 @@ function editPatient(patientId) {
         $('#evalDate')[0].value = patient['evalDate'];
     }
 
-    var tbdy = clearSavePatient();
     for (var i = 0; i < patient['izs'].length; i++) {
         appendIzTableRow(tbdy, patient['izs'][i]);
     }
@@ -131,6 +133,7 @@ function editPatient(patientId) {
 }
 
 function clearSavePatient() {
+    $('#savePatientForm')[0].reset();
     var izEntryTable = $('#izEntryTable')[0];
     var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
     while (tbdy.firstChild) {
@@ -144,6 +147,7 @@ function deletePatient(patientId) {
     var patientList = getPatientList();
     delete patientList[patientId];
     setPatientList(patientList);
+    currentPage = 'main';
     document.location.href = '#main';
     location.reload();
 }
@@ -293,7 +297,7 @@ function listPatients() {
         editButton.setAttribute('class', 'ui-btn ui-icon-edit ui-btn-icon-notext ui-corner-all ui-shadow floatLeft');
         editButton.setAttribute('title', 'Edit');
         editButton.setAttribute('href', '#savePatient');
-        editButton.setAttribute('onclick', 'editPatient(\'' + key + '\');$.mobile.changePage(\'#savePatient\');');
+        editButton.setAttribute('onclick', 'editPatient(\'' + key + '\');currentPage = \'savePatient\';$.mobile.changePage(\'#savePatient\');');
         editButton.appendChild(document.createTextNode(' '));
         patDiv3.appendChild(editButton);
 
@@ -303,7 +307,7 @@ function listPatients() {
         deleteButton.setAttribute('href', '#deleteConfirm');
         deleteButton.setAttribute('data-transition', 'pop');
         deleteButton.setAttribute('data-rel', 'dialog');
-        deleteButton.setAttribute('onclick', 'setSelectedPatient(\'' + key + '\');$.mobile.changePage(\'#deleteConfirm\');');
+        deleteButton.setAttribute('onclick', 'setSelectedPatient(\'' + key + '\');currentPage = \'deleteConfirm\';$.mobile.changePage(\'#deleteConfirm\');');
         deleteButton.appendChild(document.createTextNode(' '));
         patDiv3.appendChild(deleteButton);
 
@@ -313,7 +317,7 @@ function listPatients() {
         iceButton.setAttribute('href', '#icePatient');
         iceButton.setAttribute('data-transition', 'pop');
         iceButton.setAttribute('data-rel', 'dialog');
-        iceButton.setAttribute('onclick', 'icePatient(\'' + key + '\');$.mobile.changePage(\'#icePatient\');');
+        iceButton.setAttribute('onclick', 'icePatient(\'' + key + '\');currentPage = \'icePatient\';$.mobile.changePage(\'#icePatient\');');
         iceButton.appendChild(document.createTextNode(' '));
         patDiv3.appendChild(iceButton);
         patDiv1.appendChild(patDiv3);
@@ -374,42 +378,85 @@ function appendIzTableRow(tbdy, data) {
     }
 
     var tr = document.createElement('tr');
-    
+
     // event type select
     td = document.createElement('td');
     td.setAttribute('class', 'izTypeSelect');
-    var select = document.createElement('select');
-    select.name = 'PI' + izId;
-    select.id = select.name;
-    select.setAttribute('data-mini', 'true');
-//    select.setAttribute('data-native-menu', 'false');
-    select.setAttribute('onchange', 'setIzCodeData(this);');
-    var optionI = document.createElement('option');
-    optionI.value = 'I';
-    optionI.appendChild(document.createTextNode('Immunization'));
+//    var select = document.createElement('select');
+//    select.name = 'PI' + izId;
+//    select.id = select.name;
+//    select.setAttribute('data-mini', 'true');
+////    select.setAttribute('data-native-menu', 'false');
+//    select.setAttribute('onchange', 'setIzCodeData(this);');
+//    var optionI = document.createElement('option');
+//    optionI.value = 'I';
+//    optionI.appendChild(document.createTextNode('Immunization'));
+//    if (eventType === 'I') {
+//        optionI.selected = 'selected';
+//    }
+//    select.appendChild(optionI);
+//    var optionD = document.createElement('option');
+//    optionD.value = 'D';
+//    optionD.appendChild(document.createTextNode('Disease'));
+//    if (eventType === 'D') {
+//        optionD.selected = 'selected';
+//    }
+//    select.appendChild(optionD);
+//    td.appendChild(select);
+
+    var fieldset = document.createElement('fieldset');
+    fieldset.setAttribute('data-role', 'controlgroup');
+    fieldset.setAttribute('data-mini', 'true');
+    fieldset.setAttribute('data-type', 'horizontal');
+    fieldset.setAttribute('id', 'FS' + izId);
+//    var legend = document.createElement('legend');
+//    legend.appendChild(document.createTextNode(''));
+//    fieldset.appendChild(legend);
+    var input = document.createElement('input');
+    input.setAttribute('type', 'radio');
+    input.setAttribute('name', 'I' + izId);
+    input.setAttribute('id', 'II' + izId);
+    input.setAttribute('value', 'I');
+    input.setAttribute('onchange', 'setIzCodeData(this);');
     if (eventType === 'I') {
-        optionI.selected = 'selected';
+        input.setAttribute('checked', 'checked');
     }
-    select.appendChild(optionI);
-    var optionD = document.createElement('option');
-    optionD.value = 'D';
-    optionD.appendChild(document.createTextNode('Disease'));
+    fieldset.appendChild(input);
+    var label = document.createElement('label');
+    label.setAttribute('for', 'II' + izId);
+    label.setAttribute('title', 'Immunization');
+    label.appendChild(document.createTextNode('I'));
+    fieldset.appendChild(label);
+    input = document.createElement('input');
+    input.setAttribute('type', 'radio');
+    input.setAttribute('name', 'I' + izId);
+    input.setAttribute('id', 'ID' + izId);
+    input.setAttribute('value', 'D');
+    input.setAttribute('onchange', 'setIzCodeData(this);');
     if (eventType === 'D') {
-        optionD.selected = 'selected';
+        input.setAttribute('checked', 'checked');
     }
-    select.appendChild(optionD);
-    td.appendChild(select);
+    fieldset.appendChild(input);
+    label = document.createElement('label');
+    label.setAttribute('for', 'ID' + izId);
+    label.setAttribute('title', 'Disease');
+    label.appendChild(document.createTextNode('D'));
+    fieldset.appendChild(label);
+
+    td.appendChild(fieldset);
+
+
     tr.appendChild(td);
 
     // code select
     td = document.createElement('td');
     td.setAttribute('class', 'izSelect');
-    var cvxInput = document.createElement('select');
-    cvxInput.name = 'CI' + izId;
-    cvxInput.id = cvxInput.name;
-    cvxInput.setAttribute('data-mini', 'true');
+    var codeInput = document.createElement('select');
+    codeInput.name = 'CI' + izId;
+    codeInput.id = codeInput.name;
+    codeInput.setAttribute('data-mini', 'true');
 //    cvxInput.setAttribute('data-native-menu', 'false');
-    td.appendChild(cvxInput);
+    td.appendChild(codeInput);
     tr.appendChild(td);
 
     // date input
@@ -421,6 +468,7 @@ function appendIzTableRow(tbdy, data) {
     dateInput.type = 'text';
     dateInput.size = 8;
     dateInput.setAttribute('data-role', 'datebox');
+    dateInput.setAttribute('data-options', '{"mode":"datebox", "overrideDateFormat":"%Y%m%d", "useClearButton":"true", "useCollapsedBut":"true", "lockInput":"false", "enhanceInput":"true"}');
     if (data.length > 0) {
         dateInput.value = data[1];
     }
@@ -441,9 +489,11 @@ function appendIzTableRow(tbdy, data) {
 
     tbdy.appendChild(tr);
 
-    _setIzCodeData(eventType, $('#' + cvxInput.id)[0], data);
-    $('#' + dateInput.id).datebox({'mode': 'datebox', 'overrideDateFormat': '%Y%m%d'});
-    $('#' + dateInput.id).datebox('refresh');
+    _setIzCodeData(eventType, $('#' + codeInput.id)[0], data);
+//    $('#FS' + izId).trigger('create');
+//    $('#' + codeInput.id).trigger('create');
+//    $('#' + dateInput.id).datebox({'mode': 'datebox', 'overrideDateFormat': '%Y%m%d', 'enhanceInput': 'true', 'lockInput': 'false'});
+//    $('#' + dateInput.id).datebox('refresh');
 }
 
 function setIzCodeData(source) {
@@ -509,6 +559,7 @@ $(document).ready(function() {
         reader.onload = (function(theFile) {
             return function(e) {
                 importPatient(e.target.result);
+                currentPage = 'main';
                 document.location.href = '#main';
                 location.reload();
             };

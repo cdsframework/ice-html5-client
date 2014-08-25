@@ -106,12 +106,12 @@ and open the template in the editor.
     margin-top:9px;
 }
 .izTypeSelect {
-    width:12em;
+    width:5em;
 }
-.izTypeSelect .ui-select {
+/*.izTypeSelect .ui-select {
     margin-top:9px;
     max-width: 12em;
-}
+}*/
 .izAction {
     width:30px;
 }
@@ -166,14 +166,14 @@ and open the template in the editor.
     margin-bottom:4px;
     margin-left:12px;
 }
-td.iceDateInput a {
+/*td.iceDateInput a {
     position: absolute;
     right: 0;
     top: 50%;
     margin: -14px 15px 0;
     border: 0;
     background-color: none;
-}
+}*/
 
 .ui-datebox-container {
     border: 2px solid #999!important;

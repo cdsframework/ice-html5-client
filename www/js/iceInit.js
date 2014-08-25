@@ -21,7 +21,12 @@ function deviceReady() {
 }
 
 function backButtonCallback() {
-    document.location = '#exitConfirm';
+    if (currentPage === 'main') {
+        document.location = '#exitConfirm';
+    } else {
+        currentPage = 'main';
+        window.history.back();
+    }
 }
 
 // console.log('done');
