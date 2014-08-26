@@ -4,10 +4,7 @@
  * and open the template in the editor.
  */
 
-//$.datepicker._defaults.dateFormat = 'yymmdd';
-//$.datepicker._defaults.changeYear = true;
-//$.datepicker._defaults.changeMonth = true;
-//console.log($.datepicker._defaults);
+var version = '1.0.6';
 
 function onLoad() {
     document.addEventListener('deviceready', deviceReady, false);
@@ -21,7 +18,12 @@ function deviceReady() {
 }
 
 function backButtonCallback() {
-    document.location = '#exitConfirm';
+    if (currentPage === 'main') {
+        document.location = '#exitConfirm';
+    } else {
+        currentPage = 'main';
+        window.history.back();
+    }
 }
 
 // console.log('done');

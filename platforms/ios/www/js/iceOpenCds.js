@@ -251,6 +251,10 @@ function getPatientEvents(patient, xmlDoc) {
             var child = childNodes[i];
             var id = child.getElementsByTagName('id')[0].getAttribute('extension');
             var substanceCode = child.getElementsByTagName('substanceCode')[0].getAttribute('code');
+            var cvxCode = cvxData[substanceCode];
+            if (cvxCode !== null && typeof (cvxCode) !== 'undefined') {
+                substanceCode = substanceCode + ': ' + cvxCode['displayName'];
+            }
             var administrationTime = child.getElementsByTagName('administrationTimeInterval')[0].getAttribute('high').substring(0, 8);
             patient['izs'][patient['izs'].length] = [id, administrationTime, substanceCode, 'I'];
 //            console.log([id, administrationTime, substanceCode]);
@@ -264,8 +268,10 @@ function getPatientEvents(patient, xmlDoc) {
             var id = child.getElementsByTagName('id')[0].getAttribute('root');
             var observationFocus = child.getElementsByTagName('observationFocus')[0].getAttribute('code');
             var observationEventTime = child.getElementsByTagName('observationEventTime')[0].getAttribute('high').substring(0, 8);
-            patient['izs'][patient['izs'].length] = [id, observationEventTime, observationFocus, 'D'];
-//            console.log([id, administrationTime, substanceCode]);
+            if (observationFocus !== 'U') {
+                patient['izs'][patient['izs'].length] = [id, observationEventTime, observationFocus, 'D'];
+//                console.log([id, administrationTime, substanceCode]);
+            }
         }
     }
 }

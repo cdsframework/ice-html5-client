@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+var currentPage = 'main';
 
 function createCORSRequest(method, url) {
     var xhr = new XMLHttpRequest();
@@ -143,6 +143,7 @@ function saveSettings() {
 //    console.log($('input[name="debugSetting"]:checked').val());
     settings['debug'] = $('input[name="debugSetting"]:checked').val() === 'on';
     setSettings(settings);
+    currentPage = 'main';
     document.location.href = '#main';
     location.reload();
 
