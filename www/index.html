@@ -9,7 +9,7 @@ and open the template in the editor.
         <title>ICE Test App</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/jquery.mobile-1.4.3.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.3.css" />
         <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css">
         <link rel="stylesheet" href="css/ice.css" />
         <script src="js/jquery.min.js"></script>
@@ -32,7 +32,7 @@ and open the template in the editor.
             </div>
             <div role="main" class="ui-content">
                 <form>
-                    <table id="patientListTable" data-role="table" class="ui-responsive table-stroke">
+                    <table id="patientListTable" data-role="table" class="ui-responsive">
                         <caption class="patCaption">Patient List</caption>
                         <thead>
                             <tr>
@@ -71,7 +71,7 @@ and open the template in the editor.
                     <div class="floatLeft100" ><div class="icePatLabel" style="margin-bottom:20px;">Age @Evaluation:&nbsp;&nbsp;</div><div class="icePatData" id="patientAgeEvalDate"></div></div>
                     <table id="iceOutputGrid"
                            data-role="table"
-                           class="ui-responsive table-stroke"
+                           class="ui-responsive"
                            style="margin-top:20px;">
                         <caption>Patient Output Grid</caption>
                         <thead>
@@ -92,7 +92,7 @@ and open the template in the editor.
                     <a href="#main" onclick="selectedPatient = null;currentPage = 'main';" class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Back</a>
                     <table id="iceDebugger"
                            data-role="table"
-                           class="ui-responsive table-stroke"
+                           class="ui-responsive"
                            style="display:none;margin-top:20px;">
                         <caption>Debugging Info</caption>
                         <thead>
@@ -122,7 +122,7 @@ and open the template in the editor.
                     <input type="hidden" name="patientId" id="patientId" />
                     <table data-role="table"
                            style="margin-bottom:12px;"
-                           class="ui-responsive table-stroke">
+                           class="ui-responsive">
                         <caption>Demographics</caption>
                         <thead>
                             <tr>
@@ -132,27 +132,17 @@ and open the template in the editor.
                         </thead>
                         <tbody>
                             <tr>
-                                <th>
-                                    <label for="firstName">First Name</label>
-                                </th>
-                                <td>
-                                    <input name="firstName" id="firstName" type="text" />
-                                </td>
+                                <th><label for="firstName">First Name</label></th>
+                                <td><input name="firstName" id="firstName" type="text" /></td>
                             </tr>
                             <tr>
-                                <th>
-                                    <label for="lastName">Last Name</label>
-                                </th>
-                                <td>
-                                    <input name="lastName" id="lastName" type="text" />
-                                </td>
+                                <th><label for="lastName">Last Name</label></th>
+                                <td><input name="lastName" id="lastName" type="text" /></td>
                             </tr>
                             <tr>
-                                <th>
-                                    <label>Gender</label>
-                                </th>
+                                <th><label>Gender</label></th>
                                 <td>
-                                    <fieldset data-role="controlgroup" data-type="horizontal">
+                                    <fieldset data-role="controlgroup" data-type="horizontal" style="width:14.5em;">
                                         <label><input name="gender" id="genderM" type="radio" value="M"/>Male</label>
                                         <label><input name="gender" id="genderF" type="radio" value="F"/>Female</label>
                                         <label><input name="gender" id="genderO" type="radio" value="O"/>Other</label>
@@ -160,17 +150,13 @@ and open the template in the editor.
                                 </td>
                             </tr>
                             <tr>
-                                <th>
-                                    <label for="dob">Birth Date</label>
-                                </th>
+                                <th><label for="dob">Birth Date</label></th>
                                 <td>
                                     <input name="dob" id="dob" type="text" data-role="datebox" data-options='{"mode":"datebox", "overrideDateFormat":"%Y%m%d", "lockInput":"false", "enhanceInput":"true"}' />
                                 </td>
                             </tr>
                             <tr>
-                                <th>
-                                    <label for="dob">Evaluation Date</label>
-                                </th>
+                                <th><label for="dob">Evaluation Date</label></th>
                                 <td class="izEvalDateInput">
                                     <input name="evalDate"
                                            id="evalDate"
@@ -184,14 +170,15 @@ and open the template in the editor.
                     </table>
                     <table data-role="table"
                            id="izEntryTable"
-                           class="ui-responsive table-stroke">
-                        <caption>Immunizations (I) &amp; Diseases (D)</caption>
+                           data-mode="reflow"
+                           class="ui-responsive">
+                        <caption>Immunizations &amp; Diseases</caption>
                         <thead>
                             <tr>
-                                <td>Type</td>
-                                <td>Code</td>
-                                <td>Date</td>
-                                <td></td>
+                                <th data-priority="1">Type</th>
+                                <th data-priority="persist">Code</th>
+                                <th data-priority="2">Date</th>
+                                <th data-priority="3">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
