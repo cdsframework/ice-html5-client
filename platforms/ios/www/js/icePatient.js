@@ -130,6 +130,7 @@ function editPatient(patientId) {
         appendIzTableRow(tbdy, patient['izs'][i]);
     }
     $('#izEntryTable').trigger('create');
+    $('#izEntryTable').table('refresh');
 }
 
 function clearSavePatient() {
@@ -214,7 +215,7 @@ function listPatients() {
 
         var izTbl = document.createElement('table');
         izTbl.setAttribute('data-role', 'table');
-        izTbl.setAttribute('class', 'ui-responsive table-stroke izTable');
+        izTbl.setAttribute('class', 'ui-responsive izTable');
         var izThead = document.createElement('thead');
         var izTr = document.createElement('tr');
 
@@ -253,7 +254,7 @@ function listPatients() {
                         eventType = iz[3];
                     }
                     izTd = document.createElement('td');
-                    izTd.setAttribute('style', 'text-align:center;');
+//                    izTd.setAttribute('style', 'text-align:center;');
                     izTd.appendChild(document.createTextNode(eventType));
                     izTr.appendChild(izTd);
 
@@ -329,6 +330,7 @@ function listPatients() {
     }
     tbl.appendChild(tbdy);
     $('#patientListTable').trigger('create');
+    $('#patientListTable').table('refresh');
 }
 
 function removeIzTableRow(source) {
@@ -362,6 +364,7 @@ function addIzRow() {
     var tbdy = izEntryTable.getElementsByTagName('tbody')[0];
     appendIzTableRow(tbdy, []);
     $('#izEntryTable').trigger('create');
+    $('#izEntryTable').table('refresh');
 }
 
 function appendIzTableRow(tbdy, data) {
@@ -382,36 +385,11 @@ function appendIzTableRow(tbdy, data) {
     // event type select
     td = document.createElement('td');
     td.setAttribute('class', 'izTypeSelect');
-//    var select = document.createElement('select');
-//    select.name = 'PI' + izId;
-//    select.id = select.name;
-//    select.setAttribute('data-mini', 'true');
-////    select.setAttribute('data-native-menu', 'false');
-//    select.setAttribute('onchange', 'setIzCodeData(this);');
-//    var optionI = document.createElement('option');
-//    optionI.value = 'I';
-//    optionI.appendChild(document.createTextNode('Immunization'));
-//    if (eventType === 'I') {
-//        optionI.selected = 'selected';
-//    }
-//    select.appendChild(optionI);
-//    var optionD = document.createElement('option');
-//    optionD.value = 'D';
-//    optionD.appendChild(document.createTextNode('Disease'));
-//    if (eventType === 'D') {
-//        optionD.selected = 'selected';
-//    }
-//    select.appendChild(optionD);
-//    td.appendChild(select);
-
     var fieldset = document.createElement('fieldset');
     fieldset.setAttribute('data-role', 'controlgroup');
     fieldset.setAttribute('data-mini', 'true');
     fieldset.setAttribute('data-type', 'horizontal');
     fieldset.setAttribute('id', 'FS' + izId);
-//    var legend = document.createElement('legend');
-//    legend.appendChild(document.createTextNode(''));
-//    fieldset.appendChild(legend);
     var input = document.createElement('input');
     input.setAttribute('type', 'radio');
     input.setAttribute('name', 'I' + izId);
@@ -425,7 +403,7 @@ function appendIzTableRow(tbdy, data) {
     var label = document.createElement('label');
     label.setAttribute('for', 'II' + izId);
     label.setAttribute('title', 'Immunization');
-    label.appendChild(document.createTextNode('I'));
+    label.appendChild(document.createTextNode('IZ'));
     fieldset.appendChild(label);
     input = document.createElement('input');
     input.setAttribute('type', 'radio');
@@ -440,7 +418,7 @@ function appendIzTableRow(tbdy, data) {
     label = document.createElement('label');
     label.setAttribute('for', 'ID' + izId);
     label.setAttribute('title', 'Disease');
-    label.appendChild(document.createTextNode('D'));
+    label.appendChild(document.createTextNode('Disease'));
     fieldset.appendChild(label);
 
     td.appendChild(fieldset);
@@ -455,7 +433,8 @@ function appendIzTableRow(tbdy, data) {
     codeInput.name = 'CI' + izId;
     codeInput.id = codeInput.name;
     codeInput.setAttribute('data-mini', 'true');
-//    cvxInput.setAttribute('data-native-menu', 'false');
+//    codeInput.setAttribute('data-options', '{"hidePlaceholderMenuItems":"false"}');
+//    codeInput.setAttribute('data-native-menu', 'false');
     td.appendChild(codeInput);
     tr.appendChild(td);
 
@@ -519,6 +498,7 @@ function _setIzCodeData(value, object, data) {
     }
     var option = document.createElement('option');
     option.setAttribute('value', '');
+//    option.setAttribute('data-placeholder', 'true');
     option.appendChild(document.createTextNode('Choose one...'));
     object.appendChild(option);
 
