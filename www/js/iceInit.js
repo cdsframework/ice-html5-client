@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-var version = '1.0.6';
+var version = '1.0.7';
 
 function onLoad() {
     document.addEventListener('deviceready', deviceReady, false);
