@@ -66,3 +66,7 @@ platforms/android/assets/www/res/screen/android/screen-hdpi-landscape.png
 platforms/android/local.properties
 platforms/android/assets/www/manifest.json
 IceClient.apk
+platforms/ios/www/config.xml
+platforms/ios/www/index.html
+platforms/ios/www/css/ice.css
+platforms/ios/www/js/iceInit.js
