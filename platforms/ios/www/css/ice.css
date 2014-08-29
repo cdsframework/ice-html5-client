@@ -103,20 +103,42 @@ and open the template in the editor.
     font-size: 0.6em;
 }
 .izSelect .ui-select {
-    margin-top:9px;
+    margin-top:0.5em;
 }
 .izTypeSelect {
-    width:5em;
+    width:9.2em;
 }
-/*.izTypeSelect .ui-select {
-    margin-top:9px;
-    max-width: 12em;
-}*/
+.izTypeSelect fieldset {
+    width:9.1em;
+    margin-top: 0.5em;
+}
+
+@media all {
+    .ui-responsive td.izSelect .ui-select {
+        max-width:18em;
+    }
+}
+
+@media ( max-width: 40em ) {
+    .ui-responsive td.izSelect .ui-select {
+        max-width:12em;
+    }
+}
+
+@media ( max-width: 35em ) {
+    .ui-responsive td.izSelect .ui-select {
+        max-width:18em;
+    }
+}
+
+.izSelect .ui-select {
+    text-overflow: ellipsis;
+}
 .izAction {
     width:30px;
 }
 .izAction .ui-icon-delete {
-    margin-top:11px;
+    margin-top:0.54em;
 }
 .ui-popup.ui-content {
     background-color: #eee;
@@ -153,28 +175,15 @@ and open the template in the editor.
     text-align:right;
     width:150px;
 }
-@-moz-document url-prefix() {
-    .importPatientButton {
-        right: 130px;
-    }
-}
-
 .patCaption {
     width:100px;
 }
 .ui-table caption {
     margin-bottom:4px;
-    margin-left:12px;
+    margin-left:0;
+    opacity:inherit;
+    font-weight:bold;
 }
-/*td.iceDateInput a {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    margin: -14px 15px 0;
-    border: 0;
-    background-color: none;
-}*/
-
 .ui-datebox-container {
     border: 2px solid #999!important;
     padding: 6px 6px 0px 6px;
@@ -184,6 +193,7 @@ and open the template in the editor.
 }*/
 .iceDateInput .ui-input-text {
     min-width:115px;
+    margin-top: 0.35em;
 }
 .iceDateInput a.ui-input-clear {
     background-color: transparent;
@@ -196,4 +206,12 @@ and open the template in the editor.
 }
 .ui-datebox-controls a.ui-icon-delete {
     margin-left:10px;
+}
+
+.ui-responsive tr {
+    border-bottom: 1px solid #ccc;
+}
+
+.ui-table-reflow tbody th {
+    margin-top: 0em;
 }
