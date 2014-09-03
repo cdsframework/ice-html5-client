@@ -7,6 +7,14 @@
 var version = '1.0.7';
 
 function onLoad() {
+    
+    $.validator.setDefaults({
+        debug: true,
+        success: "valid"
+    });
+
+    initPatientValidation();
+
     document.addEventListener('deviceready', deviceReady, false);
     if (getSettings()['viewedIntro'] !== true) {
         document.location = '#about';

@@ -57,6 +57,11 @@ function setPatientList(patientList) {
  */
 function savePatient() {
 
+    console.log($('#savePatientForm').valid());
+    if ($('#savePatientForm').valid() === false) {
+        return false;
+    }
+
     var patientId = $('#patientId')[0].value;
 
     if (patientId === null || patientId === '' || typeof (patientId) === 'undefined') {
@@ -130,7 +135,7 @@ function editPatient(patientId) {
         appendIzTableRow(tbdy, patient['izs'][i]);
     }
     $('#izEntryTable').trigger('create');
-    $('#izEntryTable').table('refresh');
+//    $('#izEntryTable').table('refresh');
 }
 
 function clearSavePatient() {
@@ -290,7 +295,7 @@ function listPatients() {
         exportButton.setAttribute('class', 'ui-btn ui-icon-arrow-d ui-btn-icon-notext ui-corner-all ui-shadow floatLeft');
         exportButton.setAttribute('title', 'Export Patient');
         exportButton.setAttribute('download', key + '.json');
-        exportButton.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(patient)));
+        exportButton.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify([patient])));
         exportButton.appendChild(document.createTextNode(' '));
         patDiv3.appendChild(exportButton);
 
@@ -330,7 +335,7 @@ function listPatients() {
     }
     tbl.appendChild(tbdy);
     $('#patientListTable').trigger('create');
-    $('#patientListTable').table('refresh');
+//    $('#patientListTable').table('refresh');
 }
 
 function removeIzTableRow(source) {
@@ -429,6 +434,7 @@ function appendIzTableRow(tbdy, data) {
     // code select
     td = document.createElement('td');
     td.setAttribute('class', 'izSelect');
+//    td.setAttribute('data-rule-required', 'true');
     var codeInput = document.createElement('select');
     codeInput.name = 'CI' + izId;
     codeInput.id = codeInput.name;
@@ -436,11 +442,16 @@ function appendIzTableRow(tbdy, data) {
 //    codeInput.setAttribute('data-options', '{"hidePlaceholderMenuItems":"false"}');
 //    codeInput.setAttribute('data-native-menu', 'false');
     td.appendChild(codeInput);
+    var errorDiv = document.createElement('div');
+    errorDiv.setAttribute('id', codeInput.id + 'Error');
+    td.appendChild(errorDiv);
     tr.appendChild(td);
 
     // date input
     var td = document.createElement('td');
     td.setAttribute('class', 'iceDateInput');
+//    td.setAttribute('data-rule-dateISO', 'true');
+//    td.setAttribute('data-rule-required', 'true');
     var dateInput = document.createElement('input');
     dateInput.name = 'DI' + izId;
     dateInput.id = dateInput.name;
@@ -452,6 +463,9 @@ function appendIzTableRow(tbdy, data) {
         dateInput.value = data[1];
     }
     td.appendChild(dateInput);
+    var errorDiv = document.createElement('div');
+    errorDiv.setAttribute('id', dateInput.id + 'Error');
+    td.appendChild(errorDiv);
     tr.appendChild(td);
 
     // delete button
@@ -467,6 +481,9 @@ function appendIzTableRow(tbdy, data) {
     tr.appendChild(td);
 
     tbdy.appendChild(tr);
+    $('#' + dateInput.id).rules('add', {'required': true});
+    $('#' + dateInput.id).rules('add', {'dateISO': true});
+    $('#' + codeInput.id).rules('add', {'required': true});
 
     _setIzCodeData(eventType, $('#' + codeInput.id)[0], data);
 //    $('#FS' + izId).trigger('create');
@@ -549,16 +566,47 @@ $(document).ready(function() {
 });
 
 function importPatient(data) {
+    var patients = [];
     var payload = atob(decodeURIComponent(data.substring(data.indexOf(',') + 1)));
-    var patient;
     try {
-        patient = JSON.parse(payload);
+        patients = [].concat(JSON.parse(payload));
     } catch (err) {
         var xmlDoc = (new DOMParser()).parseFromString(payload, 'application/xml');
-        patient = vmr2Js(xmlDoc);
+        var patientNodes = xmlDoc.documentElement.getElementsByTagName('patient');
+        console.log(patientNodes);
+        for (var i = 0; i < patientNodes.length; i++) {
+            patients[patients.length] = vmr2Js(patientNodes[i]);
+        }
     }
-    patient['id'] = getGuid();
     var patientList = getPatientList();
-    patientList[patient['id']] = patient;
+    for (var c = 0; c < patients.length; c++) {
+        var patient = patients[c];
+        patient['id'] = getGuid();
+        patientList[patient['id']] = patient;
+    }
     setPatientList(patientList);
+}
+
+function initPatientValidation() {
+
+//    console.log('called initPatientValidation');
+
+    $.validator.addMethod("dateISO", function(value, element) {
+        return this.optional(element) || /^\d{4}(0?[1-9]|1[012])(0?[1-9]|[12][0-9]|3[01])$/.test(value);
+    }, "Please specify a valid date. e.g. 19301231");
+
+    $('#savePatientForm').validate({
+        onfocusout: function(element, event) {
+            var id = '#' + element.id;
+            if (!$("#savePatientForm").validate().element(id)) {
+                $(id + 'Error').show();
+            } else {
+                $(id + 'Error').hide();
+            }
+        },
+        errorPlacement: function(error, element) {
+//            console.log($('#' + element[0].id + 'Error'));
+            error.appendTo($('#' + element[0].id + 'Error'));
+        }
+    });
 }
