@@ -66,3 +66,15 @@ platforms/android/assets/www/res/screen/android/screen-hdpi-landscape.png
 platforms/android/local.properties
 platforms/android/assets/www/manifest.json
 IceClient.apk
+platforms/android/assets/www/plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js
+platforms/android/assets/www/plugins/org.apache.cordova.dialogs/www/notification.js
+platforms/android/assets/www/plugins/org.apache.cordova.dialogs/www/android/notification.js
+platforms/android/assets/www/plugins/org.apache.cordova.device/www/device.js
+platforms/android/assets/www/plugins/org.apache.cordova.device-orientation/www/compass.js
+platforms/android/assets/www/plugins/org.apache.cordova.device-orientation/www/CompassHeading.js
+platforms/android/assets/www/plugins/org.apache.cordova.device-orientation/www/CompassError.js
+platforms/android/assets/www/plugins/org.apache.cordova.device-motion/www/accelerometer.js
+platforms/android/assets/www/plugins/org.apache.cordova.device-motion/www/Acceleration.js
+platforms/android/assets/www/phonegap.js
+platforms/android/assets/www/cordova_plugins.js
+platforms/android/assets/www/cordova.js
