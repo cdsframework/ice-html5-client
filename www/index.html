@@ -17,6 +17,7 @@ and open the template in the editor.
         <script src="js/jqm-datebox.core.min.js"></script>
         <script src="js/jqm-datebox.mode.datebox.min.js"></script>
         <script src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+        <script src="js/jquery.validate.min.js"></script>
         <script src="js/iceData.js"></script>
         <script src="js/iceUtils.js"></script>
         <script src="js/iceOpenCds.js"></script>
@@ -46,15 +47,23 @@ and open the template in the editor.
                     <script type="text/javascript">
                         listPatients();
                     </script>
-                    <a href="#savePatient" onclick="clearSavePatient();currentPage='savePatient';" class="ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-left">Add Patient</a>
-                    <a href="#importPatient" onclick="currentPage='importPatient';" class="ui-btn ui-btn-inline ui-icon-arrow-u ui-btn-icon-left">Import Patient</a>
-                    <a href="#settings" onclick="initSettings();currentPage='settings';" class="ui-btn ui-btn-inline ui-icon-gear ui-btn-icon-left">Settings</a>
+                    <a href="#savePatient" onclick="clearSavePatient();
+                            currentPage = 'savePatient';" class="ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-left">Add Patient</a>
+                    <a href="#importPatient" onclick="currentPage = 'importPatient';" class="ui-btn ui-btn-inline ui-icon-arrow-u ui-btn-icon-left">Import Patient</a>
+                    <a href="#settings" onclick="initSettings();
+                            currentPage = 'settings';" class="ui-btn ui-btn-inline ui-icon-gear ui-btn-icon-left">Settings</a>
                     <a href="#about"
                        data-transition="pop"
                        data-rel="dialog"
-                       onclick="$.mobile.changePage('#about');currentPage='about';"
+                       onclick="$.mobile.changePage('#about');
+                               currentPage = 'about';"
                        id="aboutButton" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-left">About</a>
-                </form>
+                    <a href="#help"
+                       data-transition="pop"
+                       data-rel="dialog"
+                       onclick="$.mobile.changePage('#help');
+                               currentPage = 'help';"
+                       id="helpButton" class="ui-btn ui-btn-inline ui-icon-eye ui-btn-icon-left">Help</a>                </form>
             </div>
             <div data-role="footer"><h4>Copyright &copy;<script>document.write(new Date().getFullYear())</script> HLN Consulting, LLC</h4></div>
         </div>
@@ -62,7 +71,8 @@ and open the template in the editor.
             <div data-role="header"><div class="iceLogo"></div><h1>Patient ICE Results</h1></div>
             <div role="main" class="ui-content">
                 <form>
-                    <a href="#main" onclick="selectedPatient = null;currentPage = 'main';" class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Back</a>
+                    <a href="#main" onclick="selectedPatient = null;
+                                    currentPage = 'main';" class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Back</a>
                     <div class="floatLeft100" style="opacity: .5;display: table-caption;margin: 20px 12px;">Patient Info</div>
                     <div class="floatLeft100" ><div class="icePatLabel">Name:&nbsp;&nbsp;</div><div class="icePatData" id="patientName"></div></div>
                     <div class="floatLeft100" ><div class="icePatLabel">DOB:&nbsp;&nbsp;</div><div class="icePatData" id="patientDob"></div></div>
@@ -89,7 +99,8 @@ and open the template in the editor.
                             </tr>
                         </tbody>
                     </table>
-                    <a href="#main" onclick="selectedPatient = null;currentPage = 'main';" class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Back</a>
+                    <a href="#main" onclick="selectedPatient = null;
+                            currentPage = 'main';" class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Back</a>
                     <table id="iceDebugger"
                            data-role="table"
                            class="ui-responsive"
@@ -133,26 +144,34 @@ and open the template in the editor.
                         <tbody>
                             <tr>
                                 <th><label for="firstName">First Name</label></th>
-                                <td><input name="firstName" id="firstName" type="text" /></td>
+                                <td><input name="firstName" id="firstName" type="text" data-rule-required="true" /><div id="firstNameError"></div></td>
                             </tr>
                             <tr>
                                 <th><label for="lastName">Last Name</label></th>
-                                <td><input name="lastName" id="lastName" type="text" /></td>
+                                <td><input name="lastName" id="lastName" type="text" data-rule-required="true" /><div id="lastNameError"></div></td>
                             </tr>
                             <tr>
                                 <th><label>Gender</label></th>
                                 <td>
                                     <fieldset data-role="controlgroup" data-type="horizontal" style="width:17em;">
-                                        <label><input name="gender" id="genderM" type="radio" value="M"/>Male</label>
-                                        <label><input name="gender" id="genderF" type="radio" value="F"/>Female</label>
-                                        <label><input name="gender" id="genderO" type="radio" value="O"/>Other</label>
+                                        <label><input name="gender" id="genderM" type="radio" value="M" required/>Male</label>
+                                        <label><input name="gender" id="genderF" type="radio" value="F" />Female</label>
+                                        <label><input name="gender" id="genderO" type="radio" value="O" />Other</label>
                                     </fieldset>
+                                    <div id="genderError"></div>
                                 </td>
                             </tr>
                             <tr>
                                 <th><label for="dob">Birth Date</label></th>
                                 <td>
-                                    <input name="dob" id="dob" type="text" data-role="datebox" data-options='{"mode":"datebox", "overrideDateFormat":"%Y%m%d", "lockInput":"false", "enhanceInput":"true"}' />
+                                    <input name="dob"
+                                           id="dob"
+                                           type="text"
+                                           data-role="datebox"
+                                           data-options='{"mode":"datebox", "overrideDateFormat":"%Y%m%d", "lockInput":"false", "enhanceInput":"true"}'
+                                           data-rule-required="true"
+                                           data-rule-dateISO="true" />
+                                    <div id="dobError"></div>
                                 </td>
                             </tr>
                             <tr>
@@ -163,7 +182,9 @@ and open the template in the editor.
                                            type="text"
                                            data-clear-btn="true"
                                            data-role="datebox"
-                                           data-options='{"mode":"datebox", "overrideDateFormat":"%Y%m%d", "useClearButton":"true", "useCollapsedBut":"true", "lockInput":"false", "enhanceInput":"true"}' />
+                                           data-options='{"mode":"datebox", "overrideDateFormat":"%Y%m%d", "useClearButton":"true", "useCollapsedBut":"true", "lockInput":"false", "enhanceInput":"true"}'
+                                           data-rule-dateISO="true" />
+                                    <div id="evalDateError"></div>
                                 </td>
                             </tr>
                         </tbody>
@@ -193,7 +214,9 @@ and open the template in the editor.
                             <a href="#main"
                                style="float:right;"
                                onclick="document.getElementById('savePatientForm').reset();
-                                       selectedPatient = null;currentPage='main';"
+                                       $('#savePatientForm').validate().resetForm();
+                                       selectedPatient = null;
+                                       currentPage = 'main';"
                                class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Cancel</a>
                         </div>
                         <div class="ui-block-b">
@@ -212,7 +235,8 @@ and open the template in the editor.
             <div role="main" class="ui-content" style="padding:40px;">
                 <div id="deleteConfirmMessage">Are you sure you want to delete the selected patient?</div>
                 <div class="ui-grid-a">
-                    <div class="ui-block-a"><a href="#main" onclick="selectedPatient = null;currentPage = 'main';" class="ui-shadow ui-btn ui-corner-all">Cancel</a></div>
+                    <div class="ui-block-a"><a href="#main" onclick="selectedPatient = null;
+                                    currentPage = 'main';" class="ui-shadow ui-btn ui-corner-all">Cancel</a></div>
                     <div class="ui-block-b" style="padding-right:20px;">
                         <div class="button-wrap">
                             <button name="Delete" class="ui-shadow ui-btn ui-corner-all" onclick="deletePatient(selectedPatient);
@@ -268,7 +292,8 @@ and open the template in the editor.
                     <div class="ui-grid-a">
                         <div class="ui-block-a"><a href="#main"
                                                    style="float:right"
-                                                   onclick="document.getElementById('settingsForm').reset();currentPage = 'main';"
+                                                   onclick="document.getElementById('settingsForm').reset();
+                                                           currentPage = 'main';"
                                                    class="ui-shadow ui-btn ui-corner-all ui-btn-inline">Cancel</a></div>
                         <div class="ui-block-b">
                             <div class="button-wrap">
@@ -307,7 +332,34 @@ and open the template in the editor.
                     <a href="#" onclick="window.open('https://cdsframework.atlassian.net/wiki/display/CDSF/ICE', '_system');">ICE Wiki</a>.
                     For more information, send email to 
                     <a href="#" onclick="window.open('mailto:ice@hln.com?Subject=ICE%20Inquiry', '_system');">ice@hln.com</a>. </p>
-                <a href="#main" class="ui-btn ui-btn-inline" onclick="setViewedIntro();currentPage = 'main';" style="margin:auto;">OK</a>
+                <a href="#main" class="ui-btn ui-btn-inline" onclick="setViewedIntro();
+                        currentPage = 'main';" style="margin:auto;">OK</a>
+            </div>
+        </div>
+        <div data-role="page" id="help" data-dialog="true">
+            <div data-role="header">
+                <div class="iceLogo"></div>
+                <h1>Help</h1>
+            </div>
+            <div role="main" class="ui-content">
+                <h3>Manual</h3>
+                <ul>
+                    <li>To create a new patient manually, click the Add Patient button.</li>
+                    <li>To import patients in either the vMR or JSON data formats, click the Import Patient button.</li>
+                    <li>Any patient data that the user key enters or imports will reside locally on their machine. (It will not
+                        be transmitted unless/until the user clicks the icon to ICE the patient, and the ICE Web Service will not
+                        store a record of the patient data).</li>
+                    <li>Users may edit a patient in the patient list by clicking the pencil icon on the right.</li>
+                    <li>Don't forget that you may edit the Evaluation Date which determines the date for which ICE will calculate
+                        the evaluations and recommendations whenever the user submits that patient to the ICE Web Service. </li>
+                    <li>To run a patient through ICE and see the results, click the last icon on the far right. It will securely 
+                        invoke the ICE Web Service on one of HLN's servers and then display the patient's data as well as the 
+                        results returned by the ICE Web Service. If you are running in Debug mode, it will also display the 
+                        input and output vMRs.</li>
+                    <li>To turn Debug mode on/off, click on the Settings button, toggle the on/off switch to the desired mode, 
+                        and then click the Save button.</li>
+                </ul>
+                <a href="#main" class="ui-btn ui-btn-inline" onclick="currentPage = 'main';" style="margin:auto;">OK</a>
             </div>
         </div>
     </body>

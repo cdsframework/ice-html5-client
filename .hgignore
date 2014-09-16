@@ -100,3 +100,4 @@ platforms/ios/www/plugins/org.apache.cordova.device-orientation/www/CompassHeadi
 platforms/ios/www/plugins/org.apache.cordova.device/www/device.js
 platforms/ios/www/plugins/org.apache.cordova.dialogs/www/notification.js
 platforms/ios/www/plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js
+platforms/ios/www

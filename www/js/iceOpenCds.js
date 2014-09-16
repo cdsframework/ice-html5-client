@@ -110,7 +110,7 @@ function evaluate(inputXml, patient, settings) {
     if (settings['debug']) {
         console.time("evaluate");
     }
-    var xhr = createCORSRequest('POST', 'http://cds.hln.com:16080/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate');
+    var xhr = createCORSRequest('POST', 'https://cds.hln.com/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate');
 
     var evalDate = patient['evalDate'];
     if (evalDate === null || typeof (evalDate) === 'undefined' || evalDate === '') {
@@ -221,16 +221,15 @@ function processResponse(xmlDoc, patient, settings) {
     }
 }
 
-function vmr2Js(xmlDoc) {
+function vmr2Js(patientNode) {
     var patient = {'izs': []};
-    getPatientDemographics(patient, xmlDoc);
-    getPatientEvents(patient, xmlDoc);
+    getPatientDemographics(patient, patientNode);
+    getPatientEvents(patient, patientNode);
 //    console.log(patient);
     return patient;
 }
 
-function getPatientDemographics(patient, xmlDoc) {
-    var patientNode = xmlDoc.documentElement.getElementsByTagName('patient')[0];
+function getPatientDemographics(patient, patientNode) {
     var idNode = patientNode.getElementsByTagName('id')[0];
     patient['firstName'] = 'Patient';
     patient['lastName'] = idNode.getAttribute('extension');
@@ -243,34 +242,39 @@ function getPatientDemographics(patient, xmlDoc) {
     }
 }
 
-function getPatientEvents(patient, xmlDoc) {
-    var substanceAdministrationEventsNode = xmlDoc.documentElement.getElementsByTagName('substanceAdministrationEvents')[0];
-    var childNodes = substanceAdministrationEventsNode.childNodes;
-    for (var i = 0; i < childNodes.length; i++) {
-        if (childNodes[i].nodeName.toLowerCase() === 'substanceadministrationevent') {
-            var child = childNodes[i];
-            var id = child.getElementsByTagName('id')[0].getAttribute('extension');
-            var substanceCode = child.getElementsByTagName('substanceCode')[0].getAttribute('code');
-            var cvxCode = cvxData[substanceCode];
-            if (cvxCode !== null && typeof (cvxCode) !== 'undefined') {
-                substanceCode = substanceCode + ': ' + cvxCode['displayName'];
-            }
-            var administrationTime = child.getElementsByTagName('administrationTimeInterval')[0].getAttribute('high').substring(0, 8);
-            patient['izs'][patient['izs'].length] = [id, administrationTime, substanceCode, 'I'];
+function getPatientEvents(patient, patientNode) {
+    var substanceAdministrationEventsNode = patientNode.getElementsByTagName('substanceAdministrationEvents')[0];
+    var childNodes;
+    if (typeof (substanceAdministrationEventsNode) !== 'undefined') {
+        childNodes = substanceAdministrationEventsNode.childNodes;
+        for (var i = 0; i < childNodes.length; i++) {
+            if (childNodes[i].nodeName.toLowerCase() === 'substanceadministrationevent') {
+                var child = childNodes[i];
+                var id = child.getElementsByTagName('id')[0].getAttribute('extension');
+                var substanceCode = child.getElementsByTagName('substanceCode')[0].getAttribute('code');
+                var cvxCode = cvxData[substanceCode];
+                if (cvxCode !== null && typeof (cvxCode) !== 'undefined') {
+                    substanceCode = substanceCode + ': ' + cvxCode['displayName'];
+                }
+                var administrationTime = child.getElementsByTagName('administrationTimeInterval')[0].getAttribute('high').substring(0, 8);
+                patient['izs'][patient['izs'].length] = [id, administrationTime, substanceCode, 'I'];
 //            console.log([id, administrationTime, substanceCode]);
+            }
         }
     }
-    var observationResults = xmlDoc.documentElement.getElementsByTagName('observationResults')[0];
-    childNodes = observationResults.childNodes;
-    for (var i = 0; i < childNodes.length; i++) {
-        if (childNodes[i].nodeName.toLowerCase() === 'observationresult') {
-            var child = childNodes[i];
-            var id = child.getElementsByTagName('id')[0].getAttribute('root');
-            var observationFocus = child.getElementsByTagName('observationFocus')[0].getAttribute('code');
-            var observationEventTime = child.getElementsByTagName('observationEventTime')[0].getAttribute('high').substring(0, 8);
-            if (observationFocus !== 'U') {
-                patient['izs'][patient['izs'].length] = [id, observationEventTime, observationFocus, 'D'];
+    var observationResults = patientNode.getElementsByTagName('observationResults')[0];
+    if (typeof (observationResults) !== 'undefined') {
+        childNodes = observationResults.childNodes;
+        for (var i = 0; i < childNodes.length; i++) {
+            if (childNodes[i].nodeName.toLowerCase() === 'observationresult') {
+                var child = childNodes[i];
+                var id = child.getElementsByTagName('id')[0].getAttribute('root');
+                var observationFocus = child.getElementsByTagName('observationFocus')[0].getAttribute('code');
+                var observationEventTime = child.getElementsByTagName('observationEventTime')[0].getAttribute('high').substring(0, 8);
+                if (observationFocus !== 'U') {
+                    patient['izs'][patient['izs'].length] = [id, observationEventTime, observationFocus, 'D'];
 //                console.log([id, administrationTime, substanceCode]);
+                }
             }
         }
     }

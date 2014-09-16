@@ -10,13 +10,13 @@ and open the template in the editor.
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
-#about .ui-dialog-contain {
+#about .ui-dialog-contain, #help .ui-dialog-contain {
     max-width: none;
 }
-#about h3 {
+#about h3, #help h3 {
     font-size:1em;
 }
-#about p {
+#about p, #help p {
     font-size: 0.9em;
 }
 .iceLogo {
@@ -215,3 +215,19 @@ and open the template in the editor.
 .ui-table-reflow tbody th {
     margin-top: 0em;
 }
+
+/*  validation css */
+
+label.error {
+    color: red;
+}
+/* 
+@media screen and (orientation: portrait){
+    label.error { margin-left: 0; display: block; }
+}
+ 
+@media screen and (orientation: landscape){
+    label.error { display: inline-block; margin-left: 22%; }
+}
+ 
+em { color: red; font-weight: bold; padding-right: .25em; }*/
