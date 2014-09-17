@@ -101,3 +101,8 @@ platforms/ios/www/plugins/org.apache.cordova.device/www/device.js
 platforms/ios/www/plugins/org.apache.cordova.dialogs/www/notification.js
 platforms/ios/www/plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js
 platforms/ios/www
+platforms/ios/build
+platforms/ios/CordovaLib/build
+platforms/ios/CordovaLib/CordovaLib.xcodeproj/xcuserdata
+platforms/ios/ICE OpenCDS Client.xcodeproj/project.xcworkspace/xcuserdata
+platforms/ios/ICE OpenCDS Client.xcodeproj/xcuserdata
