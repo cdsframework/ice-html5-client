@@ -221,6 +221,11 @@ and open the template in the editor.
 label.error {
     color: red;
 }
+
+.ui-page > .ui-footer > h4 {
+    font-size: .8em;
+}
+
 /* 
 @media screen and (orientation: portrait){
     label.error { margin-left: 0; display: block; }
