@@ -56,8 +56,9 @@ function setPatientList(patientList) {
  * @returns {undefined}
  */
 function savePatient() {
-
-    console.log($('#savePatientForm').valid());
+//    if (typeof (console) !== 'undefined' && typeof (console.log) !== 'undefined') {
+//        console.log($('#savePatientForm').valid());
+//    }
     if ($('#savePatientForm').valid() === false) {
         return false;
     }
@@ -291,13 +292,15 @@ function listPatients() {
         patDiv3 = document.createElement('div');
         patDiv3.setAttribute('class', 'floatRight');
 
-        exportButton = document.createElement('a');
-        exportButton.setAttribute('class', 'ui-btn ui-icon-arrow-d ui-btn-icon-notext ui-corner-all ui-shadow floatLeft');
-        exportButton.setAttribute('title', 'Export Patient');
-        exportButton.setAttribute('download', key + '.json');
-        exportButton.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify([patient])));
-        exportButton.appendChild(document.createTextNode(' '));
-        patDiv3.appendChild(exportButton);
+        if (!mobileDetected) {
+            exportButton = document.createElement('a');
+            exportButton.setAttribute('class', 'ui-btn ui-icon-arrow-d ui-btn-icon-notext ui-corner-all ui-shadow floatLeft');
+            exportButton.setAttribute('title', 'Export Patient');
+            exportButton.setAttribute('download', key + '.json');
+            exportButton.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify([patient])));
+            exportButton.appendChild(document.createTextNode(' '));
+            patDiv3.appendChild(exportButton);
+        }
 
         editButton = document.createElement('a');
         editButton.setAttribute('class', 'ui-btn ui-icon-edit ui-btn-icon-notext ui-corner-all ui-shadow floatLeft');
@@ -500,11 +503,14 @@ function setIzCodeData(source) {
 }
 
 function _setIzCodeData(value, object, data) {
+    var sourceDataItem;
+    var sourceGroupDataItem;
     var sourceData;
+    var elementSelected = false;
 
     //get the source data - iz or disease
     if (value === 'I') {
-        sourceData = getCvxData();
+        sourceData = getVaccineGroupData();
     } else {
         sourceData = getDiseaseData();
     }
@@ -520,15 +526,36 @@ function _setIzCodeData(value, object, data) {
     object.appendChild(option);
 
     // add the option elements
-    for (var i = 0; i < sourceData.length; i++) {
-        var option = document.createElement('option');
-        var label = sourceData[i];
-        option.setAttribute('value', label);
-        if (data.length > 0 && data[2] === label) {
-            option.setAttribute('selected', 'selected');
+    if (value === 'I') {
+        for (sourceGroupDataItem in sourceData) {
+            var vaccineList = sourceData[sourceGroupDataItem]['vaccineList'];
+            var optgroup = document.createElement('optgroup');
+            optgroup.setAttribute('label', sourceData[sourceGroupDataItem]['displayName']);
+            for (var i = 0; i < vaccineList.length; i++) {
+                sourceDataItem = vaccineList[i];
+                var option = document.createElement('option');
+                var label = sourceDataItem['selectName'];
+                option.setAttribute('value', label);
+                if (!elementSelected && data.length > 0 && data[2] === label) {
+                    option.setAttribute('selected', 'selected');
+                    elementSelected = true;
+                }
+                option.appendChild(document.createTextNode(label));
+                optgroup.appendChild(option);
+            }
+            object.appendChild(optgroup);
         }
-        option.appendChild(document.createTextNode(label));
-        object.appendChild(option);
+    } else {
+        for (sourceDataItem in sourceData) {
+            var option = document.createElement('option');
+            var label = sourceData[sourceDataItem]['selectName'];
+            option.setAttribute('value', label);
+            if (data.length > 0 && data[2] === label) {
+                option.setAttribute('selected', 'selected');
+            }
+            option.appendChild(document.createTextNode(label));
+            object.appendChild(option);
+        }
     }
 }
 
@@ -573,7 +600,9 @@ function importPatient(data) {
     } catch (err) {
         var xmlDoc = (new DOMParser()).parseFromString(payload, 'application/xml');
         var patientNodes = xmlDoc.documentElement.getElementsByTagName('patient');
-        console.log(patientNodes);
+        if (typeof (console) !== 'undefined' && typeof (console.log) !== 'undefined') {
+            console.log(patientNodes);
+        }
         for (var i = 0; i < patientNodes.length; i++) {
             patients[patients.length] = vmr2Js(patientNodes[i]);
         }

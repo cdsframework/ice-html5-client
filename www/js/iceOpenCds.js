@@ -107,7 +107,7 @@ function addsubstanceAdministrationEvent(xmlString, iz) {
 }
 
 function evaluate(inputXml, patient, settings) {
-    if (settings['debug']) {
+    if (settings['debug'] && typeof(console) !== 'undefined' && typeof(console.time) !== 'undefined') {
         console.time("evaluate");
     }
     var xhr = createCORSRequest('POST', 'https://cds.hln.com/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate');
@@ -178,7 +178,7 @@ function evaluate(inputXml, patient, settings) {
                 }
                 requestStatusNode.appendChild(document.createTextNode(xhr.status + ': ' + xhr.statusText));
             }
-            if (settings['debug']) {
+            if (settings['debug'] && typeof(console) !== 'undefined' && typeof(console.time) !== 'undefined') {
                 console.timeEnd("evaluate");
             }
         }
@@ -284,7 +284,7 @@ function cdsOutput2Js(cdsOutputDoc, settings) {
     var result = {};
     var groupKey;
     for (groupKey in vaccineGroups) {
-        result[groupKey] = {'groupName': vaccineGroups[groupKey],
+        result[groupKey] = {'groupName': vaccineGroups[groupKey]['displayName'],
             'evaluations': [],
             'recommendations': []
         };
@@ -751,7 +751,7 @@ function renderRecommendations(groupKey, recommendations) {
         if (recommendation['substanceCodeType'] === 'VACCINE') {
             recDiv1.appendChild(document.createTextNode('Vaccine: ' + cvxData[recommendation['substanceCode']]['displayName'] + ' (' + recommendation['substanceCode'] + ')'));
         } else {
-            recDiv1.appendChild(document.createTextNode('Vaccine Group: ' + vaccineGroups[recommendation['substanceCode']]));
+            recDiv1.appendChild(document.createTextNode('Vaccine Group: ' + vaccineGroups[recommendation['substanceCode']]['displayName']));
         }
 
         recA = document.createElement('a');

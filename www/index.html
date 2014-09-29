@@ -1,10 +1,5 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
+<html lang="en" >
     <head>
         <title>ICE Test App</title>
         <meta charset="UTF-8">
@@ -49,7 +44,10 @@ and open the template in the editor.
                     </script>
                     <a href="#savePatient" onclick="clearSavePatient();
                             currentPage = 'savePatient';" class="ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-left">Add Patient</a>
-                    <a href="#importPatient" onclick="currentPage = 'importPatient';" class="ui-btn ui-btn-inline ui-icon-arrow-u ui-btn-icon-left">Import Patient</a>
+                    <a href="#importPatient"
+                       onclick="currentPage = 'importPatient';"
+                       id="importPatientButton"
+                       class="ui-btn ui-btn-inline ui-icon-arrow-u ui-btn-icon-left">Import Patient</a>
                     <a href="#settings" onclick="initSettings();
                             currentPage = 'settings';" class="ui-btn ui-btn-inline ui-icon-gear ui-btn-icon-left">Settings</a>
                     <a href="#about"
@@ -128,7 +126,7 @@ and open the template in the editor.
         <div data-role="page" id="savePatient">
             <div data-role="header"><div class="iceLogo"></div><h1>Patient Editor</h1></div>
             <div role="main" class="ui-content">
-                <div style="margin-bottom:12px;">Note: for dates, use &quot;yyyymmdd&quot; format (e.g. 19301231). All data is stored on the user's browser.</div>
+                <div style="margin-bottom:12px;">Note: for dates, use &quot;yyyymmdd&quot; format (e.g. 19301231).</div>
                 <form id="savePatientForm">
                     <input type="hidden" name="patientId" id="patientId" />
                     <table data-role="table"
