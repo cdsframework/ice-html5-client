@@ -19,6 +19,13 @@ and open the template in the editor.
 #about p, #help p {
     font-size: 0.9em;
 }
+.version {
+    right: 10px;
+    top: 12px;
+    position: absolute;
+    font-size: .75em;
+    color: #888;
+}
 .iceLogo {
     float:left;
     background-image: url(images/iceLogo.png);
