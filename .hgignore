@@ -107,3 +107,4 @@ platforms/ios/CordovaLib/CordovaLib.xcodeproj/xcuserdata
 platforms/ios/ICE OpenCDS Client.xcodeproj/project.xcworkspace/xcuserdata
 platforms/ios/ICE OpenCDS Client.xcodeproj/xcuserdata
 platforms/android/assets/*
+platforms/android/CordovaLib/local.properties

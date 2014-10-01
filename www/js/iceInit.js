@@ -2,7 +2,7 @@
  * ICE Client initialization script.
  */
 
-var version = '1.0.9';
+var version = '1.0.10';
 
 function onLoad() {
 
