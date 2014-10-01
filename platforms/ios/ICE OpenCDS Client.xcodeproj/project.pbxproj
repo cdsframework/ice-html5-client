@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00811FC94A424E868C6D12B7 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCACF83EEF9F49E294FB68A3 /* CoreMotion.framework */; };
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
@@ -549,6 +548,7 @@
 				);
 				PRODUCT_NAME = "ICE OpenCDS Client";
 				PROVISIONING_PROFILE = "9f0ead1d-d558-4df5-a9f5-c3fb828b27fc";
+				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -583,6 +583,7 @@
 				);
 				PRODUCT_NAME = "ICE OpenCDS Client";
 				PROVISIONING_PROFILE = "9f0ead1d-d558-4df5-a9f5-c3fb828b27fc";
+				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

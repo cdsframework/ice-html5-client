@@ -27,7 +27,7 @@
 #import "CDVViewController.h"
 
 @interface CDVHTTPURLResponse : NSHTTPURLResponse
-@property (nonatomic) NSInteger statusCode;
+@property (atomic) NSInteger statusCode;
 @end
 
 static CDVWhitelist* gWhitelist = nil;
