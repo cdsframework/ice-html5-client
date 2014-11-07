@@ -109,3 +109,5 @@ platforms/ios/ICE OpenCDS Client.xcodeproj/xcuserdata
 platforms/android/assets/*
 platforms/android/CordovaLib/local.properties
 console.log
+nbproject/private/private.properties
+nbproject/private/private.xml
