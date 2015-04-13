@@ -1,9 +1,3 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 function icePatient(id) {
     var settings = getSettings();
     var patientList = getPatientList();
@@ -110,7 +104,7 @@ function evaluate(inputXml, patient, settings) {
     if (settings['debug'] && typeof(console) !== 'undefined' && typeof(console.time) !== 'undefined') {
         console.time("evaluate");
     }
-    var xhr = createCORSRequest('POST', 'https://cds.hln.com/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate');
+    var xhr = createCORSRequest('POST', 'https://cds.hln.com/opencds-decision-support-service/evaluate');
 
     var evalDate = patient['evalDate'];
     if (evalDate === null || typeof (evalDate) === 'undefined' || evalDate === '') {
