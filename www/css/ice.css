@@ -21,6 +21,13 @@
     font-size: .75em;
     color: #888;
 }
+
+.note {
+    color: #4896db;
+    font-size: .80em;
+    padding-top: 10px;
+}
+
 .iceLogo {
     float:left;
     background-image: url(images/iceLogo.png);
