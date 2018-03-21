@@ -342,16 +342,24 @@ function getRecommendations(cdsOutputDoc, settings) {
             var overdueTime = '';
             var proposedAdministrationTime = child.getElementsByTagName('proposedAdministrationTimeInterval');
             if (proposedAdministrationTime.length > 0) {
-                administrationTime = proposedAdministrationTime[0].getAttribute('low').substring(0, 8);
-                overdueTime = proposedAdministrationTime[0].getAttribute('high').substring(0, 8);
+                if (proposedAdministrationTime[0].getAttribute('low') !== null) {
+                    administrationTime = proposedAdministrationTime[0].getAttribute('low').substring(0, 8);
+                }
+                if (proposedAdministrationTime[0].getAttribute('high') !== null) {
+                    overdueTime = proposedAdministrationTime[0].getAttribute('high').substring(0, 8);
+                }
             }
 
             var earliestTime = '';
             var latestTime = '';
             var validAdministrationTime = child.getElementsByTagName('validAdministrationTimeInterval');
             if (validAdministrationTime.length > 0) {
-                earliestTime = validAdministrationTime[0].getAttribute('low').substring(0, 8);
-                latestTime = validAdministrationTime[0].getAttribute('high').substring(0, 8);
+                if (validAdministrationTime[0].getAttribute('low') !== null) {
+                    earliestTime = validAdministrationTime[0].getAttribute('low').substring(0, 8);
+                }
+                if (validAdministrationTime[0].getAttribute('high') !== null) {
+                    latestTime = validAdministrationTime[0].getAttribute('high').substring(0, 8);
+                }
             }
 
             // get child relatedClinicalStatements
