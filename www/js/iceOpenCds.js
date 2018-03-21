@@ -758,9 +758,9 @@ function renderRecommendations(groupKey, recommendations) {
         }
 
         if (recommendation['administrationTime'] !== '') {
-            recDiv1.appendChild(document.createTextNode('Administration Date: ' + getFormattedDateFromISO(recommendation['administrationTime'])));
+            recDiv1.appendChild(document.createTextNode('Recommendation Date: ' + getFormattedDateFromISO(recommendation['administrationTime'])));
         } else {
-            recDiv1.appendChild(document.createTextNode('Administration Date: N/A'));
+            recDiv1.appendChild(document.createTextNode('Recommendation Date: N/A'));
         }
         recDiv1.appendChild(document.createElement('br'));
 
