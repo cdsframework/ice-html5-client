@@ -351,15 +351,15 @@ function getRecommendations(cdsOutputDoc, settings) {
             }
 
             var earliestTime = '';
-            var latestTime = '';
+            // var latestTime = '';
             var validAdministrationTime = child.getElementsByTagName('validAdministrationTimeInterval');
             if (validAdministrationTime.length > 0) {
                 if (validAdministrationTime[0].getAttribute('low') !== null) {
                     earliestTime = validAdministrationTime[0].getAttribute('low').substring(0, 8);
                 }
-                if (validAdministrationTime[0].getAttribute('high') !== null) {
-                    latestTime = validAdministrationTime[0].getAttribute('high').substring(0, 8);
-                }
+                //if (validAdministrationTime[0].getAttribute('high') !== null) {
+                //    latestTime = validAdministrationTime[0].getAttribute('high').substring(0, 8);
+                //}
             }
 
             // get child relatedClinicalStatements
@@ -396,7 +396,7 @@ function getRecommendations(cdsOutputDoc, settings) {
                         'administrationTime': administrationTime,
                         'overdueTime': overdueTime,
                         'earliestTime': earliestTime,
-                        'latestTime': latestTime,
+                        //'latestTime': latestTime,
                         'concept': concept,
                         'interpretations': interpretations
                     };
@@ -410,7 +410,7 @@ function getRecommendations(cdsOutputDoc, settings) {
                     'administrationTime': administrationTime,
                     'overdueTime': overdueTime,
                     'earliestTime': earliestTime,
-                    'latestTime': latestTime,
+                    //'latestTime': latestTime,
                     'concept': 'N/A',
                     'interpretations': []
                 };
@@ -778,12 +778,12 @@ function renderRecommendations(groupKey, recommendations) {
         }
         recDiv1.appendChild(document.createElement('br'));
 
-        if (recommendation['latestTime'] !== '') {
-            recDiv1.appendChild(document.createTextNode('Latest Date: ' + getFormattedDateFromISO(recommendation['latestTime'])));
-        } else {
-            recDiv1.appendChild(document.createTextNode('Latest Date: N/A'));
-        }
-        recDiv1.appendChild(document.createElement('br'));
+        //if (recommendation['latestTime'] !== '') {
+        //    recDiv1.appendChild(document.createTextNode('Latest Date: ' + getFormattedDateFromISO(recommendation['latestTime'])));
+        //} else {
+        //    recDiv1.appendChild(document.createTextNode('Latest Date: N/A'));
+        //}
+        //recDiv1.appendChild(document.createElement('br'));
 
         recDiv1.appendChild(document.createTextNode('Status: ' + recommendation['concept']));
         recDiv1.appendChild(document.createElement('br'));
