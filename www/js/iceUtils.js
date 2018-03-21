@@ -24,13 +24,13 @@ function createCORSRequest(method, url) {
     return xhr;
 }
 
-var getGuid = (function() {
+var getGuid = (function () {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
                 .toString(16)
                 .substring(1);
     }
-    return function() {
+    return function () {
 //        return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                 s4() + '-' + s4() + s4() + s4();
@@ -42,7 +42,7 @@ function formatXml(xml) {
     var reg = /(>)(<)(\/*)/g;
     xml = xml.replace(reg, '$1\r\n$2$3');
     var pad = 0;
-    jQuery.each(xml.split('\r\n'), function(index, node) {
+    jQuery.each(xml.split('\r\n'), function (index, node) {
         var indent = 0;
         if (node.match(/.+<\/\w[^>]*>$/)) {
             indent = 0;
@@ -69,6 +69,20 @@ function formatXml(xml) {
 
 function getAgeFromISOs(dateString1, dateString2) {
     return getAge(getDateFromISO(dateString1), getDateFromISO(dateString2));
+}
+
+function getFormattedDateFromISO(dateString) {
+    var rawDate = getDateFromISO(dateString);
+    var day = rawDate.getDate();
+    if (day < 10) {
+        day = '0' + day;
+    }
+    var month = (rawDate.getMonth() + 1);
+    if (month < 10) {
+        month = '0' + month;
+    }
+    var result = rawDate.getFullYear() + '-' + month + '-' + day;
+    return result;
 }
 
 function getDateFromISO(dateString) {
@@ -145,7 +159,7 @@ function saveSettings() {
 }
 
 function sleep(millis, callback) {
-    setTimeout(function()
+    setTimeout(function ()
     {
         callback();
     }

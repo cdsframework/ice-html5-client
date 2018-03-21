@@ -191,7 +191,7 @@ function listPatients() {
         span.appendChild(document.createTextNode('DOB: '));
 
         patDiv1.appendChild(span);
-        patDiv1.appendChild(document.createTextNode(patient['dob']));
+        patDiv1.appendChild(document.createTextNode(getFormattedDateFromISO(patient['dob'])));
         patDiv1.appendChild(document.createElement('br'));
 
         span = document.createElement('span');
@@ -248,7 +248,8 @@ function listPatients() {
                     izTr = document.createElement('tr');
 
                     var izTd = document.createElement('td');
-                    izTd.appendChild(document.createTextNode(iz[1]));
+                    izTd.setAttribute('style', 'white-space: nowrap;');
+                    izTd.appendChild(document.createTextNode(getFormattedDateFromISO(iz[1])));
                     izTr.appendChild(izTd);
 
                     izTd = document.createElement('td');
