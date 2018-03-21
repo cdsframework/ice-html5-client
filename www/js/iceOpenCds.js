@@ -101,7 +101,7 @@ function addsubstanceAdministrationEvent(xmlString, iz) {
 }
 
 function evaluate(inputXml, patient, settings) {
-    if (settings['debug'] && typeof(console) !== 'undefined' && typeof(console.time) !== 'undefined') {
+    if (settings['debug'] && typeof (console) !== 'undefined' && typeof (console.time) !== 'undefined') {
         console.time("evaluate");
     }
     var xhr = createCORSRequest('POST', 'https://cds.hln.com/opencds-decision-support-service/evaluate');
@@ -147,7 +147,7 @@ function evaluate(inputXml, patient, settings) {
         soapRequestNode.appendChild(document.createTextNode(formatXml(sr)));
     }
 
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 var xmlDoc = (new DOMParser()).parseFromString(xhr.responseText, 'application/xml');
@@ -172,7 +172,7 @@ function evaluate(inputXml, patient, settings) {
                 }
                 requestStatusNode.appendChild(document.createTextNode(xhr.status + ': ' + xhr.statusText));
             }
-            if (settings['debug'] && typeof(console) !== 'undefined' && typeof(console.time) !== 'undefined') {
+            if (settings['debug'] && typeof (console) !== 'undefined' && typeof (console.time) !== 'undefined') {
                 console.timeEnd("evaluate");
             }
         }
@@ -339,9 +339,27 @@ function getRecommendations(cdsOutputDoc, settings) {
             var substanceCode = substanceCodeNode.getAttribute('code');
 
             var administrationTime = '';
+            var overdueTime = '';
             var proposedAdministrationTime = child.getElementsByTagName('proposedAdministrationTimeInterval');
             if (proposedAdministrationTime.length > 0) {
-                administrationTime = proposedAdministrationTime[0].getAttribute('high').substring(0, 8);
+                if (proposedAdministrationTime[0].getAttribute('low') !== null) {
+                    administrationTime = proposedAdministrationTime[0].getAttribute('low').substring(0, 8);
+                }
+                if (proposedAdministrationTime[0].getAttribute('high') !== null) {
+                    overdueTime = proposedAdministrationTime[0].getAttribute('high').substring(0, 8);
+                }
+            }
+
+            var earliestTime = '';
+            // var latestTime = '';
+            var validAdministrationTime = child.getElementsByTagName('validAdministrationTimeInterval');
+            if (validAdministrationTime.length > 0) {
+                if (validAdministrationTime[0].getAttribute('low') !== null) {
+                    earliestTime = validAdministrationTime[0].getAttribute('low').substring(0, 8);
+                }
+                //if (validAdministrationTime[0].getAttribute('high') !== null) {
+                //    latestTime = validAdministrationTime[0].getAttribute('high').substring(0, 8);
+                //}
             }
 
             // get child relatedClinicalStatements
@@ -376,6 +394,9 @@ function getRecommendations(cdsOutputDoc, settings) {
                         'substanceCode': substanceCode,
                         'substanceCodeType': substanceCodeType,
                         'administrationTime': administrationTime,
+                        'overdueTime': overdueTime,
+                        'earliestTime': earliestTime,
+                        //'latestTime': latestTime,
                         'concept': concept,
                         'interpretations': interpretations
                     };
@@ -387,6 +408,9 @@ function getRecommendations(cdsOutputDoc, settings) {
                     'substanceCode': substanceCode,
                     'substanceCodeType': substanceCodeType,
                     'administrationTime': administrationTime,
+                    'overdueTime': overdueTime,
+                    'earliestTime': earliestTime,
+                    //'latestTime': latestTime,
                     'concept': 'N/A',
                     'interpretations': []
                 };
@@ -542,7 +566,7 @@ function renderGrid(responseJs, patient, settings) {
     while (patientDobNode.firstChild) {
         patientDobNode.removeChild(patientDobNode.firstChild);
     }
-    patientDobNode.appendChild(document.createTextNode(patient['dob']));
+    patientDobNode.appendChild(document.createTextNode(getFormattedDateFromISO(patient['dob'])));
 
     var patientGenderNode = $('#patientGender')[0];
     while (patientGenderNode.firstChild) {
@@ -558,7 +582,7 @@ function renderGrid(responseJs, patient, settings) {
     if (evalDate === null || typeof (evalDate) === 'undefined' || evalDate === '') {
         evalDate = new Date().toISOString().substring(0, 10).split('-').join('');
     }
-    patientEvalDateNode.appendChild(document.createTextNode(evalDate));
+    patientEvalDateNode.appendChild(document.createTextNode(getFormattedDateFromISO(evalDate)));
 
     var patientAgeEvalDateNode = $('#patientAgeEvalDate')[0];
     while (patientAgeEvalDateNode.firstChild) {
@@ -649,7 +673,7 @@ function renderEvaluations(groupKey, evaluations, patient) {
         } else {
             evalDiv1.setAttribute('class', 'ui-shadow iceEvalSquare iceDisease');
         }
-        evalDiv1.appendChild(document.createTextNode('Date: ' + eventDate));
+        evalDiv1.appendChild(document.createTextNode('Date: ' + getFormattedDateFromISO(eventDate)));
         evalDiv1.appendChild(document.createElement('br'));
         evalDiv1.appendChild(document.createTextNode('Age: ' + age));
         evalDiv1.appendChild(document.createElement('br'));
@@ -695,13 +719,17 @@ function renderEvaluations(groupKey, evaluations, patient) {
         attrTbl.appendChild(attrThead);
         var attrTbody = document.createElement('tbody');
 
-        for (evaluationKey in evaluation) {
+        for (var evaluationKey in evaluation) {
             attrTr = document.createElement('tr');
             var attrTd = document.createElement('td');
             attrTd.appendChild(document.createTextNode(evaluationKey));
             attrTr.appendChild(attrTd);
             attrTd = document.createElement('td');
-            attrTd.appendChild(document.createTextNode(evaluation[evaluationKey]));
+            if ((evaluationKey === 'administrationTime' || evaluationKey === 'observationEventTime') && evaluation[evaluationKey] !== '') {
+                attrTd.appendChild(document.createTextNode(getFormattedDateFromISO(evaluation[evaluationKey])));
+            } else {
+                attrTd.appendChild(document.createTextNode(evaluation[evaluationKey]));
+            }
             attrTr.appendChild(attrTd);
             attrTbody.appendChild(attrTr);
         }
@@ -730,11 +758,32 @@ function renderRecommendations(groupKey, recommendations) {
         }
 
         if (recommendation['administrationTime'] !== '') {
-            recDiv1.appendChild(document.createTextNode('Date: ' + recommendation['administrationTime']));
+            recDiv1.appendChild(document.createTextNode('Administration Date: ' + getFormattedDateFromISO(recommendation['administrationTime'])));
         } else {
-            recDiv1.appendChild(document.createTextNode('Date: N/A'));
+            recDiv1.appendChild(document.createTextNode('Administration Date: N/A'));
         }
         recDiv1.appendChild(document.createElement('br'));
+
+        if (recommendation['overdueTime'] !== '') {
+            recDiv1.appendChild(document.createTextNode('Overdue Date: ' + getFormattedDateFromISO(recommendation['overdueTime'])));
+        } else {
+            recDiv1.appendChild(document.createTextNode('Overdue Date: N/A'));
+        }
+        recDiv1.appendChild(document.createElement('br'));
+
+        if (recommendation['earliestTime'] !== '') {
+            recDiv1.appendChild(document.createTextNode('Earliest Date: ' + getFormattedDateFromISO(recommendation['earliestTime'])));
+        } else {
+            recDiv1.appendChild(document.createTextNode('Earliest Date: N/A'));
+        }
+        recDiv1.appendChild(document.createElement('br'));
+
+        //if (recommendation['latestTime'] !== '') {
+        //    recDiv1.appendChild(document.createTextNode('Latest Date: ' + getFormattedDateFromISO(recommendation['latestTime'])));
+        //} else {
+        //    recDiv1.appendChild(document.createTextNode('Latest Date: N/A'));
+        //}
+        //recDiv1.appendChild(document.createElement('br'));
 
         recDiv1.appendChild(document.createTextNode('Status: ' + recommendation['concept']));
         recDiv1.appendChild(document.createElement('br'));
@@ -781,13 +830,20 @@ function renderRecommendations(groupKey, recommendations) {
         attrTbl.appendChild(attrThead);
         var attrTbody = document.createElement('tbody');
 
-        for (recommendationKey in recommendation) {
+        for (var recommendationKey in recommendation) {
             attrTr = document.createElement('tr');
             var attrTd = document.createElement('td');
             attrTd.appendChild(document.createTextNode(recommendationKey));
             attrTr.appendChild(attrTd);
             attrTd = document.createElement('td');
-            attrTd.appendChild(document.createTextNode(recommendation[recommendationKey]));
+
+            if ((recommendationKey === 'administrationTime' || recommendationKey === 'overdueTime' || recommendationKey === 'earliestTime' || recommendationKey === 'latestTime')
+                    && recommendation[recommendationKey] !== '') {
+                attrTd.appendChild(document.createTextNode(getFormattedDateFromISO(recommendation[recommendationKey])));
+            } else {
+                attrTd.appendChild(document.createTextNode(recommendation[recommendationKey]));
+            }
+
             attrTr.appendChild(attrTd);
             attrTbody.appendChild(attrTr);
         }
