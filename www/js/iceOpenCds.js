@@ -457,8 +457,14 @@ function getEvaluations(cdsOutputDoc, settings) {
                     var evaluationSubstanceAdministrationEvent = relatedClinicalStatement.getElementsByTagName('substanceAdministrationEvent')[0];
                     var observationResult = evaluationSubstanceAdministrationEvent.getElementsByTagName('observationResult')[0];
                     var conceptNodes = observationResult.getElementsByTagName('concept');
-                    var doseNumber = evaluationSubstanceAdministrationEvent.getElementsByTagName('doseNumber')[0].getAttribute('value');
-                    var isValid = evaluationSubstanceAdministrationEvent.getElementsByTagName('isValid')[0].getAttribute('value');
+		    var doseNumber = 'N/A';
+		    if (evaluationSubstanceAdministrationEvent.getElementsByTagName('doseNumber') !== null && typeof (evaluationSubstanceAdministrationEvent.getElementsByTagName('doseNumber')) !== 'undefined' && evaluationSubstanceAdministrationEvent.getElementsByTagName('doseNumber').length > 0) {
+			doseNumber = evaluationSubstanceAdministrationEvent.getElementsByTagName('doseNumber')[0].getAttribute('value');
+		    }
+		    var isValid = 'N/A';
+    		    if (evaluationSubstanceAdministrationEvent.getElementsByTagName('isValid') !== null && typeof (evaluationSubstanceAdministrationEvent.getElementsByTagName('isValid')) !== 'undefined' && evaluationSubstanceAdministrationEvent.getElementsByTagName('isValid').length > 0) {
+			isValid = evaluationSubstanceAdministrationEvent.getElementsByTagName('isValid')[0].getAttribute('value');
+		    }
                     var componentSubstanceCode = evaluationSubstanceAdministrationEvent.getElementsByTagName('substanceCode')[0].getAttribute('code');
                     var observationEventTime = observationResult.getElementsByTagName('observationEventTime')[0].getAttribute('high').substring(0, 8);
                     var observationFocus = observationResult.getElementsByTagName('observationFocus')[0].getAttribute('code');
@@ -764,14 +770,14 @@ function renderRecommendations(groupKey, recommendations) {
         }
         recDiv1.appendChild(document.createElement('br'));
 
-        if (recommendation['overdueTime'] !== '') {
+        if (typeof (recommendation['overdueTime']) !== 'undefined' && recommendation['overdueTime'] !== '') {
             recDiv1.appendChild(document.createTextNode('Overdue Date: ' + getFormattedDateFromISO(recommendation['overdueTime'])));
         } else {
             recDiv1.appendChild(document.createTextNode('Overdue Date: N/A'));
         }
         recDiv1.appendChild(document.createElement('br'));
 
-        if (recommendation['earliestTime'] !== '') {
+        if (typeof (recommendation['earliestTime']) !== 'undefined' && recommendation['earliestTime'] !== '') {
             recDiv1.appendChild(document.createTextNode('Earliest Date: ' + getFormattedDateFromISO(recommendation['earliestTime'])));
         } else {
             recDiv1.appendChild(document.createTextNode('Earliest Date: N/A'));

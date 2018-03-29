@@ -24,10 +24,12 @@ var cvxData = {
     '20': {'displayName': 'DTaP', 'group': ['200'] },
     '21': {'displayName': 'varicella', 'group': ['600'] },
     '22': {'displayName': 'DTP-Hib', 'group': ['200', '300'] },
+    '24': {'displayName': 'Anthrax vaccine', 'group': ['999'] },
     '28': {'displayName': 'DT, pediatric', 'group': ['200']},
     '31': {'displayName': 'Hep A, pediatric, NOS', 'group': ['810'] },
     '32': {'displayName': 'meningococcal MPSV4', 'group': ['830'] },
     '33': {'displayName': 'pneumococcal polysaccharide', 'group': ['750'] },
+    '37': {'displayName': 'yellow fever vaccine', 'group': ['999'] },
     '38': {'displayName': 'rubella/mumps', 'group': ['500'] },
     '42': {'displayName': 'Hep B, adolescent/high risk infant', 'group': ['100'] },
     '43': {'displayName': 'Hep B, adult', 'group': ['100'] },
@@ -101,6 +103,8 @@ var cvxData = {
     '178': {'displayName': 'OPV bivalent', 'group': ['400'] },
     '179': {'displayName': 'OPV, monovalent, unspecified (NOS)', 'group': ['400'] },
     '182': {'displayName': 'OPV, Unspecified (NOS)', 'group': ['400'] },
+    '183': {'displayName': 'yellow fever vaccine alternative formulation', 'group': ['999'] },
+    '184': {'displayName': 'yellow fever vaccine, unspecified formulation', 'group': ['999'] },    
     '185': {'displayName': 'Influenza, recombinant, quadrivalent,injectable, preservative free', 'group': ['800'] },
     '186': {'displayName': 'Influenza, injectable, MDCK, quadrivalent', 'group': ['800'] }
 };
