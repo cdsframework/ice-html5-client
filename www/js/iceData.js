@@ -106,7 +106,10 @@ var cvxData = {
     '183': {'displayName': 'yellow fever vaccine alternative formulation', 'group': ['999'] },
     '184': {'displayName': 'yellow fever vaccine, unspecified formulation', 'group': ['999'] },    
     '185': {'displayName': 'Influenza, recombinant, quadrivalent,injectable, preservative free', 'group': ['800'] },
-    '186': {'displayName': 'Influenza, injectable, MDCK, quadrivalent', 'group': ['800'] }
+    '186': {'displayName': 'Influenza, injectable, MDCK, quadrivalent', 'group': ['800'] },
+    '187': {'displayName': 'Zoster vaccine recombinant', 'group': ['620'] },
+    '188': {'displayName': 'Zoster vaccine, unspecified formulation', 'group': ['620'] },
+    '189': {'displayName': 'Hep B, adjuvanted', 'group': ['100'] }
 };
 
 function getCvxData() {
