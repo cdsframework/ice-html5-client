@@ -556,13 +556,13 @@ function getInterpretations(node) {
 
 function renderGrid(responseJs, patient, settings) {
 
-	var filters = ['.ui-popup-container[id^=eval]', '.ui-popup-container[id^=rec]', '.ui-popup-screen[id^=eval]', '.ui-popup-screen[id^=rec]'];
-
-	for (var i = 0; i < filters.length; i++) {
-		$(filters[i]).each(function(index, existing) {
-              existing.parentElement.removeChild(existing);
-       });
-	}
+    var filters = ['.ui-popup-container[id^=eval]', '.ui-popup-container[id^=rec]', '.ui-popup-screen[id^=eval]', '.ui-popup-screen[id^=rec]'];
+    for (var i = 0; i < filters.length; i++) {
+	$(filters[i]).each(function(index, existing) {
+	    existing.parentElement.removeChild(existing);
+	});
+    }
+    
     if (settings['debug']) {
         $('#iceDebugger')[0].style.display = 'block';
     } else {
